@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import pluginData from '../data/plugin-slots.json';
+
+const mfeCount = pluginData.mfes.length;
+const slotCount = pluginData.pluginSlots.length;
+const lastUpdated = pluginData.lastUpdated;
+const documentedCount = pluginData.pluginSlots.filter((slot) => slot.readmePresent).length;
+const missingReadmeCount = slotCount - documentedCount;
+const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).length;
+---
+
+<BaseLayout title="Home" lastUpdated={lastUpdated}>
+  <div class="hero">
+    <h1>Open edX Frontend Plugin Slots Browser</h1>
+    <div class="subtitle-block">
+      A continuously updated catalog of Open edX frontend plugin slots, with
+      source links and example configurations to help you customize MFEs without
+      forking code.
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">{mfeCount}</div>
+        <div class="stat-label">Frontend Apps</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">{slotCount}</div>
+        <div class="stat-label">Plugin Slots</div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a href="/openedx-plugin-slots-browser/mfes" class="btn btn-primary">
+        Browse MFEs →
+      </a>
+    </div>
+
+    <div class="insights">
+      <div class="insight-card">
+        <div class="insight-number">{documentedCount}</div>
+        <div class="insight-label">Documented</div>
+        <div class="insight-subtitle">{missingReadmeCount} missing README</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-number">{examplesCount}</div>
+        <div class="insight-label">With Examples</div>
+        <div class="insight-subtitle">Slots with example configs</div>
+      </div>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    margin: 3rem 0;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 3rem;
+  }
+
+  .subtitle-block {
+    max-width: 720px;
+    margin: 0 auto 3rem auto;
+    font-size: 1.05rem;
+    color: #5a5a5a;
+    line-height: 1.7;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--color-primary);
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+
+  .stat-date {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .insights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .insight-card {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    background: #fff;
+  }
+
+  .insight-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .insight-label {
+    margin-top: 0.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .insight-subtitle {
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    color: #777;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #0052a3;
+  }
+
+  .btn-secondary {
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .btn-secondary:hover {
+    background: #f8f8f8;
+  }
+
+</style>

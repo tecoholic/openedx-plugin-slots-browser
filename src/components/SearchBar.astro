@@ -1,0 +1,277 @@
+---
+// Search bar with client-side search using Fuse.js
+---
+
+<div class="search-container">
+  <div class="search-wrapper">
+    <input
+      type="text"
+      id="search-input"
+      class="search-input"
+      placeholder="Search plugins, MFEs, slots... (Cmd+K)"
+      aria-label="Search"
+    />
+    <span class="search-hint">⌘K</span>
+  </div>
+  <div id="search-results" class="search-results hidden"></div>
+</div>
+
+<style>
+  .search-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .search-wrapper {
+    position: relative;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    padding-right: 2.5rem;
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  }
+
+  .search-hint {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: #999;
+    pointer-events: none;
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .search-results.hidden {
+    display: none;
+  }
+
+  .search-results.empty {
+    padding: 1rem;
+    text-align: center;
+    color: #999;
+  }
+</style>
+
+<style is:global>
+  .search-result {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .search-result:last-child {
+    border-bottom: none;
+  }
+
+  .search-result:hover {
+    background: rgba(0, 102, 204, 0.05);
+    border-left: 3px solid var(--color-primary);
+    padding-left: calc(1rem - 3px);
+  }
+
+  .search-result a {
+    display: block;
+    text-decoration: none !important;
+    color: #333 !important;
+  }
+
+  .search-result a:hover {
+    text-decoration: none !important;
+    color: #333 !important;
+  }
+
+  .result-title {
+    font-weight: 600;
+    color: var(--color-primary) !important;
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+  }
+
+  .result-mfe {
+    font-size: 0.8rem;
+    color: #666 !important;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .result-description {
+    font-size: 0.8rem;
+    color: #999 !important;
+    line-height: 1.4;
+  }
+</style>
+
+<script>
+  let searchData: any[] = [];
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const resultsContainer = document.getElementById('search-results') as HTMLElement;
+
+  // Simple fuzzy search function
+  function fuzzyMatch(query: string, text: string): boolean {
+    const queryLower = query.toLowerCase();
+    const textLower = text.toLowerCase();
+    let queryIdx = 0;
+
+    for (let i = 0; i < textLower.length && queryIdx < queryLower.length; i++) {
+      if (textLower[i] === queryLower[queryIdx]) {
+        queryIdx++;
+      }
+    }
+
+    return queryIdx === queryLower.length;
+  }
+
+  // Load plugin-slots.json
+  async function initSearch() {
+    try {
+      const response = await fetch('/openedx-plugin-slots-browser/data/plugin-slots.json');
+      const data = await response.json();
+
+      // Create searchable data combining MFEs and slots
+      searchData = [
+        ...data.mfes.map((mfe: any) => ({
+          type: 'mfe',
+          id: mfe.id,
+          name: mfe.name,
+          description: mfe.description,
+          url: `/openedx-plugin-slots-browser/mfes/${mfe.id}`,
+        })),
+        ...data.pluginSlots.map((slot: any) => ({
+          type: 'slot',
+          id: slot.id,
+          name: slot.id,
+          mfeName: slot.mfeName,
+          description: slot.description,
+          url: `/openedx-plugin-slots-browser/mfes/${slot.mfeId}#${slot.id}`,
+        })),
+      ];
+    } catch (err) {
+      console.error('Failed to load search data:', err);
+    }
+  }
+
+  // Perform search with scoring
+  function performSearch(query: string) {
+    if (!query.trim()) {
+      resultsContainer.classList.add('hidden');
+      return;
+    }
+
+    const queryLower = query.toLowerCase();
+
+    const results = searchData
+      .filter((item) => {
+        const searchText = `${item.name} ${item.description || ''} ${item.mfeName || ''}`;
+        return fuzzyMatch(query, searchText);
+      })
+      .map((item) => {
+        // Score based on where the match is found
+        let score = 0;
+
+        // Exact match in name: highest priority
+        if (item.name.toLowerCase() === queryLower) {
+          score += 1000;
+        }
+        // Name contains query: high priority
+        else if (item.name.toLowerCase().includes(queryLower)) {
+          score += 500;
+        }
+        // Fuzzy match in name: medium-high priority
+        else if (fuzzyMatch(query, item.name)) {
+          score += 300;
+        }
+
+        // Description match: lower priority
+        if (item.description && item.description.toLowerCase().includes(queryLower)) {
+          score += 100;
+        } else if (item.description && fuzzyMatch(query, item.description)) {
+          score += 50;
+        }
+
+        // MFE name match: low priority
+        if (item.mfeName && item.mfeName.toLowerCase().includes(queryLower)) {
+          score += 25;
+        }
+
+        return { ...item, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
+
+    if (results.length === 0) {
+      resultsContainer.innerHTML =
+        '<div class="search-results empty">No results found</div>';
+      resultsContainer.classList.remove('hidden');
+      return;
+    }
+
+    resultsContainer.innerHTML = results
+      .map((item) => {
+        return `
+        <div class="search-result">
+          <a href="${item.url}">
+            <div class="result-title">${item.name}</div>
+            ${item.mfeName ? `<div class="result-mfe">${item.mfeName}</div>` : ''}
+            ${item.description ? `<div class="result-description">${item.description.slice(0, 60)}${item.description.length > 60 ? '...' : ''}</div>` : ''}
+          </a>
+        </div>
+      `;
+      })
+      .join('');
+
+    resultsContainer.classList.remove('hidden');
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', (e) => {
+    performSearch((e.target as HTMLInputElement).value);
+  });
+
+  // Close results when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target as Node) && !resultsContainer.contains(e.target as Node)) {
+      resultsContainer.classList.add('hidden');
+    }
+  });
+
+  // Cmd+K or Ctrl+K to focus search
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+
+  // Initialize search on load
+  initSearch();
+</script>

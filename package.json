@@ -1,0 +1,30 @@
+{
+  "name": "openedx-plugin-slots-browser",
+  "version": "0.1.0",
+  "description": "Browse all frontend plugins available in the Open edX ecosystem",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run sync:data && astro build",
+    "preview": "astro preview",
+    "collect": "ts-node scripts/collect-plugins.ts",
+    "collect:dev": "ts-node scripts/collect-plugins.ts --dev && npm run sync:data",
+    "collect:all": "ts-node scripts/collect-plugins.ts && npm run sync:data",
+    "test:collect": "ts-node scripts/collect-plugins.ts --test",
+    "sync:data": "cp data/plugin-slots.json src/data/plugin-slots.json"
+  },
+  "dependencies": {
+    "@iconify-json/tabler": "^1.2.26",
+    "@octokit/rest": "^19.0.0",
+    "astro-icon": "^1.1.5",
+    "markdown-it": "^14.1.0",
+    "shiki": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "astro": "^5.17.1",
+    "tailwindcss": "^3.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
