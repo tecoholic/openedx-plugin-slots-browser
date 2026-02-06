@@ -7,10 +7,10 @@
     "dev": "astro dev",
     "build": "npm run sync:data && astro build",
     "preview": "astro preview",
-    "collect": "ts-node scripts/collect-plugins.ts",
-    "collect:dev": "ts-node scripts/collect-plugins.ts --dev && npm run sync:data",
-    "collect:all": "ts-node scripts/collect-plugins.ts && npm run sync:data",
-    "test:collect": "ts-node scripts/collect-plugins.ts --test",
+    "collect": "ts-node-esm scripts/collect-plugins.ts",
+    "collect:dev": "ts-node-esm scripts/collect-plugins.ts --dev && npm run sync:data",
+    "collect:all": "ts-node-esm scripts/collect-plugins.ts && npm run sync:data",
+    "test:collect": "ts-node-esm scripts/collect-plugins.ts --test",
     "sync:data": "cp data/plugin-slots.json src/data/plugin-slots.json"
   },
   "dependencies": {
