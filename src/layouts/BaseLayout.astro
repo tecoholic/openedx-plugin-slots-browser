@@ -110,7 +110,6 @@ const formattedLastUpdated = lastUpdated
         min-width: 250px;
         max-width: 500px;
       }
-
       .nav-right {
         display: flex;
         gap: 1rem;
@@ -143,10 +142,6 @@ const formattedLastUpdated = lastUpdated
         flex: 1;
         padding: 2rem;
         max-width: 100%;
-      }
-
-      main.with-sidebar {
-        max-width: none;
       }
 
       h1 {
@@ -201,6 +196,12 @@ const formattedLastUpdated = lastUpdated
           padding: 1.5rem;
         }
       }
+
+      @media (max-width: 786px) {
+          .nav-center {
+              display: none;
+          }
+      }
     </style>
   </head>
   <body>
@@ -226,9 +227,7 @@ const formattedLastUpdated = lastUpdated
     <div class="content-wrapper">
       {showSidebar && <Sidebar currentMfeId={currentMfeId} currentSlotId={currentSlotId} />}
       <main class={showSidebar ? 'with-sidebar' : ''}>
-        <div style="max-width: 1200px; margin: 0 auto;">
-          <slot />
-        </div>
+        <slot />
       </main>
     </div>
     <footer>

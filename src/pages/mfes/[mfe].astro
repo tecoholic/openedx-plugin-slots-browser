@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PropsTable from '../../components/PropsTable.astro';
-import CodeExample from '../../components/CodeExample.astro';
 import pluginData from '../../data/plugin-slots.json';
 import { Icon } from 'astro-icon/components';
 
@@ -16,7 +14,7 @@ const mfeInfo = pluginData.mfes.find((m) => m.id === mfe);
 const slots = pluginData.pluginSlots.filter((s) => s.mfeId === mfe);
 
 if (!mfeInfo) {
-  return Astro.redirect('/openedx-plugins-browser/mfes');
+  return Astro.redirect('/openedx-plugin-slots-browser/mfes');
 }
 ---
 
@@ -45,7 +43,7 @@ if (!mfeInfo) {
           <div class="slots-grid">
           {slots.map((slot) => (
             <div class="slot-card">
-              <h3>{slot.id}</h3>
+                <a href={`/openedx-plugin-slots-browser/slots/${slot.id}`}><h3>{slot.id}</h3></a>
 
               <div class="slot-badges">
                 {!slot.readmePresent && (

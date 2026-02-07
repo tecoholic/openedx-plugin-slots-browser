@@ -94,7 +94,7 @@ function decodeHtml(html: string): string {
 <BaseLayout title={slot.id} showSidebar currentMfeId={slot.mfeId}>
   <div class="header">
     <div class="breadcrumb">
-      <a href={`/openedx-plugins-browser/mfes/${slot.mfeId}`}>{slot.mfeName}</a>
+      <a href={`/openedx-plugin-slots-browser/mfes/${slot.mfeId}`}>{slot.mfeName}</a>
       <span class="separator">/</span>
       <span class="current">{slot.id}</span>
     </div>
@@ -152,7 +152,7 @@ function decodeHtml(html: string): string {
   }
 
   .slot-content {
-    max-width: 900px;
+    max-width: 100%;
   }
 
   .readme-content {
@@ -163,6 +163,11 @@ function decodeHtml(html: string): string {
     margin: 2rem 0 1rem 0;
     border-bottom: 1px solid var(--color-border);
     padding-bottom: 0.5rem;
+    word-wrap: break-word;
+
+    @media (max-width: 786px) {
+      font-size: 1.5rem;
+    }
   }
 
   .readme-content :global(h2) {
@@ -173,6 +178,7 @@ function decodeHtml(html: string): string {
     border-left: 8px solid var(--color-primary);
     padding: 0.6rem 0.85rem;
     border-radius: 4px;
+    word-wrap: break-word;
   }
 
   .readme-content :global(h3) {
@@ -180,6 +186,7 @@ function decodeHtml(html: string): string {
     margin: 1.25rem 0 0.5rem 0;
     padding: 0.5rem 0.75rem;
     border-bottom: 1px solid var(--color-primary);
+    word-wrap: break-word;
   }
 
   .readme-content :global(p) {
