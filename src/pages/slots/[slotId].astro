@@ -4,6 +4,7 @@ import pluginData from '../../data/plugin-slots.json';
 import MarkdownIt from 'markdown-it';
 import { highlightCodeAsync } from '../../utils/highlighter';
 import { Icon } from 'astro-icon/components';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export function getStaticPaths() {
   return pluginData.pluginSlots.map((slot) => ({
@@ -93,11 +94,13 @@ function decodeHtml(html: string): string {
 
 <BaseLayout title={slot.id} showSidebar currentMfeId={slot.mfeId}>
   <div class="header">
-    <div class="breadcrumb">
-      <a href={`/openedx-plugin-slots-browser/mfes/${slot.mfeId}`}>{slot.mfeName}</a>
-      <span class="separator">/</span>
-      <span class="current">{slot.id}</span>
-    </div>
+    <Breadcrumbs
+      items={[
+        { label: 'MFEs', href: '/openedx-plugin-slots-browser/mfes' },
+        { label: slot.mfeName, href: `/openedx-plugin-slots-browser/mfes/${slot.mfeId}` },
+        { label: slot.id }
+      ]}
+    />
   </div>
 
   <div class="slot-content">
@@ -122,29 +125,6 @@ function decodeHtml(html: string): string {
 <style>
   .header {
     margin-bottom: 2rem;
-  }
-
-  .breadcrumb {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 1rem;
-  }
-
-  .breadcrumb a {
-    color: var(--color-primary);
-    text-decoration: none;
-  }
-
-  .breadcrumb a:hover {
-    text-decoration: underline;
-  }
-
-  .separator {
-    margin: 0 0.5rem;
-  }
-
-  .current {
-    font-weight: 500;
   }
 
   .header h1 {

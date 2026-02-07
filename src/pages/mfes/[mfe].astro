@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import pluginData from '../../data/plugin-slots.json';
 import { Icon } from 'astro-icon/components';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export function getStaticPaths() {
   return pluginData.mfes.map((mfe) => ({
@@ -20,6 +21,12 @@ if (!mfeInfo) {
 
 <BaseLayout title={mfeInfo.name} showSidebar currentMfeId={mfe}>
   <div class="header">
+    <Breadcrumbs
+      items={[
+        { label: 'MFEs', href: '/openedx-plugin-slots-browser/mfes' },
+        { label: mfeInfo.name }
+      ]}
+    />
     <div class="header-top">
       <h1>{mfeInfo.name}</h1>
        <a href={mfeInfo.repository} target="_blank" rel="noopener noreferrer" class="btn btn-small">
