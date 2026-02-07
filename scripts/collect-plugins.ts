@@ -309,16 +309,6 @@ function extractDescription(content: string): string {
       description = line;
       break;
     }
-
-    // Some pages seem to have a small description directly under the heading without the "description" subheading
-
-    // Skip headings and empty lines
-    if (line.startsWith('#') || line.trim() === '') {
-      continue;
-    }
-
-    description = line.trim();
-    break;
   }
 
   return description.slice(0, 200);
