@@ -12,7 +12,6 @@ This project discovers and documents all plugin slots available across Open edX'
 - 📦 **Catalog of all frontend plugin slots** across Open edX MFEs
 - 🌐 **Static site** built with Astro
 - ⚡ **Fast & performant** with client-side search
-- 🎨 **Beautiful UI** for browsing and discovering plugins
 
 ## Tech Stack
 
@@ -26,7 +25,7 @@ This project discovers and documents all plugin slots available across Open edX'
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 24
 - npm or yarn
 - GitHub token (for real data collection)
 
@@ -60,32 +59,6 @@ npm run collect -- --dry-run    # Test mode - outputs nothing
 npm run collect -- --test       # Test mode - outputs test message
 ```
 
-The script features:
-- Automatic retry logic (3 attempts with exponential backoff)
-- TypeScript interface extraction from `index.ts` files
-- JSDoc comment parsing for prop descriptions
-- Example code extraction from `example.jsx` files
-- Error handling and detailed logging
-- Test modes for development (`--dry-run`, `--test`)
-
-### File Structure
-
-```
-.
-├── .github/workflows/       # GitHub Actions
-│   ├── collect-data.yml    # Daily data collection
-│   └── deploy.yml          # Build & deploy
-├── scripts/                # Data collection scripts
-│   └── collect-plugins.ts  # Main collection script
-├── data/                   # Generated data
-│   └── plugins.json        # Auto-generated plugin data
-├── src/
-│   ├── pages/             # Astro pages
-│   ├── layouts/           # Astro layouts
-│   └── data/              # Data for templates
-└── astro.config.mjs       # Astro configuration
-```
-
 ## How It Works
 
 1. **GitHub Actions** runs a scheduled cron job every day at 2 AM UTC
@@ -110,62 +83,6 @@ The project includes two GitHub Actions workflows:
 ### deploy.yml
 - **Trigger**: On push to `main` branch
 - **Actions**: Builds site and deploys to GitHub Pages
-
-To manually trigger either workflow:
-1. Go to **Actions** tab in your GitHub repository
-2. Select the workflow
-3. Click **Run workflow**
-
-## Data Schema
-
-The `plugins.json` file contains:
-
-```json
-{
-  "lastUpdated": "2025-02-05T10:30:00Z",
-  "mfes": [
-    {
-      "id": "frontend-app-learner-dashboard",
-      "name": "Learner Dashboard",
-      "description": "...",
-      "repository": "https://github.com/openedx/...",
-      "owner": "openedx",
-      "topics": [],
-      "pluginSlotsCount": 3
-    }
-  ],
-  "pluginSlots": [
-    {
-      "id": "SlotId",
-      "mfeId": "mfe-id",
-      "mfeName": "MFE Name",
-      "filePath": "src/plugin-slots/SlotId/README.md",
-      "description": "...",
-      "operations": ["insert", "replace", "wrap"],
-      "sourceUrl": "https://github.com/...",
-      "lastUpdated": "2025-02-05T10:30:00Z"
-    }
-  ]
-}
-```
-
-## Deployment
-
-This site is automatically deployed to GitHub Pages. To enable:
-
-1. Go to **Settings** → **Pages**
-2. Select **GitHub Actions** as source
-3. The `deploy.yml` workflow will automatically deploy on push
-
-## Issues & Contributing
-
-- **Data issues**: Check that plugin slots are properly documented in the MFE's `/src/plugin-slots` directory
-- **Site issues**: Open an issue in this repository
-- **MFE issues**: Open an issue in the relevant [openedx](https://github.com/openedx) repository
-
-## License
-
-This project is part of the Open edX ecosystem and follows the same licensing.
 
 ## Learn More
 
