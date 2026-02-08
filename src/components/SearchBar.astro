@@ -8,7 +8,7 @@
       type="text"
       id="search-input"
       class="search-input"
-      placeholder="Search plugins, MFEs, slots... (Cmd+K)"
+      placeholder="Search plugins, filters, slots... (Cmd+K)"
       aria-label="Search"
     />
     <span class="search-hint">⌘K</span>
@@ -150,28 +150,42 @@
     return queryIdx === queryLower.length;
   }
 
-  // Load plugin-slots.json
+  // Load plugin-slots.json and filters.json
   async function initSearch() {
     try {
-      const response = await fetch('/openedx-plugin-slots-browser/data/plugin-slots.json');
-      const data = await response.json();
+      const [slotsResponse, filtersResponse] = await Promise.all([
+        fetch('/openedx-plugin-slots-browser/data/plugin-slots.json'),
+        fetch('/openedx-plugin-slots-browser/data/filters.json'),
+      ]);
+      
+      const slotsData = await slotsResponse.json();
+      const filtersData = await filtersResponse.json();
 
-      // Create searchable data combining MFEs and slots
+      // Create searchable data combining MFEs, slots, and filters
       searchData = [
-        ...data.mfes.map((mfe: any) => ({
+        ...slotsData.mfes.map((mfe: any) => ({
           type: 'mfe',
           id: mfe.id,
           name: mfe.name,
           description: mfe.description,
           url: `/openedx-plugin-slots-browser/mfes/${mfe.id}`,
         })),
-        ...data.pluginSlots.map((slot: any) => ({
+        ...slotsData.pluginSlots.map((slot: any) => ({
           type: 'slot',
           id: slot.id,
           name: slot.id,
           mfeName: slot.mfeName,
           description: slot.description,
           url: `/openedx-plugin-slots-browser/mfes/${slot.mfeId}#${slot.id}`,
+        })),
+        ...filtersData.filters.map((filter: any) => ({
+          type: 'filter',
+          id: filter.id,
+          name: filter.name,
+          description: filter.description,
+          category: filter.category,
+          filterType: filter.filterType,
+          url: `/openedx-plugin-slots-browser/filters/${filter.id}`,
         })),
       ];
     } catch (err) {
@@ -190,7 +204,7 @@
 
     const results = searchData
       .filter((item) => {
-        const searchText = `${item.name} ${item.description || ''} ${item.mfeName || ''}`;
+        const searchText = `${item.name} ${item.description || ''} ${item.mfeName || ''} ${item.category || ''} ${item.filterType || ''}`;
         return fuzzyMatch(query, searchText);
       })
       .map((item) => {
@@ -222,6 +236,11 @@
           score += 25;
         }
 
+        // Category match: low priority
+        if (item.category && item.category.toLowerCase().includes(queryLower)) {
+          score += 20;
+        }
+
         return { ...item, score };
       })
       .sort((a, b) => b.score - a.score)
@@ -236,11 +255,12 @@
 
     resultsContainer.innerHTML = results
       .map((item) => {
+        const typeLabel = item.type === 'filter' ? `[${item.category}]` : item.type === 'slot' ? `[${item.mfeName}]` : '';
         return `
         <div class="search-result">
           <a href="${item.url}">
             <div class="result-title">${item.name}</div>
-            ${item.mfeName ? `<div class="result-mfe">${item.mfeName}</div>` : ''}
+            ${typeLabel ? `<div class="result-mfe">${typeLabel}</div>` : ''}
             ${item.description ? `<div class="result-description">${item.description.slice(0, 60)}${item.description.length > 60 ? '...' : ''}</div>` : ''}
           </a>
         </div>

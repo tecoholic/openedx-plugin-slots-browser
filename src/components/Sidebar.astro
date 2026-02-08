@@ -1,55 +1,110 @@
 ---
 import pluginData from '../data/plugin-slots.json';
+import eventsData from '../data/events.json';
 import { Icon } from 'astro-icon/components';
 
 export interface Props {
   currentMfeId?: string;
   currentSlotId?: string;
+  currentEventId?: string;
+  showEvents?: boolean;
 }
 
-const { currentMfeId, currentSlotId } = Astro.props;
+const { currentMfeId, currentSlotId, currentEventId, showEvents = false } = Astro.props;
+
+// Group events by namespace
+const eventsByNamespace = eventsData.events.reduce(
+  (acc, event) => {
+    if (!acc[event.namespace]) {
+      acc[event.namespace] = [];
+    }
+    acc[event.namespace].push(event);
+    return acc;
+  },
+  {} as Record<string, typeof eventsData.events>
+);
+
+const namespaces = Object.keys(eventsByNamespace).sort();
 ---
 
 <aside class="sidebar">
   <nav class="tree-nav">
-    <div class="tree-section">
-      <h3 class="tree-title">Frontend Apps</h3>
-      <ul class="tree-list">
-        {
-          pluginData.mfes.map((mfe) => {
-            const mfeSlots = pluginData.pluginSlots.filter(s => s.mfeId === mfe.id);
-            const isActive = currentMfeId === mfe.id;
+    {showEvents ? (
+      <div class="tree-section">
+        <h3 class="tree-title">Events by Domain</h3>
+        <ul class="tree-list">
+          {
+            namespaces.map((namespace) => {
+              const nsEvents = eventsByNamespace[namespace];
+              const isActive = currentEventId?.startsWith(namespace);
 
-            return (
-              <li class={`tree-item ${isActive ? 'active' : ''}`}>
-                <details open={isActive}>
-                  <summary class="tree-toggle">
-                    <a href={`/openedx-plugin-slots-browser/mfes/${mfe.id}`}>
-                      <span class="mfe-name">{mfe.name}</span>
-                      <span class="slot-badge">{mfeSlots.length}</span>
-                    </a>
-                  </summary>
-                  {mfeSlots.length > 0 && (
-                    <ul class="tree-sublist">
-                      {mfeSlots.map((slot) => (
-                        <li class={`tree-subitem ${currentSlotId === slot.id ? 'active' : ''}`}>
-                          <a href={`/openedx-plugin-slots-browser/slots/${slot.id}`}>
-                            <span class="slot-name">{slot.id}</span>
-                            {!slot.readmePresent && (
-                              <Icon name="tabler:alert-circle" class="readme-missing-indicator" title="README missing" />
-                            )}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </details>
-              </li>
-            );
-          })
-        }
-      </ul>
-    </div>
+              return (
+                <li class={`tree-item ${isActive ? 'active' : ''}`}>
+                  <details open={isActive}>
+                    <summary class="tree-toggle">
+                      <a href={`/openedx-plugin-slots-browser/events`}>
+                        <span class="namespace-name">{namespace.replace(/-/g, ' ').split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</span>
+                        <span class="event-badge">{nsEvents.length}</span>
+                      </a>
+                    </summary>
+                    {nsEvents.length > 0 && (
+                      <ul class="tree-sublist">
+                        {nsEvents.map((event) => (
+                          <li class={`tree-subitem ${currentEventId === event.id ? 'active' : ''}`}>
+                            <a href={`/openedx-plugin-slots-browser/events/${event.id}`}>
+                              <span class="event-name">{event.eventName}</span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </details>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    ) : (
+      <div class="tree-section">
+        <h3 class="tree-title">Frontend Apps</h3>
+        <ul class="tree-list">
+          {
+            pluginData.mfes.map((mfe) => {
+              const mfeSlots = pluginData.pluginSlots.filter(s => s.mfeId === mfe.id);
+              const isActive = currentMfeId === mfe.id;
+
+              return (
+                <li class={`tree-item ${isActive ? 'active' : ''}`}>
+                  <details open={isActive}>
+                    <summary class="tree-toggle">
+                      <a href={`/openedx-plugin-slots-browser/mfes/${mfe.id}`}>
+                        <span class="mfe-name">{mfe.name}</span>
+                        <span class="slot-badge">{mfeSlots.length}</span>
+                      </a>
+                    </summary>
+                    {mfeSlots.length > 0 && (
+                      <ul class="tree-sublist">
+                        {mfeSlots.map((slot) => (
+                          <li class={`tree-subitem ${currentSlotId === slot.id ? 'active' : ''}`}>
+                            <a href={`/openedx-plugin-slots-browser/slots/${slot.id}`}>
+                              <span class="slot-name">{slot.id}</span>
+                              {!slot.readmePresent && (
+                                <Icon name="tabler:alert-circle" class="readme-missing-indicator" title="README missing" />
+                              )}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </details>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    )}
   </nav>
 </aside>
 
@@ -136,7 +191,8 @@ const { currentMfeId, currentSlotId } = Astro.props;
     text-decoration: none;
   }
 
-  .mfe-name {
+  .mfe-name,
+  .namespace-name {
     flex: 1;
     font-weight: 500;
     font-size: 0.95rem;
@@ -146,7 +202,8 @@ const { currentMfeId, currentSlotId } = Astro.props;
     text-overflow: ellipsis;
   }
 
-  .slot-badge {
+  .slot-badge,
+  .event-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -185,7 +242,8 @@ const { currentMfeId, currentSlotId } = Astro.props;
     transition: all 0.2s ease;
   }
 
-  .slot-name {
+  .slot-name,
+  .event-name {
     flex: 1;
     min-width: 0;
     word-break: break-word;

@@ -1,0 +1,111 @@
+---
+interface FilterReturn {
+  type: string;
+  description: string;
+}
+
+interface Props {
+  returns: FilterReturn[];
+}
+
+const { returns } = Astro.props;
+---
+
+{returns.length > 0 && (
+  <div class="returns-section">
+    <h3>Return Values</h3>
+    <div class="table-responsive">
+      <table class="returns-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {returns.map((ret) => (
+            <tr>
+              <td class="return-type">
+                <code>{ret.type}</code>
+              </td>
+              <td class="return-description">{ret.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
+
+<style>
+  .returns-section {
+    margin: 2rem 0;
+  }
+
+  .returns-section h3 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .returns-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .returns-table thead {
+    background: #f5f5f5;
+  }
+
+  .returns-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .returns-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .returns-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .return-type code {
+    background: #f5f5f5;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 0.9rem;
+  }
+
+  .return-type {
+    font-weight: 500;
+    width: 25%;
+    min-width: 120px;
+    color: #666;
+  }
+
+  .return-description {
+    color: #555;
+  }
+
+  @media (max-width: 768px) {
+    .returns-table th,
+    .returns-table td {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>

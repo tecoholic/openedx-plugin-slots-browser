@@ -1,9 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import pluginData from '../data/plugin-slots.json';
+import filterData from '../data/filters.json';
+import eventsData from '../data/events.json';
 
 const mfeCount = pluginData.mfes.length;
 const slotCount = pluginData.pluginSlots.length;
+const filterCount = filterData.filters.length;
+const eventCount = eventsData.events.length;
 const lastUpdated = pluginData.lastUpdated;
 const documentedCount = pluginData.pluginSlots.filter((slot) => slot.readmePresent).length;
 const missingReadmeCount = slotCount - documentedCount;
@@ -12,11 +16,11 @@ const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).
 
 <BaseLayout title="Home" lastUpdated={lastUpdated}>
   <div class="hero">
-    <h1>Open edX Frontend Plugin Slots Browser</h1>
+    <h1>Open edX Plugins Browser</h1>
     <div class="subtitle-block">
-      A continuously updated catalog of Open edX frontend plugin slots, with
-      source links and example configurations to help you customize MFEs without
-      forking code.
+      A continuously updated catalog of Open edX frontend plugin slots, backend filters, and events,
+      with source links and documentation to help you extend and customize Open edX without
+      forking core code.
     </div>
 
     <div class="stats">
@@ -28,11 +32,25 @@ const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).
         <div class="stat-number">{slotCount}</div>
         <div class="stat-label">Plugin Slots</div>
       </div>
+      <div class="stat">
+        <div class="stat-number">{filterCount}</div>
+        <div class="stat-label">Backend Filters</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">{eventCount}</div>
+        <div class="stat-label">Events</div>
+      </div>
     </div>
 
     <div class="cta">
       <a href="/openedx-plugin-slots-browser/mfes" class="btn btn-primary">
-        Browse MFEs →
+        Browse Plugin Slots →
+      </a>
+      <a href="/openedx-plugin-slots-browser/filters" class="btn btn-primary">
+        Browse Filters →
+      </a>
+      <a href="/openedx-plugin-slots-browser/events" class="btn btn-primary">
+        Browse Events →
       </a>
     </div>
 

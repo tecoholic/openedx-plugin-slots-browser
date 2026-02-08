@@ -7,19 +7,24 @@
     "dev": "astro dev",
     "build": "npm run sync:data && astro build",
     "preview": "astro preview",
-    "collect": "ts-node-esm scripts/collect-plugins.ts",
+    "collect": "npm run collect:plugins && npm run collect:filters && npm run collect:events",
+    "collect:plugins": "ts-node-esm scripts/collect-plugins.ts",
+    "collect:plugins:dev": "ts-node-esm scripts/collect-plugins.ts --dev && npm run sync:data",
+    "collect:filters": "node --import tsx scripts/collect-filters.ts",
+    "collect:events": "ts-node-esm scripts/collect-events.ts",
     "collect:dev": "ts-node-esm scripts/collect-plugins.ts --dev && npm run sync:data",
-    "collect:all": "ts-node-esm scripts/collect-plugins.ts && npm run sync:data",
+    "collect:all": "npm run collect:plugins && npm run collect:filters && npm run collect:events && npm run sync:data",
     "test:collect": "ts-node-esm scripts/collect-plugins.ts --test",
     "test": "node --import tsx --test scripts/collect-plugins.test.ts",
-    "sync:data": "cp data/plugin-slots.json src/data/plugin-slots.json"
+    "sync:data": "cp data/plugin-slots.json src/data/plugin-slots.json && cp data/filters.json src/data/filters.json && cp data/events.json src/data/events.json 2>/dev/null || true"
   },
   "dependencies": {
     "@iconify-json/tabler": "^1.2.26",
     "@octokit/rest": "^19.0.0",
     "astro-icon": "^1.1.5",
     "markdown-it": "^14.1.0",
-    "shiki": "^3.22.0"
+    "shiki": "^3.22.0",
+    "simple-datatables": "^10.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

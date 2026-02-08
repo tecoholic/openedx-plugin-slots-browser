@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import eventsData from '../../data/events.json';
+import { Icon } from 'astro-icon/components';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+export function getStaticPaths() {
+  return eventsData.events.map((event) => ({
+    params: { eventId: event.id },
+  }));
+}
+
+const { eventId } = Astro.params;
+const event = eventsData.events.find((e) => e.id === eventId);
+
+if (!event) {
+  return Astro.redirect('/openedx-plugin-slots-browser/events');
+}
+
+// Find related events in same namespace
+const relatedEvents = eventsData.events
+  .filter((e) => e.namespace === event.namespace && e.id !== event.id)
+  .slice(0, 5);
+---
+
+<BaseLayout title={event.eventName} showSidebar showEvents currentEventId={event.id}>
+  <div class="header">
+    <Breadcrumbs
+      items={[
+        { label: 'Events', href: '/openedx-plugin-slots-browser/events' },
+        { label: event.eventName },
+      ]}
+    />
+    <div class="header-top">
+      <h1>{event.eventName}</h1>
+      <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-small">
+        <Icon name="tabler:external-link" /> View Source
+      </a>
+    </div>
+  </div>
+
+  <section class="event-details">
+    <div class="detail-card">
+      <h3>Namespace</h3>
+      <p class="detail-value">{event.namespace}</p>
+    </div>
+
+    <div class="detail-card">
+      <h3>Event Type</h3>
+      <p class="detail-value monospace">{event.eventType}</p>
+    </div>
+
+    {event.description && (
+      <div class="detail-card">
+        <h3>Description</h3>
+        <p>{event.description}</p>
+      </div>
+    )}
+
+    <div class="detail-card">
+      <h3>File Path</h3>
+      <p class="detail-value monospace">{event.filePath}</p>
+    </div>
+
+    <div class="detail-card">
+      <h3>Last Updated</h3>
+      <p class="detail-value">{new Date(event.lastUpdated).toLocaleDateString()}</p>
+    </div>
+  </section>
+
+  {relatedEvents.length > 0 && (
+    <section class="related-section">
+      <h2>Related Events in {event.namespace}</h2>
+      <div class="related-list">
+        {relatedEvents.map((relEvent) => (
+          <div class="related-item">
+            <a href={`/openedx-plugin-slots-browser/events/${relEvent.id}`}>
+              <strong>{relEvent.eventName}</strong>
+              <p class="event-type-small">{relEvent.eventType}</p>
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <div class="back-link">
+    <a href="/openedx-plugin-slots-browser/events">← Back to Events</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .header-top h1 {
+    margin: 0;
+    flex: 1;
+  }
+
+  .btn-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .btn-small:hover {
+    background: #0052a3;
+  }
+
+  .btn-small :global(svg) {
+    width: 1em;
+    height: 1em;
+    display: inline;
+  }
+
+  .event-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .detail-card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fafafa;
+  }
+
+  .detail-card h3 {
+    margin: 0 0 1rem 0;
+    color: var(--color-primary);
+    font-size: 1rem;
+  }
+
+  .detail-card p {
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .detail-value {
+    color: #555;
+  }
+
+  .monospace {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    background: white;
+    padding: 0.75rem;
+    border-radius: 4px;
+    word-break: break-all;
+  }
+
+  .related-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: var(--color-secondary);
+    border-radius: 8px;
+  }
+
+  .related-section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .related-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .related-item {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .related-item:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .related-item a {
+    text-decoration: none;
+  }
+
+  .related-item a:hover strong {
+    text-decoration: underline;
+  }
+
+  .related-item strong {
+    color: var(--color-primary);
+  }
+
+  .event-type-small {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0.5rem 0 0 0;
+  }
+
+  .back-link {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-link a {
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+</style>

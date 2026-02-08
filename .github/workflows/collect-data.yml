@@ -1,4 +1,4 @@
-name: Collect Plugin Slots Data
+name: Collect Plugin Slots and Filters Data
 
 on:
   schedule:
@@ -34,5 +34,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-          git add data/plugin-slots.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "ci: update plugin data" && git push)
+          git add data/plugin-slots.json data/filters.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "ci: update plugin slots and filters data" && git push)
