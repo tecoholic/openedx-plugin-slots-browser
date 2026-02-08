@@ -1,16 +1,19 @@
 ---
 import pluginData from '../data/plugin-slots.json';
 import eventsData from '../data/events.json';
+import filtersData from '../data/filters.json';
 import { Icon } from 'astro-icon/components';
 
 export interface Props {
   currentMfeId?: string;
   currentSlotId?: string;
   currentEventId?: string;
+  currentFilterId?: string;
   showEvents?: boolean;
+  showFilters?: boolean;
 }
 
-const { currentMfeId, currentSlotId, currentEventId, showEvents = false } = Astro.props;
+const { currentMfeId, currentSlotId, currentEventId, currentFilterId, showEvents = false, showFilters = false } = Astro.props;
 
 // Group events by namespace
 const eventsByNamespace = eventsData.events.reduce(
@@ -25,11 +28,61 @@ const eventsByNamespace = eventsData.events.reduce(
 );
 
 const namespaces = Object.keys(eventsByNamespace).sort();
+
+// Group filters by category
+const filtersByCategory = filtersData.filters.reduce(
+  (acc, filter) => {
+    if (!acc[filter.category]) {
+      acc[filter.category] = [];
+    }
+    acc[filter.category].push(filter);
+    return acc;
+  },
+  {} as Record<string, typeof filtersData.filters>
+);
+
+const categories = Object.keys(filtersByCategory).sort();
 ---
 
 <aside class="sidebar">
   <nav class="tree-nav">
-    {showEvents ? (
+    {showFilters ? (
+      <div class="tree-section">
+        <h3 class="tree-title">Filters by Category</h3>
+        <ul class="tree-list">
+          {
+            categories.map((category) => {
+              const catFilters = filtersByCategory[category];
+              const isActive = currentFilterId && catFilters.some(f => f.id === currentFilterId);
+
+              return (
+                <li class={`tree-item ${isActive ? 'active' : ''}`}>
+                  <details open={isActive}>
+                    <summary class="tree-toggle">
+                      <a href={`/openedx-plugin-slots-browser/filters`}>
+                        <span class="category-name">{category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                        <span class="filter-badge">{catFilters.length}</span>
+                      </a>
+                    </summary>
+                    {catFilters.length > 0 && (
+                      <ul class="tree-sublist">
+                        {catFilters.map((filter) => (
+                          <li class={`tree-subitem ${currentFilterId === filter.id ? 'active' : ''}`}>
+                            <a href={`/openedx-plugin-slots-browser/filters/${filter.id}`}>
+                              <span class="filter-name">{filter.name}</span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </details>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    ) : showEvents ? (
       <div class="tree-section">
         <h3 class="tree-title">Events by Domain</h3>
         <ul class="tree-list">
@@ -319,7 +372,7 @@ const namespaces = Object.keys(eventsByNamespace).sort();
 </style>
 
 <script>
-  // Store expanded state in localStorage
+  // Store expanded state and enforce single-open accordion behavior
   document.addEventListener('DOMContentLoaded', () => {
     const details = document.querySelectorAll('.tree-item details');
 
@@ -334,10 +387,33 @@ const namespaces = Object.keys(eventsByNamespace).sort();
         detail.open = true;
       }
 
-      // Save state on toggle
+      // Save state on toggle and enforce single-open behavior
       detail.addEventListener('toggle', () => {
-        localStorage.setItem(storageKey, detail.open ? 'true' : 'false');
+        if (detail.open) {
+          // Close all other details elements when this one opens
+          details.forEach((otherDetail) => {
+            if (otherDetail !== detail && otherDetail.open) {
+              otherDetail.open = false;
+            }
+          });
+          localStorage.setItem(storageKey, 'true');
+        } else {
+          localStorage.setItem(storageKey, 'false');
+        }
       });
+
+      // Prevent navigation when clicking on the summary to toggle
+      if (summary) {
+        summary.addEventListener('click', (e) => {
+          // Only prevent default if clicking on the summary element itself or the link
+          // This allows the toggle to work without navigating
+          if (e.target === summary || e.target.closest('a') === summary.querySelector('a')) {
+            e.preventDefault();
+            // Manually toggle the details element
+            detail.open = !detail.open;
+          }
+        });
+      }
     });
   });
 </script>

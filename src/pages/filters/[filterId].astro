@@ -17,7 +17,7 @@ const { filter } = Astro.props;
 const lastUpdated = filtersData.lastUpdated;
 ---
 
-<BaseLayout title={filter.name} lastUpdated={lastUpdated}>
+<BaseLayout title={filter.name} lastUpdated={lastUpdated} showSidebar showFilters currentFilterId={filter.id}>
   <Breadcrumbs
     items={[
       { label: 'Home', href: '/openedx-plugin-slots-browser/' },

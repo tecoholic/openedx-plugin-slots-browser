@@ -9,11 +9,13 @@ export interface Props {
   currentMfeId?: string;
   currentSlotId?: string;
   currentEventId?: string;
+  currentFilterId?: string;
   showEvents?: boolean;
+  showFilters?: boolean;
   lastUpdated?: string;
 }
 
-const { title, showSidebar = false, currentMfeId, currentSlotId, currentEventId, showEvents = false, lastUpdated } = Astro.props;
+const { title, showSidebar = false, currentMfeId, currentSlotId, currentEventId, currentFilterId, showEvents = false, showFilters = false, lastUpdated } = Astro.props;
 const formattedLastUpdated = lastUpdated
   ? new Date(lastUpdated).toLocaleString(undefined, {
       year: 'numeric',
@@ -128,6 +130,25 @@ const formattedLastUpdated = lastUpdated
         color: var(--color-primary-darker);
       }
 
+      .nav-link-with-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+      }
+
+      .nav-link-with-icon:hover {
+          background-color: #f3f5fd;
+      }
+
+      .nav-link-with-icon :global(svg) {
+        width: 1.1em;
+        height: 1.1em;
+        display: inline;
+      }
+
       .nav-brand-icon :global(svg) {
         display: block;
         width: 1.3em;
@@ -221,14 +242,27 @@ const formattedLastUpdated = lastUpdated
           <SearchBar />
         </div>
         <div class="nav-right">
-          <a href="/openedx-plugin-slots-browser/mfes">Plugin Slots</a>
-          <a href="/openedx-plugin-slots-browser/filters">Filters</a>
-          <a href="/openedx-plugin-slots-browser/about">About</a>
+          <a href="/openedx-plugin-slots-browser/mfes" class="nav-link-with-icon">
+            <Icon name="tabler:puzzle" width="1em" height="1em" />
+            Plugin Slots
+          </a>
+          <a href="/openedx-plugin-slots-browser/filters" class="nav-link-with-icon">
+            <Icon name="tabler:filter-code" width="1em" height="1em" />
+            Filters
+          </a>
+          <a href="/openedx-plugin-slots-browser/events" class="nav-link-with-icon">
+            <Icon name="tabler:bell" width="1em" height="1em" />
+            Events
+          </a>
+          <a href="/openedx-plugin-slots-browser/about" class="nav-link-with-icon">
+            <Icon name="tabler:info-circle" width="1em" height="1em" />
+            About
+          </a>
         </div>
       </nav>
     </header>
     <div class="content-wrapper">
-      {showSidebar && <Sidebar currentMfeId={currentMfeId} currentSlotId={currentSlotId} currentEventId={currentEventId} showEvents={showEvents} />}
+      {showSidebar && <Sidebar currentMfeId={currentMfeId} currentSlotId={currentSlotId} currentEventId={currentEventId} currentFilterId={currentFilterId} showEvents={showEvents} showFilters={showFilters} />}
       <main class={showSidebar ? 'with-sidebar' : ''}>
         <slot />
       </main>

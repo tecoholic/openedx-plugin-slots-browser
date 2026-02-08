@@ -1,71 +1,87 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 import pluginData from '../data/plugin-slots.json';
 import filterData from '../data/filters.json';
 import eventsData from '../data/events.json';
 
-const mfeCount = pluginData.mfes.length;
 const slotCount = pluginData.pluginSlots.length;
 const filterCount = filterData.filters.length;
 const eventCount = eventsData.events.length;
 const lastUpdated = pluginData.lastUpdated;
 const documentedCount = pluginData.pluginSlots.filter((slot) => slot.readmePresent).length;
-const missingReadmeCount = slotCount - documentedCount;
 const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).length;
+const filterDomains = new Set(filterData.filters.map((filter) => filter.category)).size;
+const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace)).size;
 ---
 
 <BaseLayout title="Home" lastUpdated={lastUpdated}>
   <div class="hero">
-    <h1>Open edX Plugins Browser</h1>
+    <h1>Open edX Plugin Slots Browser</h1>
     <div class="subtitle-block">
       A continuously updated catalog of Open edX frontend plugin slots, backend filters, and events,
       with source links and documentation to help you extend and customize Open edX without
       forking core code.
     </div>
 
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-number">{mfeCount}</div>
-        <div class="stat-label">Frontend Apps</div>
+    <div class="cards-grid">
+      <div class="data-card">
+        <Icon name="tabler:puzzle" class="card-icon icon-red" />
+        <div class="card-stat">
+          <div class="stat-number">{slotCount}</div>
+          <div class="stat-label">Frontend Plugin Slots</div>
+        </div>
+        <a href="/openedx-plugin-slots-browser/mfes" class="btn btn-primary">
+          Browse Plugin Slots →
+        </a>
+        <div class="card-footer">
+          <div class="footer-item">
+            <span class="footer-label">With README</span>
+            <span class="footer-value">{documentedCount}</span>
+          </div>
+          <div class="footer-item">
+            <span class="footer-label">With Examples</span>
+            <span class="footer-value">{examplesCount}</span>
+          </div>
+        </div>
       </div>
-      <div class="stat">
-        <div class="stat-number">{slotCount}</div>
-        <div class="stat-label">Plugin Slots</div>
+
+      <div class="data-card">
+        <Icon name="tabler:filter-code" class="card-icon icon-green" />
+        <div class="card-stat">
+          <div class="stat-number">{filterCount}</div>
+          <div class="stat-label">Backend Filters</div>
+        </div>
+        <a href="/openedx-plugin-slots-browser/filters" class="btn btn-primary">
+          Browse Filters →
+        </a>
+        <div class="card-footer">
+          <div class="footer-item">
+            <span class="footer-label">Domains</span>
+            <span class="footer-value">{filterDomains}</span>
+          </div>
+        </div>
       </div>
-      <div class="stat">
-        <div class="stat-number">{filterCount}</div>
-        <div class="stat-label">Backend Filters</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">{eventCount}</div>
-        <div class="stat-label">Events</div>
+
+      <div class="data-card">
+        <Icon name="tabler:bell" class="card-icon icon-purple" />
+        <div class="card-stat">
+          <div class="stat-number">{eventCount}</div>
+          <div class="stat-label">Backend Events</div>
+        </div>
+        <a href="/openedx-plugin-slots-browser/events" class="btn btn-primary">
+          Browse Events →
+        </a>
+        <div class="card-footer">
+          <div class="footer-item">
+            <span class="footer-label">Namespaces</span>
+            <span class="footer-value">{eventNamespaces}</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="cta">
-      <a href="/openedx-plugin-slots-browser/mfes" class="btn btn-primary">
-        Browse Plugin Slots →
-      </a>
-      <a href="/openedx-plugin-slots-browser/filters" class="btn btn-primary">
-        Browse Filters →
-      </a>
-      <a href="/openedx-plugin-slots-browser/events" class="btn btn-primary">
-        Browse Events →
-      </a>
-    </div>
 
-    <div class="insights">
-      <div class="insight-card">
-        <div class="insight-number">{documentedCount}</div>
-        <div class="insight-label">Documented</div>
-        <div class="insight-subtitle">{missingReadmeCount} missing README</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-number">{examplesCount}</div>
-        <div class="insight-label">With Examples</div>
-        <div class="insight-subtitle">Slots with example configs</div>
-      </div>
-    </div>
   </div>
 
 </BaseLayout>
@@ -95,15 +111,70 @@ const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).
     line-height: 1.7;
   }
 
-  .stats {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    margin: 3rem 0;
-    flex-wrap: wrap;
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 3rem auto;
+    max-width: 1000px;
   }
 
-  .stat {
+  .data-card {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .footer-label {
+    color: #666;
+    font-weight: 500;
+  }
+
+  .footer-value {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .card-icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto;
+  }
+
+  .card-icon.icon-red {
+    color: #dd0000;
+  }
+
+  .card-icon.icon-green {
+    color: #00a650;
+  }
+
+  .card-icon.icon-purple {
+    color: #7c3aed;
+  }
+
+  .card-stat {
     text-align: center;
   }
 
@@ -122,14 +193,6 @@ const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).
   .stat-date {
     font-size: 1.1rem;
     font-weight: 500;
-  }
-
-  .cta {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin: 2rem 0;
-    flex-wrap: wrap;
   }
 
   .insights {
