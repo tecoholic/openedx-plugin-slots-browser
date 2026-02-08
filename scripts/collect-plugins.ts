@@ -1,6 +1,7 @@
 import { Octokit } from '@octokit/rest';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
-import { dirname } from 'path';
+import { dirname, resolve } from 'path';
+import { pathToFileURL } from 'url';
 
 const token = process.env.GITHUB_TOKEN;
 const isTestMode = process.argv.includes('--test');
@@ -291,7 +292,7 @@ function formatName(repoName: string): string {
     .join(' ');
 }
 
-function extractDescription(content: string): string {
+export function extractDescription(content: string): string {
   // Extract first paragraph after heading
   const lines = content.split('\n');
   let description = '';
@@ -300,9 +301,12 @@ function extractDescription(content: string): string {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
-    if (line.startsWith('#') && line.toLowerCase() === "description") {
-      descTitleFound = true;
-      continue
+    if (line.startsWith('#')) {
+      const heading = line.replace(/^#+\s*/, '').trim().toLowerCase();
+      if (heading === 'description') {
+        descTitleFound = true;
+        continue;
+      }
     }
 
     if (descTitleFound && line !== '') {
@@ -314,5 +318,15 @@ function extractDescription(content: string): string {
   return description.slice(0, 200);
 }
 
-// Run collection
-collectPlugins();
+const isMain = (() => {
+  const entry = process.argv[1];
+  if (!entry) {
+    return false;
+  }
+  return import.meta.url === pathToFileURL(resolve(entry)).href;
+})();
+
+// Run collection when invoked directly.
+if (isMain) {
+  collectPlugins();
+}
