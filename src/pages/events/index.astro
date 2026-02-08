@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import eventsData from '../../data/events.json';
 import { Icon } from 'astro-icon/components';
+import 'simple-datatables/dist/style.css';
 
 // Group events by namespace
 const eventsByNamespace = eventsData.events.reduce(
@@ -39,30 +40,42 @@ const namespaces = Object.keys(eventsByNamespace).sort();
 
   {
     namespaces.map((namespace) => (
-      <section class="namespace-section">
-        <h2>{namespace.replace(/-/g, ' ').split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</h2>
-        <p class="namespace-count">{eventsByNamespace[namespace].length} events</p>
+      <section class="namespace-section" id={namespace}>
+         <h2>
+           <a href={`#${namespace}`} class="namespace-anchor">
+             {namespace.replace(/-/g, ' ').split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+           </a>
+         </h2>
+         <p class="namespace-count">{eventsByNamespace[namespace].length} events</p>
 
-        <div class="events-grid">
-          {eventsByNamespace[namespace].map((event) => (
-            <div class="event-card">
-              <a href={`/openedx-plugin-slots-browser/events/${event.id}`} class="event-title">
-                <h3>{event.eventName}</h3>
-              </a>
-
-              <p class="event-type">{event.eventType}</p>
-
-              {event.description && <p class="event-description">{event.description}</p>}
-
-              <div class="event-footer">
-                <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer" class="source-link">
-                  <Icon name="tabler:external-link" /> View Source
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+        <table class="events-table" data-namespace={namespace}>
+          <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Description</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            {eventsByNamespace[namespace].map((event) => (
+              <tr>
+                <td class="event-name">
+                  <a href={`/openedx-plugin-slots-browser/events/${event.id}`}>
+                    {event.eventName}
+                  </a>
+                  <p class="event-type">{event.eventType}</p>
+                </td>
+                <td class="event-description">{event.description || '-'}</td>
+                <td class="event-source">
+                  <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer" class="source-link">
+                    <Icon name="tabler:external-link" />
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+       </section>
     ))
   }
 </BaseLayout>
@@ -110,93 +123,147 @@ const namespaces = Object.keys(eventsByNamespace).sort();
     border-bottom: 2px solid var(--color-primary);
   }
 
+  .namespace-anchor {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .namespace-anchor:hover {
+    text-decoration: underline;
+  }
+
   .namespace-count {
     color: #999;
     font-size: 0.95rem;
     margin-bottom: 1.5rem;
   }
 
-  .events-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .event-card {
+  .events-table {
+    width: 100%;
+    border-collapse: collapse;
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    background: #fafafa;
-  }
-
-  .event-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: var(--color-primary);
+    overflow: hidden;
     background: white;
   }
 
-  .event-title {
-    text-decoration: none;
-    flex: 1;
+  .events-table thead {
+    background: #e8e8e8;
+    border-bottom: 2px solid var(--color-border);
   }
 
-  .event-card h3 {
-    margin: 0 0 0.75rem 0;
+  .events-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+    background: #e8e8e8;
+  }
+
+  .events-table tbody tr {
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.2s ease;
+  }
+
+  .events-table tbody tr:hover {
+    background-color: #fafafa;
+  }
+
+  .events-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .events-table td {
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: #666;
+  }
+
+  .event-name {
+    font-weight: 500;
+    color: #333;
+  }
+
+  .event-name a {
     color: var(--color-primary);
-    font-size: 1.1rem;
-    word-break: break-word;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
   }
 
-  .event-title:hover h3 {
+  .event-name a:hover {
     text-decoration: underline;
   }
 
   .event-type {
     background: var(--color-secondary);
-    padding: 0.5rem 0.75rem;
+    padding: 0.3rem 0.5rem;
     border-radius: 4px;
     font-family: 'Courier New', monospace;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #555;
-    margin: 0 0 1rem 0;
-    word-break: break-all;
+    display: inline-block;
+    word-break: break-word;
+    margin: 0;
   }
 
   .event-description {
     color: #666;
-    font-size: 0.95rem;
-    margin: 0 0 1rem 0;
-    line-height: 1.5;
-    flex: 1;
+    max-width: 300px;
+    word-break: break-word;
   }
 
-  .event-footer {
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-border);
+  .event-source {
+    text-align: center;
   }
 
   .source-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
     color: var(--color-primary);
     text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
   }
 
   .source-link:hover {
-    text-decoration: underline;
+    opacity: 0.7;
   }
 
   .source-link :global(svg) {
-    width: 1em;
-    height: 1em;
-    display: inline;
-    vertical-align: -0.125em;
+    width: 1.2em;
+    height: 1.2em;
   }
+
+  :global(.datatable-top) {
+      display: flex;
+    justify-content: end;
+  }
+
+  :global(.datatable-info) {
+    display: none;
+  }
+
+
 </style>
+
+<script>
+  import { DataTable } from 'simple-datatables';
+
+  function initializeTables() {
+    const tables = document.querySelectorAll('.events-table');
+    tables.forEach((table) => {
+      new DataTable(table, {
+        searchable: true,
+        sortable: true,
+        perPage: 25,
+        perPageSelect: false,
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initializeTables);
+
+  // Also initialize for client-side navigation
+  document.addEventListener('astro:page-load', initializeTables);
+</script>

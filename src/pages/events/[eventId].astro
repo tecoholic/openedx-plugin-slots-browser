@@ -17,10 +17,7 @@ if (!event) {
   return Astro.redirect('/openedx-plugin-slots-browser/events');
 }
 
-// Find related events in same namespace
-const relatedEvents = eventsData.events
-  .filter((e) => e.namespace === event.namespace && e.id !== event.id)
-  .slice(0, 5);
+
 ---
 
 <BaseLayout title={event.eventName} showSidebar showEvents currentEventId={event.id}>
@@ -40,44 +37,70 @@ const relatedEvents = eventsData.events
   </div>
 
   <section class="event-details">
-    <div class="detail-card">
-      <h3>Namespace</h3>
-      <p class="detail-value">{event.namespace}</p>
-    </div>
-
-    <div class="detail-card">
-      <h3>Event Type</h3>
-      <p class="detail-value monospace">{event.eventType}</p>
-    </div>
-
-    {event.description && (
-      <div class="detail-card">
-        <h3>Description</h3>
-        <p>{event.description}</p>
-      </div>
-    )}
-
-    <div class="detail-card">
-      <h3>File Path</h3>
-      <p class="detail-value monospace">{event.filePath}</p>
-    </div>
-
-    <div class="detail-card">
-      <h3>Last Updated</h3>
-      <p class="detail-value">{new Date(event.lastUpdated).toLocaleDateString()}</p>
-    </div>
+    <table class="details-table">
+      <tbody>
+        <tr>
+          <td class="label">Namespace</td>
+          <td class="value">{event.namespace}</td>
+        </tr>
+        <tr>
+          <td class="label">Event Type</td>
+          <td class="value monospace">{event.eventType}</td>
+        </tr>
+        {event.description && (
+          <tr>
+            <td class="label">Description</td>
+            <td class="value">{event.description}</td>
+          </tr>
+        )}
+        <tr>
+          <td class="label">File Path</td>
+          <td class="value monospace">{event.filePath}</td>
+        </tr>
+        <tr>
+          <td class="label">Last Updated</td>
+          <td class="value">{new Date(event.lastUpdated).toLocaleDateString()}</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
-  {relatedEvents.length > 0 && (
-    <section class="related-section">
-      <h2>Related Events in {event.namespace}</h2>
-      <div class="related-list">
-        {relatedEvents.map((relEvent) => (
-          <div class="related-item">
-            <a href={`/openedx-plugin-slots-browser/events/${relEvent.id}`}>
-              <strong>{relEvent.eventName}</strong>
-              <p class="event-type-small">{relEvent.eventType}</p>
-            </a>
+  {event.dataClasses && event.dataClasses.length > 0 && (
+    <section class="event-data-section">
+      <h2>Event data</h2>
+      <div class="event-data-list">
+        {event.dataClasses.map((dataClass) => (
+          <div class="event-data-item">
+            <div class="event-data-key">
+              {dataClass.dataKey && <code>{dataClass.dataKey}</code>}
+            </div>
+            <div class="event-data-definition">
+              <h3>{dataClass.name}</h3>
+              {dataClass.description && <p class="description">{dataClass.description}</p>}
+              {dataClass.attributes && dataClass.attributes.length > 0 && (
+                <div>
+                  <h4 class="attributes-title">Attributes</h4>
+                  <table class="attributes-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataClass.attributes.map((attr) => (
+                        <tr>
+                          <td class="attr-name">{attr.name}</td>
+                          <td class="attr-type">{attr.type}</td>
+                          <td class="attr-desc">{attr.description || '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -132,33 +155,37 @@ const relatedEvents = eventsData.events
   }
 
   .event-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
     margin-bottom: 3rem;
   }
 
-  .detail-card {
+  .details-table {
+    width: 100%;
+    border-collapse: collapse;
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    padding: 1.5rem;
-    background: #fafafa;
+    overflow: hidden;
   }
 
-  .detail-card h3 {
-    margin: 0 0 1rem 0;
+  .details-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .details-table td.label {
+    font-weight: 600;
     color: var(--color-primary);
-    font-size: 1rem;
+    background: #fafafa;
+    width: 20%;
+    vertical-align: top;
   }
 
-  .detail-card p {
-    margin: 0;
-    line-height: 1.6;
-    color: #333;
-  }
-
-  .detail-value {
+  .details-table td.value {
     color: #555;
+    line-height: 1.6;
+  }
+
+  .details-table tr:last-child td {
+    border-bottom: none;
   }
 
   .monospace {
@@ -170,54 +197,103 @@ const relatedEvents = eventsData.events
     word-break: break-all;
   }
 
-  .related-section {
+  .event-data-section {
     margin-bottom: 3rem;
-    padding: 2rem;
-    background: var(--color-secondary);
-    border-radius: 8px;
   }
 
-  .related-section h2 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
+  .event-data-section h2 {
+    margin: 0 0 1.5rem 0;
   }
 
-  .related-list {
+  .event-data-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 2rem;
   }
 
-  .related-item {
-    background: white;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 1rem;
-    transition: all 0.2s ease;
+  .event-data-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
   }
 
-  .related-item:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  .event-data-item:first-child {
+    border-top: none;
+    padding-top: 0;
   }
 
-  .related-item a {
-    text-decoration: none;
+  .event-data-key {
+    flex-shrink: 0;
   }
 
-  .related-item a:hover strong {
-    text-decoration: underline;
+  .event-data-key code {
+    background: #f0f0f0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+    display: block;
   }
 
-  .related-item strong {
+  .event-data-definition h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--color-primary);
+    font-size: 1.1rem;
+  }
+
+  .event-data-definition .description {
+    margin: 0 0 1rem 0;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .attributes-title {
+    margin: 1rem 0 0.75rem 0;
+    color: #333;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .attributes-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .attributes-table thead {
+    background: #f5f5f5;
+  }
+
+  .attributes-table th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .attributes-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .attr-name {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
     color: var(--color-primary);
   }
 
-  .event-type-small {
+  .attr-type {
     font-family: 'Courier New', monospace;
-    font-size: 0.8rem;
     color: #666;
-    margin: 0.5rem 0 0 0;
+    font-size: 0.85rem;
+  }
+
+  .attr-desc {
+    color: #555;
   }
 
   .back-link {

@@ -24,6 +24,13 @@ interface EventAttribute {
   description?: string;
 }
 
+interface DataClass {
+  name: string;
+  description: string;
+  attributes: EventAttribute[];
+  dataKey?: string;
+}
+
 interface Event {
   id: string;
   eventName: string;
@@ -31,6 +38,7 @@ interface Event {
   eventType?: string;
   description: string;
   attributes?: EventAttribute[];
+  dataClasses?: DataClass[];
   filePath: string;
   sourceUrl: string;
   lastUpdated: string;
@@ -76,41 +84,75 @@ async function collectEvents() {
 
     console.log(`  ✓ Found ${domainDirs.length} domain directories`);
 
-    // 3. For each domain, look for signals.py
-    for (const domain of domainDirs) {
-      if (domain.type !== 'dir' || !domain.path) continue;
+    // 3. For each domain, look for signals.py and data.py
+     for (const domain of domainDirs) {
+       if (domain.type !== 'dir' || !domain.path) continue;
 
-      try {
-        console.log(`  → Processing domain: ${domain.name}...`);
+       try {
+         console.log(`  → Processing domain: ${domain.name}...`);
 
-        const signalsPath = `${domain.path}/signals.py`;
-        const signalsContent = await octokit.rest.repos.getContent({
-          owner: 'openedx',
-          repo: 'openedx-events',
-          path: signalsPath,
-        });
+         const signalsPath = `${domain.path}/signals.py`;
+         const signalsContent = await octokit.rest.repos.getContent({
+           owner: 'openedx',
+           repo: 'openedx-events',
+           path: signalsPath,
+         });
 
-        if (
-          signalsContent &&
-          signalsContent.data &&
-          typeof signalsContent.data === 'object' &&
-          !Array.isArray(signalsContent.data) &&
-          'content' in signalsContent.data
-        ) {
-          const fileContent = Buffer.from(
-            (signalsContent.data as any).content as string,
-            'base64'
-          ).toString('utf-8');
+         let dataClasses: Map<string, DataClass> = new Map();
 
-          // Parse events from signals.py
-          const parsedEvents = parseEventFile(fileContent, signalsPath, domain.name);
-          events.push(...parsedEvents);
-          console.log(`    ✓ Found ${parsedEvents.length} events`);
-        }
-      } catch (err) {
-        console.log(`  !! signals.py not found in ${domain.name}: ${err instanceof Error ? err.message : 'Unknown error'}`);
-      }
-    }
+         // Try to fetch data.py from the same domain
+         try {
+           const dataPath = `${domain.path}/data.py`;
+           const dataContent = await octokit.rest.repos.getContent({
+             owner: 'openedx',
+             repo: 'openedx-events',
+             path: dataPath,
+           });
+
+           if (
+             dataContent &&
+             dataContent.data &&
+             typeof dataContent.data === 'object' &&
+             !Array.isArray(dataContent.data) &&
+             'content' in dataContent.data
+           ) {
+             const dataFileContent = Buffer.from(
+               (dataContent.data as any).content as string,
+               'base64'
+             ).toString('utf-8');
+
+             dataClasses = parseDataFile(dataFileContent, domain.name);
+             console.log(`    ✓ Found ${dataClasses.size} data classes`);
+           }
+         } catch (err) {
+           // data.py is optional
+           console.log(`    → No data.py found for ${domain.name}`);
+         }
+
+         if (
+           signalsContent &&
+           signalsContent.data &&
+           typeof signalsContent.data === 'object' &&
+           !Array.isArray(signalsContent.data) &&
+           'content' in signalsContent.data
+         ) {
+           const fileContent = Buffer.from(
+             (signalsContent.data as any).content as string,
+             'base64'
+           ).toString('utf-8');
+
+           // Parse events from signals.py
+           const parsedEvents = parseEventFile(fileContent, signalsPath, domain.name);
+           
+           // Associate data classes with events
+           const enrichedEvents = enrichEventsWithData(parsedEvents, dataClasses);
+           events.push(...enrichedEvents);
+           console.log(`    ✓ Found ${enrichedEvents.length} events`);
+         }
+       } catch (err) {
+         console.log(`  !! signals.py not found in ${domain.name}: ${err instanceof Error ? err.message : 'Unknown error'}`);
+       }
+     }
 
     // 4. Write output
     const output: EventsData = {
@@ -154,6 +196,9 @@ function parseEventFile(content: string, filePath: string, domainName: string): 
     // Extract description from event type or surrounding comments
     const description = extractEventDescription(content, variableName, eventType);
 
+    // Extract data classes from the data={...} section
+    const dataClassMappings = extractDataClassesFromSignal(content, variableName);
+
     // Construct namespace from domain (replace underscores with hyphens)
     const namespace = domainName.replace(/_/g, '-');
 
@@ -166,12 +211,84 @@ function parseEventFile(content: string, filePath: string, domainName: string): 
       filePath,
       sourceUrl: `https://github.com/openedx/openedx-events/tree/main/${filePath}`,
       lastUpdated: new Date().toISOString(),
+      attributes: dataClassMappings.length > 0 ? dataClassMappings as any : undefined,
     };
 
     events.push(event);
   }
 
   return events;
+}
+
+interface DataClassMapping {
+  key: string;
+  className: string;
+}
+
+function extractDataClassesFromSignal(content: string, variableName: string): DataClassMapping[] {
+  // Find the signal definition for this variable
+  const varIndex = content.indexOf(`${variableName} =`);
+  if (varIndex === -1) return [];
+
+  // Extract the full signal definition (find the closing parenthesis of OpenEdxPublicSignal)
+  let parenCount = 0;
+  let inDefinition = false;
+  let endIndex = varIndex;
+
+  for (let i = varIndex; i < content.length; i++) {
+    if (content[i] === '(') {
+      inDefinition = true;
+      parenCount++;
+    } else if (content[i] === ')' && inDefinition) {
+      parenCount--;
+      if (parenCount === 0) {
+        endIndex = i;
+        break;
+      }
+    }
+  }
+
+  const signalDefinition = content.substring(varIndex, endIndex + 1);
+
+  // Look for data={...} section (handle nested braces)
+  const dataStart = signalDefinition.indexOf('data=');
+  if (dataStart === -1) return [];
+
+  let braceCount = 0;
+  let bracketStart = -1;
+  let dataContent = '';
+
+  for (let i = dataStart; i < signalDefinition.length; i++) {
+    const char = signalDefinition[i];
+    if (char === '{') {
+      braceCount++;
+      if (bracketStart === -1) {
+        bracketStart = i + 1;
+      }
+    } else if (char === '}') {
+      braceCount--;
+      if (braceCount === 0 && bracketStart !== -1) {
+        dataContent = signalDefinition.substring(bracketStart, i);
+        break;
+      }
+    }
+  }
+
+  if (!dataContent) return [];
+
+  // Extract key-class pairs: "key": ClassName
+  // Pattern: "key_name": ClassName or 'key_name': ClassName
+  const keyClassRegex = /["\'](\w+)["\']:\s*([A-Z]\w*(?:Data|Type))/g;
+  const mappings: DataClassMapping[] = [];
+
+  let match;
+  while ((match = keyClassRegex.exec(dataContent)) !== null) {
+    const key = match[1];
+    const className = match[2];
+    mappings.push({ key, className });
+  }
+
+  return mappings;
 }
 
 function extractEventDescription(content: string, variableName: string, eventType: string): string {
@@ -234,6 +351,207 @@ function extractEventDescription(content: string, variableName: string, eventTyp
   }
 
   return 'OpenEdX Event';
+}
+
+function parseDataFile(content: string, domainName: string): Map<string, DataClass> {
+  const dataClasses = new Map<string, DataClass>();
+
+  // Find all @attr.s decorated classes
+  const attrClassRegex = /@attr\.s[^\n]*\nclass\s+(\w+)[^\n]*:\s*\n\s*"""([\s\S]*?)"""/g;
+
+  let match;
+  while ((match = attrClassRegex.exec(content)) !== null) {
+    const className = match[1];
+    const description = match[2].trim().split('\n')[0]; // Get first line of description
+
+    // Parse attributes from the class
+    const attributes = parseDataClassAttributes(content, className);
+
+    dataClasses.set(className, {
+      name: className,
+      description,
+      attributes,
+    });
+  }
+
+  return dataClasses;
+}
+
+function parseDataClassAttributes(content: string, className: string): EventAttribute[] {
+  const attributes: EventAttribute[] = [];
+
+  // Find the class definition - look for both "class ClassName(" and "class ClassName:"
+  let classIndex = content.indexOf(`class ${className}(`);
+  if (classIndex === -1) {
+    classIndex = content.indexOf(`class ${className}:`);
+  }
+  if (classIndex === -1) return attributes;
+
+  // Find the end of the class (next class or EOF)
+  const nextClassIndex = content.indexOf('\nclass ', classIndex + 1);
+  const classContent = nextClassIndex > 0 
+    ? content.substring(classIndex, nextClassIndex) 
+    : content.substring(classIndex);
+
+  // Extract the docstring from the class
+  const docstringDescriptions = extractDocstringDescriptions(classContent);
+
+  // Extract lines that define attributes (lines with attr.ib calls)
+  const lines = classContent.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Match: attribute_name = attr.ib(type=SomeType...)
+    const attrMatch = line.match(/^\s*(\w+)\s*=\s*attr\.ib\s*\([^)]*type=([^,)]+)/);
+
+    if (attrMatch) {
+      const attrName = attrMatch[1];
+      const attrType = attrMatch[2].trim();
+
+      // Get description from the extracted docstring descriptions
+      const description = docstringDescriptions.get(attrName);
+
+      attributes.push({
+        name: attrName,
+        type: attrType,
+        description: description || undefined,
+      });
+    }
+  }
+
+  return attributes;
+}
+
+function extractDocstringDescriptions(classContent: string): Map<string, string> {
+  const descriptions = new Map<string, string>();
+
+  // Find the docstring (first """ or ''')
+  const tripleDoubleQuoteStart = classContent.indexOf('"""');
+  const tripleSingleQuoteStart = classContent.indexOf("'''");
+  
+  let docStart = -1;
+  let quoteType = '';
+  
+  if (tripleDoubleQuoteStart !== -1 && tripleSingleQuoteStart !== -1) {
+    if (tripleDoubleQuoteStart < tripleSingleQuoteStart) {
+      docStart = tripleDoubleQuoteStart;
+      quoteType = '"""';
+    } else {
+      docStart = tripleSingleQuoteStart;
+      quoteType = "'''";
+    }
+  } else if (tripleDoubleQuoteStart !== -1) {
+    docStart = tripleDoubleQuoteStart;
+    quoteType = '"""';
+  } else if (tripleSingleQuoteStart !== -1) {
+    docStart = tripleSingleQuoteStart;
+    quoteType = "'''";
+  }
+
+  if (docStart === -1) return descriptions;
+
+  // Find the end of the docstring
+  const docEnd = classContent.indexOf(quoteType, docStart + 3);
+  if (docEnd === -1) return descriptions;
+
+  // Extract the docstring content
+  const docstring = classContent.substring(docStart + 3, docEnd);
+
+  // Parse the docstring for attribute descriptions
+  // Look for patterns like:
+  // - attribute_name: Description
+  // - attribute_name (type): Description
+  // - attribute_name: Description with
+  //     multiline content
+  
+  const lines = docstring.split('\n');
+  let inAttributesSection = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Check if we're entering an Attributes section
+    if (trimmed.toLowerCase().startsWith('attributes') && trimmed.endsWith(':')) {
+      inAttributesSection = true;
+      continue;
+    }
+
+    if (inAttributesSection && trimmed) {
+      // Try to match: attribute_name: Description or attribute_name (type): Description
+      const attrMatch = trimmed.match(/^(\w+)\s*(?:\([^)]*\))?\s*:\s*(.+)$/);
+      
+      if (attrMatch) {
+        const attrName = attrMatch[1];
+        let description = attrMatch[2].trim();
+
+        // Collect continuation lines (indented lines following this attribute)
+        for (let j = i + 1; j < lines.length; j++) {
+          const nextLine = lines[j];
+          const nextTrimmed = nextLine.trim();
+          
+          // If it's indented and not empty, it's a continuation
+          if (nextLine.startsWith('    ') && nextTrimmed && !nextTrimmed.match(/^\w+\s*(?:\([^)]*\))?\s*:/)) {
+            description += ' ' + nextTrimmed;
+            i = j; // Move the outer loop index forward
+          } else if (!nextTrimmed || nextLine.match(/^\s*\w+\s*(?:\([^)]*\))?\s*:/)) {
+            // Stop at empty line or next attribute
+            break;
+          } else if (!nextLine.startsWith('    ')) {
+            // Stop if indentation decreases
+            break;
+          }
+        }
+
+        descriptions.set(attrName, description.slice(0, 500)); // Limit to 500 chars
+      } else if (trimmed && !trimmed.match(/^\w+\s*(?:\([^)]*\))?\s*:/) && trimmed.match(/^\S/)) {
+        // Stop if we hit a non-indented line that's not an attribute definition
+        inAttributesSection = false;
+      }
+    }
+  }
+
+  return descriptions;
+}
+
+function enrichEventsWithData(events: Event[], dataClasses: Map<string, DataClass>): Event[] {
+  return events.map((event) => {
+    const relatedDataClasses: DataClass[] = [];
+
+    // If event has attributes field with data class mappings found in signal definition,
+    // use those to look up the actual data class definitions
+    if (event.attributes && event.attributes.length > 0) {
+      for (const attr of event.attributes as any) {
+        // attr is a DataClassMapping with { key, className }
+        const className = attr.className || attr.name;
+        const dataClass = dataClasses.get(className);
+        if (dataClass) {
+          // Add the dataKey from the signal definition
+          relatedDataClasses.push({
+            ...dataClass,
+            dataKey: attr.key,
+          });
+        }
+      }
+    }
+
+    // Clear the attributes field if we found data classes through it
+    // (we'll use dataClasses field instead)
+    const cleanedEvent = {
+      ...event,
+      attributes: undefined,
+    };
+
+    if (relatedDataClasses.length > 0) {
+      return {
+        ...cleanedEvent,
+        dataClasses: relatedDataClasses,
+      };
+    }
+
+    return cleanedEvent;
+  });
 }
 
 const isMain = (() => {
