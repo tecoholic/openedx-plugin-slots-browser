@@ -37,7 +37,6 @@ interface PluginSlot {
   filePath: string;
   description: string;
   readmeContent?: string;
-  exampleCode?: string;
   sourceUrl: string;
   lastUpdated: string;
   readmePresent: boolean;
@@ -239,31 +238,6 @@ async function parsePluginSlot(
     // Check if Examples section exists in README
     const hasExamples = /^#+\s+examples?/im.test(readmeText);
 
-    // Try to extract example code (no retry - file likely doesn't exist)
-    let exampleCode: string | undefined;
-    try {
-      const response = await octokit.rest.repos.getContent({
-        owner: 'openedx',
-        repo: repoName,
-        path: `${slotPath}/example.jsx`,
-      });
-
-      if (
-        response &&
-        response.data &&
-        typeof response.data === 'object' &&
-        !Array.isArray(response.data) &&
-        'content' in response.data
-      ) {
-        exampleCode = Buffer.from(
-          (response.data as any).content as string,
-          'base64'
-        ).toString('utf-8');
-      }
-    } catch (err) {
-      // Example doesn't exist - that's fine
-    }
-
     return {
       id: slotId,
       mfeId: repoName,
@@ -271,7 +245,6 @@ async function parsePluginSlot(
       filePath: `${slotPath}/README.md`,
       description: extractDescription(readmeText),
       readmeContent: readmePresent ? readmeText : undefined,
-      exampleCode,
       sourceUrl: `${repoUrl}/tree/master/${slotPath}`,
       lastUpdated: new Date().toISOString(),
       readmePresent,
