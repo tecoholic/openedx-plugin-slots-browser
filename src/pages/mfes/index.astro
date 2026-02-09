@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import pluginData from '../../data/plugin-slots.json';
 import { Icon } from 'astro-icon/components';
 
-const mfes = pluginData.mfes;
+const mfes = pluginData.mfes.sort((a,b) => a.name.localeCompare(b.name));
 ---
 
 <BaseLayout title="Frontend Applications" showSidebar>

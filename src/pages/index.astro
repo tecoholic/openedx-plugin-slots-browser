@@ -17,7 +17,7 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
 
 <BaseLayout title="Home" lastUpdated={lastUpdated}>
   <div class="hero">
-    <h1>Open edX Plugin Slots Browser</h1>
+    <h1>Open edX Plugins System Catalog</h1>
     <div class="subtitle-block">
       A continuously updated catalog of Open edX frontend plugin slots, backend filters, and events,
       with source links and documentation to help you extend and customize Open edX without
@@ -32,7 +32,7 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
           <div class="stat-label">Frontend Plugin Slots</div>
         </div>
         <a href="/openedx-plugin-slots-browser/mfes" class="btn btn-primary">
-          Browse Plugin Slots →
+            Browse MFE Slots <Icon name="tabler:arrow-right" class="btn-icon" />
         </a>
         <div class="card-footer">
           <div class="footer-item">
@@ -53,7 +53,7 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
           <div class="stat-label">Backend Filters</div>
         </div>
         <a href="/openedx-plugin-slots-browser/filters" class="btn btn-primary">
-          Browse Filters →
+          Browse Filters  <Icon name="tabler:arrow-right" class="btn-icon" />
         </a>
         <div class="card-footer">
           <div class="footer-item">
@@ -70,7 +70,7 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
           <div class="stat-label">Backend Events</div>
         </div>
         <a href="/openedx-plugin-slots-browser/events" class="btn btn-primary">
-          Browse Events →
+          Browse Events  <Icon name="tabler:arrow-right" class="btn-icon" />
         </a>
         <div class="card-footer">
           <div class="footer-item">
@@ -253,6 +253,13 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
 
   .btn-secondary:hover {
     background: #f8f8f8;
+  }
+
+  .btn-icon {
+      width: 1rem;
+      height: 1rem;
+      margin-left: 0.5rem;
+      vertical-align: middle;
   }
 
 </style>
