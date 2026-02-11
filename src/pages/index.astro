@@ -81,32 +81,34 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
       </div>
     </div>
 
-    <div class="spotlight-section">
-      <h2>Getting started</h2>
-      <p class="spotlight-subtitle">Short, curated notes with links to deeper dives.</p>
-      <ul class="spotlight-list">
-        <li class="spotlight-card">
-          <h3>Frontend Plugin Implementation Guide</h3>
-          <p>A complete guide that demonstrates how to customize Open edX micro-frontends (MFEs) using the Frontend Plugin Framework.</p>
-          <a href="https://github.com/openedx/sample-plugin/tree/main/frontend" class="spotlight-link">
-            Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
-          </a>
-        </li>
-        <li class="spotlight-card">
-          <h3>How to use Open edX Filters?</h3>
-          <p>Official documentation covering pipeline step implementation, hook, trigger and testing.</p>
-          <a href="https://docs.openedx.org/projects/openedx-filters/en/open-release-sumac.master/how-tos/using-filters.html" class="spotlight-link">
-            Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
-          </a>
-        </li>
-        <li class="spotlight-card">
-          <h3>Using Open edX Events</h3>
-          <p>Official docs covering events - sending, receiving and testing.</p>
-          <a href="https://docs.openedx.org/projects/openedx-events/en/stable/how-tos/using-events.html" class="spotlight-link">
-            Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
-          </a>
-        </li>
-      </ul>
+    <div class="spotlight-band">
+        <div class="spotlight-section">
+            <h2>Getting started</h2>
+            <p class="spotlight-subtitle">Short, curated notes with links to deeper dives.</p>
+            <ul class="spotlight-list">
+                <li class="spotlight-card">
+                    <h3>Frontend Plugin Implementation Guide</h3>
+                    <p>A complete guide that demonstrates how to customize Open edX micro-frontends (MFEs) using the Frontend Plugin Framework.</p>
+                    <a href="https://github.com/openedx/sample-plugin/tree/main/frontend" class="spotlight-link">
+                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+                    </a>
+                </li>
+                <li class="spotlight-card">
+                    <h3>How to use Open edX Filters?</h3>
+                    <p>Official documentation covering pipeline step implementation, hook, trigger and testing.</p>
+                    <a href="https://docs.openedx.org/projects/openedx-filters/en/open-release-sumac.master/how-tos/using-filters.html" class="spotlight-link">
+                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+                    </a>
+                </li>
+                <li class="spotlight-card">
+                    <h3>Using Open edX Events</h3>
+                    <p>Official docs covering events - sending, receiving and testing.</p>
+                    <a href="https://docs.openedx.org/projects/openedx-events/en/stable/how-tos/using-events.html" class="spotlight-link">
+                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="contribute-section">
@@ -325,31 +327,31 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
 
   .spotlight-section {
     margin: 5rem auto;
+    padding: 5rem 2rem;
     max-width: 1000px;
   }
 
   .spotlight-section h2 {
     margin: 0 0 0.35rem 0;
     font-size: 1.6rem;
-    color: #333;
+    color: white;
   }
 
   .spotlight-subtitle {
     margin: 0 0 1.5rem 0;
-    color: #6b6b6b;
+    color: #ddd;
     font-size: 0.98rem;
   }
 
   .spotlight-list {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
+    padding: 2rem 0;
     list-style: none;
-    padding: 0;
     margin: 0;
     overflow-x: auto;
     scroll-behavior: smooth;
     justify-content: space-between;
-    padding: 2rem 1rem;
   }
 
   .spotlight-card {
@@ -401,4 +403,9 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
     text-decoration: underline;
   }
 
+  .spotlight-band {
+      width: 100%;
+      background-color: #333;
+      border-radius: 0.5rem;
+  }
   </style>
