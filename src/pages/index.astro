@@ -26,7 +26,7 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
 
     <div class="cards-grid">
       <div class="data-card">
-        <Icon name="tabler:puzzle" class="card-icon icon-red" />
+        <Icon name="tabler:puzzle" class="card-icon icon-red" is:inline />
         <div class="card-stat">
           <div class="stat-number">{slotCount}</div>
           <div class="stat-label">Frontend Plugin Slots</div>
@@ -47,7 +47,7 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
       </div>
 
       <div class="data-card">
-        <Icon name="tabler:filter-code" class="card-icon icon-green" />
+        <Icon name="tabler:filter-code" class="card-icon icon-green" is:inline />
         <div class="card-stat">
           <div class="stat-number">{filterCount}</div>
           <div class="stat-label">Backend Filters</div>
@@ -64,7 +64,7 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
       </div>
 
       <div class="data-card">
-        <Icon name="tabler:bell" class="card-icon icon-purple" />
+        <Icon name="tabler:bell" class="card-icon icon-purple" is:inline />
         <div class="card-stat">
           <div class="stat-number">{eventCount}</div>
           <div class="stat-label">Backend Events</div>

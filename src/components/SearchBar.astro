@@ -1,5 +1,40 @@
 ---
-// Search bar with client-side search using Fuse.js
+import { Icon } from 'astro-icon/components';
+import pluginSlotsData from '../data/plugin-slots.json';
+import filtersData from '../data/filters.json';
+import eventsData from '../data/events.json';
+
+// Transform and combine data for search
+const searchData = [
+  ...pluginSlotsData.pluginSlots.map((slot: any) => ({
+    type: 'slot',
+    id: slot.id,
+    name: slot.id,
+    category: slot.mfeName + ' MFE',
+    description: slot.description,
+    url: `/openedx-plugin-slots-browser/mfes/${slot.mfeId}#${slot.id}`,
+  })),
+  ...filtersData.filters.map((filter: any) => ({
+    type: 'filter',
+    id: filter.id,
+    name: filter.name,
+    description: filter.description,
+    category: filter.category,
+    filterType: filter.filterType,
+    url: `/openedx-plugin-slots-browser/filters/${filter.id}`,
+  })),
+  ...eventsData.events.map((event: any) => ({
+    type: 'event',
+    id: event.id,
+    name: event.eventName,
+    description: event.description,
+    category: event.namespace,
+    url: `/openedx-plugin-slots-browser/events/${event.id}`,
+  })),
+];
+
+// Convert to JSON string for inline script
+const searchDataJson = JSON.stringify(searchData);
 ---
 
 <div class="search-container">
@@ -16,7 +51,18 @@
   <div id="search-results" class="search-results hidden"></div>
 </div>
 
-<style>
+<!-- Icon templates for cloning -->
+<template id="icon-slot">
+  <Icon name="tabler:puzzle" class="result-icon" is:inline />
+</template>
+<template id="icon-filter">
+  <Icon name="tabler:filter-code" class="result-icon" is:inline />
+</template>
+<template id="icon-event">
+  <Icon name="tabler:bell" class="result-icon" is:inline />
+</template>
+
+<style scoped>
   .search-container {
     position: relative;
     width: 100%;
@@ -100,43 +146,60 @@
 
   .search-result a {
     display: block;
-    text-decoration: none !important;
-    color: #333 !important;
+    text-decoration: none;
+    color: #333;
   }
 
   .search-result a:hover {
-    text-decoration: none !important;
-    color: #333 !important;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .result-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .result-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    color: var(--color-primary);
   }
 
   .result-title {
     font-weight: 600;
-    color: var(--color-primary) !important;
-    margin-bottom: 0.35rem;
+    color: var(--color-primary);
     font-size: 0.95rem;
   }
 
-  .result-mfe {
+  .result-type {
     font-size: 0.8rem;
-    color: #666 !important;
+    color: #222;
     font-weight: 500;
-    margin-bottom: 0.25rem;
   }
 
   .result-description {
     font-size: 0.8rem;
-    color: #999 !important;
+    color: #999;
     line-height: 1.4;
   }
 </style>
 
-<script>
-  let searchData: any[] = [];
-  const searchInput = document.getElementById('search-input') as HTMLInputElement;
-  const resultsContainer = document.getElementById('search-results') as HTMLElement;
+<script define:vars={{ searchDataJson }}>
+  const searchData = JSON.parse(searchDataJson);
+  const searchInput = document.getElementById('search-input');
+  const resultsContainer = document.getElementById('search-results');
 
   // Simple fuzzy search function
-  function fuzzyMatch(query: string, text: string): boolean {
+  function fuzzyMatch(query, text) {
     const queryLower = query.toLowerCase();
     const textLower = text.toLowerCase();
     let queryIdx = 0;
@@ -150,51 +213,41 @@
     return queryIdx === queryLower.length;
   }
 
-  // Load plugin-slots.json and filters.json
-  async function initSearch() {
-    try {
-      const [slotsResponse, filtersResponse] = await Promise.all([
-        fetch('/openedx-plugin-slots-browser/data/plugin-slots.json'),
-        fetch('/openedx-plugin-slots-browser/data/filters.json'),
-      ]);
-      
-      const slotsData = await slotsResponse.json();
-      const filtersData = await filtersResponse.json();
+  // Score search results based on match quality and location
+  function scoreResults(item, query) {
+    const queryLower = query.toLowerCase();
+    let score = 0;
 
-      // Create searchable data combining MFEs, slots, and filters
-      searchData = [
-        ...slotsData.mfes.map((mfe: any) => ({
-          type: 'mfe',
-          id: mfe.id,
-          name: mfe.name,
-          description: mfe.description,
-          url: `/openedx-plugin-slots-browser/mfes/${mfe.id}`,
-        })),
-        ...slotsData.pluginSlots.map((slot: any) => ({
-          type: 'slot',
-          id: slot.id,
-          name: slot.id,
-          mfeName: slot.mfeName,
-          description: slot.description,
-          url: `/openedx-plugin-slots-browser/mfes/${slot.mfeId}#${slot.id}`,
-        })),
-        ...filtersData.filters.map((filter: any) => ({
-          type: 'filter',
-          id: filter.id,
-          name: filter.name,
-          description: filter.description,
-          category: filter.category,
-          filterType: filter.filterType,
-          url: `/openedx-plugin-slots-browser/filters/${filter.id}`,
-        })),
-      ];
-    } catch (err) {
-      console.error('Failed to load search data:', err);
+    // Exact match in name: highest priority
+    if (item.name.toLowerCase() === queryLower) {
+      score += 1000;
     }
+    // Name contains query: high priority
+    else if (item.name.toLowerCase().includes(queryLower)) {
+      score += 500;
+    }
+    // Fuzzy match in name: medium-high priority
+    else if (fuzzyMatch(query, item.name)) {
+      score += 300;
+    }
+
+    // Description match: lower priority
+    if (item.description && item.description.toLowerCase().includes(queryLower)) {
+      score += 100;
+    } else if (item.description && fuzzyMatch(query, item.description)) {
+      score += 50;
+    }
+
+    // Category match: low priority
+    if (item.category && item.category.toLowerCase().includes(queryLower)) {
+      score += 25;
+    }
+
+    return { ...item, score };
   }
 
-  // Perform search with scoring
-  function performSearch(query: string) {
+  // Perform search and return scored, sorted results
+  function performSearch(query) {
     if (!query.trim()) {
       resultsContainer.classList.add('hidden');
       return;
@@ -204,45 +257,12 @@
 
     const results = searchData
       .filter((item) => {
-        const searchText = `${item.name} ${item.description || ''} ${item.mfeName || ''} ${item.category || ''} ${item.filterType || ''}`;
+        const searchText = `${item.name} ${item.description || ''} ${
+          item.category || ''
+        } ${item.filterType || ''}`;
         return fuzzyMatch(query, searchText);
       })
-      .map((item) => {
-        // Score based on where the match is found
-        let score = 0;
-
-        // Exact match in name: highest priority
-        if (item.name.toLowerCase() === queryLower) {
-          score += 1000;
-        }
-        // Name contains query: high priority
-        else if (item.name.toLowerCase().includes(queryLower)) {
-          score += 500;
-        }
-        // Fuzzy match in name: medium-high priority
-        else if (fuzzyMatch(query, item.name)) {
-          score += 300;
-        }
-
-        // Description match: lower priority
-        if (item.description && item.description.toLowerCase().includes(queryLower)) {
-          score += 100;
-        } else if (item.description && fuzzyMatch(query, item.description)) {
-          score += 50;
-        }
-
-        // MFE name match: low priority
-        if (item.mfeName && item.mfeName.toLowerCase().includes(queryLower)) {
-          score += 25;
-        }
-
-        // Category match: low priority
-        if (item.category && item.category.toLowerCase().includes(queryLower)) {
-          score += 20;
-        }
-
-        return { ...item, score };
-      })
+      .map((item) => scoreResults(item, queryLower))
       .sort((a, b) => b.score - a.score)
       .slice(0, 10);
 
@@ -255,13 +275,30 @@
 
     resultsContainer.innerHTML = results
       .map((item) => {
-        const typeLabel = item.type === 'filter' ? `[${item.category}]` : item.type === 'slot' ? `[${item.mfeName}]` : '';
+        let iconTemplate = '';
+        if (item.type === 'slot') {
+          iconTemplate = document.getElementById('icon-slot').innerHTML;
+        } else if (item.type === 'filter') {
+          iconTemplate = document.getElementById('icon-filter').innerHTML;
+        } else if (item.type === 'event') {
+          iconTemplate = document.getElementById('icon-event').innerHTML;
+        }
+
         return `
         <div class="search-result">
           <a href="${item.url}">
-            <div class="result-title">${item.name}</div>
-            ${typeLabel ? `<div class="result-mfe">${typeLabel}</div>` : ''}
-            ${item.description ? `<div class="result-description">${item.description.slice(0, 60)}${item.description.length > 60 ? '...' : ''}</div>` : ''}
+            <div class="result-content">
+              <div class="result-header">
+                ${iconTemplate}
+                <div class="result-title">${item.name}</div>
+              </div>
+              <div class="result-type">${item.category}</div>
+              ${
+                item.description
+                  ? `<div class="result-description">${item.description.slice(0, 60)}${item.description.length > 60 ? '...' : ''}</div>`
+                  : ''
+              }
+            </div>
           </a>
         </div>
       `;
@@ -273,12 +310,12 @@
 
   // Event listeners
   searchInput.addEventListener('input', (e) => {
-    performSearch((e.target as HTMLInputElement).value);
+    performSearch(e.target.value);
   });
 
   // Close results when clicking outside
   document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target as Node) && !resultsContainer.contains(e.target as Node)) {
+    if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
       resultsContainer.classList.add('hidden');
     }
   });
@@ -291,7 +328,4 @@
       searchInput.select();
     }
   });
-
-  // Initialize search on load
-  initSearch();
 </script>
