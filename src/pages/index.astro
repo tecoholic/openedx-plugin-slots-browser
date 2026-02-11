@@ -81,7 +81,10 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
       </div>
     </div>
 
-
+    <div class="contribute-section">
+      <h2>Want to Contribute?</h2>
+      <p>Help improve this catalog! Visit the <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank">GitHub repository</a> to report issues, suggest features, or submit pull requests.</p>
+    </div>
   </div>
 
 </BaseLayout>
@@ -260,6 +263,36 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
       height: 1rem;
       margin-left: 0.5rem;
       vertical-align: middle;
+   }
+
+  .contribute-section {
+    max-width: 720px;
+    margin: 3rem auto 0;
+    padding: 1.5rem;
+    text-align: center;
   }
 
-</style>
+  .contribute-section h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .contribute-section p {
+    margin: 0;
+    color: #888;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .contribute-section a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .contribute-section a:hover {
+    text-decoration: underline;
+  }
+
+  </style>

@@ -84,6 +84,10 @@ The project includes two GitHub Actions workflows:
 - **Trigger**: On push to `main` branch
 - **Actions**: Builds site and deploys to GitHub Pages
 
+## Contributing
+
+Contributions are welcome! Please visit the [GitHub repository](https://github.com/tecoholic/openedx-plugin-slots-browser) to report issues, suggest features, or submit pull requests.
+
 ## Learn More
 
 - [Open edX Documentation](https://docs.openedx.org)
