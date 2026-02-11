@@ -81,9 +81,37 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
       </div>
     </div>
 
+    <div class="spotlight-section">
+      <h2>Getting started</h2>
+      <p class="spotlight-subtitle">Short, curated notes with links to deeper dives.</p>
+      <ul class="spotlight-list">
+        <li class="spotlight-card">
+          <h3>Frontend Plugin Implementation Guide</h3>
+          <p>A complete guide that demonstrates how to customize Open edX micro-frontends (MFEs) using the Frontend Plugin Framework.</p>
+          <a href="https://github.com/openedx/sample-plugin/tree/main/frontend" class="spotlight-link">
+            Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+          </a>
+        </li>
+        <li class="spotlight-card">
+          <h3>How to use Open edX Filters?</h3>
+          <p>Official documentation covering pipeline step implementation, hook, trigger and testing.</p>
+          <a href="https://docs.openedx.org/projects/openedx-filters/en/open-release-sumac.master/how-tos/using-filters.html" class="spotlight-link">
+            Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+          </a>
+        </li>
+        <li class="spotlight-card">
+          <h3>Using Open edX Events</h3>
+          <p>Official docs covering events - sending, receiving and testing.</p>
+          <a href="https://docs.openedx.org/projects/openedx-events/en/stable/how-tos/using-events.html" class="spotlight-link">
+            Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <div class="contribute-section">
-      <h2>Want to Contribute?</h2>
-      <p>Help improve this catalog! Visit the <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank">GitHub repository</a> to report issues, suggest features, or submit pull requests.</p>
+      <h2>Help improve this catalog!</h2>
+      <p>Visit the <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank">GitHub repository</a> to report issues, suggest features, or submit pull requests.</p>
     </div>
   </div>
 
@@ -292,6 +320,84 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
   }
 
   .contribute-section a:hover {
+    text-decoration: underline;
+  }
+
+  .spotlight-section {
+    margin: 5rem auto;
+    max-width: 1000px;
+  }
+
+  .spotlight-section h2 {
+    margin: 0 0 0.35rem 0;
+    font-size: 1.6rem;
+    color: #333;
+  }
+
+  .spotlight-subtitle {
+    margin: 0 0 1.5rem 0;
+    color: #6b6b6b;
+    font-size: 0.98rem;
+  }
+
+  .spotlight-list {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    justify-content: space-between;
+    padding: 2rem 1rem;
+  }
+
+  .spotlight-card {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    background: #fff;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.75rem;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .spotlight-card:hover,
+  .spotlight-card:focus-within {
+    transform: translateY(-6px);
+    border-color: rgba(0, 0, 0, 0.18);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+  }
+
+  .spotlight-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #2e2e2e;
+  }
+
+  .spotlight-card p {
+    margin: 0;
+    color: #666;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+
+  .spotlight-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .spotlight-link:hover {
     text-decoration: underline;
   }
 
