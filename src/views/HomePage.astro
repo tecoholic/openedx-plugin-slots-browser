@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getReleaseData } from '../lib/release-data';
+import { getReleaseData, getReleaseGrowthData } from '../lib/release-data';
 import { withBasePath } from '../lib/paths';
 
 interface Props {
@@ -20,6 +20,7 @@ const documentedCount = pluginData.pluginSlots.filter((slot) => slot.readmePrese
 const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).length;
 const filterDomains = new Set(filtersData.filters.map((filter) => filter.category)).size;
 const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace)).size;
+const releaseGrowthData = getReleaseGrowthData();
 ---
 
 <BaseLayout
@@ -95,6 +96,23 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
         </div>
       </div>
     </div>
+
+    {release.slug === 'main' && (
+      <section class="graph-band" aria-labelledby="release-overview-title">
+        <div class="graph-section">
+          <h2 id="release-overview-title">Growth Across Releases</h2>
+          <p class="graph-subtitle">Counts of slots, filters, and events grouped by release.</p>
+          <div class="graph-chart-wrap">
+            <canvas
+              id="release-growth-chart"
+              data-growth-chart={JSON.stringify(releaseGrowthData)}
+              role="img"
+              aria-label="Bar chart of slots, filters, and events by release"
+            />
+          </div>
+        </div>
+      </section>
+    )}
 
     <div class="spotlight-band">
         <div class="spotlight-section">
@@ -275,6 +293,36 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
     text-align: left;
   }
 
+  .graph-band {
+    margin: 3rem auto 0 auto;
+    max-width: 1000px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: left;
+  }
+
+  .graph-section h2 {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .graph-subtitle {
+    margin-bottom: 1.5rem;
+    color: #555;
+  }
+
+  .graph-chart-wrap {
+    position: relative;
+    width: 100%;
+    min-height: 320px;
+  }
+
+  #release-growth-chart {
+    width: 100%;
+    height: 320px;
+  }
+
   .spotlight-section h2 {
     margin: 0 0 0.5rem 0;
   }
@@ -335,4 +383,134 @@ const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace
   .contribute-section a {
     font-weight: 600;
   }
+
+  @media (max-width: 720px) {
+    .graph-chart-wrap {
+      min-height: 280px;
+    }
+
+    #release-growth-chart {
+      height: 280px;
+    }
+  }
 </style>
+
+<script>
+  async function initializeReleaseGrowthChart() {
+    const chartCanvas = document.getElementById('release-growth-chart');
+    if (!(chartCanvas instanceof HTMLCanvasElement) || !chartCanvas.dataset.growthChart) {
+      return;
+    }
+
+    if (chartCanvas.dataset.chartInitialized === 'true') {
+      return;
+    }
+    chartCanvas.dataset.chartInitialized = 'true';
+
+    const {
+      BarController,
+      BarElement,
+      CategoryScale,
+      Chart,
+      Legend,
+      LinearScale,
+      Tooltip,
+    } = await import('chart.js');
+
+    Chart.register(
+      BarController,
+      BarElement,
+      CategoryScale,
+      LinearScale,
+      Tooltip,
+      Legend,
+    );
+
+    const growthData = JSON.parse(chartCanvas.dataset.growthChart);
+    const labels = growthData.map((point) => point.label);
+
+    const chartData = {
+      labels,
+      datasets: [
+        {
+          label: 'MFE Plugin Slots',
+          data: growthData.map((point) => point.slotCount),
+          backgroundColor: '#006d77',
+          borderColor: '#006d77',
+          borderWidth: 1,
+          borderRadius: 6,
+        },
+        {
+          label: 'Filters',
+          data: growthData.map((point) => point.filterCount),
+          backgroundColor: '#83c5be',
+          borderColor: '#83c5be',
+          borderWidth: 1,
+          borderRadius: 6,
+        },
+        {
+          label: 'Events',
+          data: growthData.map((point) => point.eventCount),
+          backgroundColor: '#e29578',
+          borderColor: '#e29578',
+          borderWidth: 1,
+          borderRadius: 6,
+        },
+      ],
+    };
+
+    const valueLabelsPlugin = {
+      id: 'valueLabels',
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.font = '600 12px system-ui, -apple-system, sans-serif';
+        ctx.fillStyle = '#374151';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+
+        for (const datasetMeta of chart.getSortedVisibleDatasetMetas()) {
+          const dataset = chart.data.datasets[datasetMeta.index];
+          datasetMeta.data.forEach((barElement, index) => {
+            const value = dataset.data[index];
+            if (typeof value === 'number') {
+              ctx.fillText(String(value), barElement.x, barElement.y - 4);
+            }
+          });
+        }
+
+        ctx.restore();
+      },
+    };
+
+    new Chart(chartCanvas, {
+      type: 'bar',
+      data: chartData,
+      plugins: [valueLabelsPlugin],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0,
+            },
+          },
+        },
+      },
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeReleaseGrowthChart);
+  document.addEventListener('astro:page-load', initializeReleaseGrowthChart);
+</script>

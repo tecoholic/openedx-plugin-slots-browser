@@ -18,12 +18,13 @@
     "collect:all": "npm run collect:plugins && npm run collect:filters && npm run collect:events && npm run collect:releases && npm run sync:data",
     "test:collect": "ts-node-esm scripts/collect-plugins.ts --test",
     "test": "node --import tsx --test scripts/collect-plugins.test.ts",
-    "sync:data": "cp data/plugin-slots.json src/data/plugin-slots.json && cp data/filters.json src/data/filters.json && cp data/events.json src/data/events.json && cp data/releases.json src/data/releases.json 2>/dev/null && cp -r data/releases src/data/releases 2>/dev/null || true"
+    "sync:data": "cp data/plugin-slots.json src/data/plugin-slots.json && cp data/filters.json src/data/filters.json && cp data/events.json src/data/events.json && (cp data/releases.json src/data/releases.json 2>/dev/null || true) && (cp -r data/releases src/data 2>/dev/null || true) && (rm -rf src/data/releases/releases 2>/dev/null || true)"
   },
   "dependencies": {
     "@iconify-json/tabler": "^1.2.26",
     "@octokit/rest": "^19.0.0",
     "astro-icon": "^1.1.5",
+    "chart.js": "^4.5.1",
     "markdown-it": "^14.1.0",
     "shiki": "^3.22.0",
     "simple-datatables": "^10.2.0"

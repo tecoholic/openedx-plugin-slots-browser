@@ -14,13 +14,21 @@ import sumacPluginData from '../../data/releases/sumac/plugin-slots.json';
 import sumacFiltersData from '../../data/releases/sumac/filters.json';
 import sumacEventsData from '../../data/releases/sumac/events.json';
 
-import { getReleaseOption, type ReleaseOption } from './release-config';
+import { getReleaseOption, releaseOptions, type ReleaseOption } from './release-config';
 
 export type ReleaseData = {
   release: ReleaseOption;
   pluginData: typeof mainPluginData;
   filtersData: typeof mainFiltersData;
   eventsData: typeof mainEventsData;
+};
+
+export type ReleaseGrowthData = {
+  slug: ReleaseOption['slug'];
+  label: string;
+  slotCount: number;
+  filterCount: number;
+  eventCount: number;
 };
 
 const dataByRelease = {
@@ -54,3 +62,17 @@ export const getReleaseData = (slug?: string): ReleaseData => {
     ...data,
   };
 };
+
+export const getReleaseGrowthData = (): ReleaseGrowthData[] =>
+  [...releaseOptions]
+    .reverse()
+    .map((option) => {
+      const data = dataByRelease[option.slug];
+      return {
+        slug: option.slug,
+        label: option.label,
+        slotCount: data.pluginData.pluginSlots.length,
+        filterCount: data.filtersData.filters.length,
+        eventCount: data.eventsData.events.length,
+      };
+    });
