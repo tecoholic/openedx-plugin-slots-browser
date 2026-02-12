@@ -98,10 +98,9 @@ const releaseGrowthData = getReleaseGrowthData();
     </div>
 
     {release.slug === 'main' && (
-      <section class="graph-band" aria-labelledby="release-overview-title">
+      <section class="graph-band" aria-labelledby="graph-subtitle">
         <div class="graph-section">
-          <h2 id="release-overview-title">Growth Across Releases</h2>
-          <p class="graph-subtitle">Counts of slots, filters, and events grouped by release.</p>
+          <p class="graph-subtitle">Counts of slots, filters, and events across releases.</p>
           <div class="graph-chart-wrap">
             <canvas
               id="release-growth-chart"
