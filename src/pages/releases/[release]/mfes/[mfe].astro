@@ -1,0 +1,33 @@
+---
+import MfeDetailPage from '../../../../views/MfeDetailPage.astro';
+import { getReleaseData } from '../../../../lib/release-data';
+import { releaseSlugs } from '../../../../lib/release-config';
+import { withBasePath } from '../../../../lib/paths';
+
+export function getStaticPaths() {
+  return releaseSlugs.flatMap((slug) => {
+    const { pluginData } = getReleaseData(slug);
+    return pluginData.mfes.map((mfe) => ({
+      params: { release: slug, mfe: mfe.id },
+    }));
+  });
+}
+
+const { release, mfe } = Astro.params;
+const { release: releaseInfo, pluginData, filtersData, eventsData } = getReleaseData(release);
+const mfeInfo = pluginData.mfes.find((m) => m.id === mfe);
+const slots = pluginData.pluginSlots.filter((s) => s.mfeId === mfe);
+
+if (!mfeInfo) {
+  return Astro.redirect(withBasePath(releaseInfo.basePath, '/mfes'));
+}
+---
+
+<MfeDetailPage
+  release={releaseInfo}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+  mfeInfo={mfeInfo}
+  slots={slots}
+/>

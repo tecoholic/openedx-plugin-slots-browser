@@ -1,0 +1,10 @@
+{
+  "slug": "ulmo",
+  "name": "Ulmo",
+  "edxPlatformRef": "release/ulmo",
+  "filtersVersion": "2.1.0",
+  "filtersRef": "v2.1.0",
+  "eventsVersion": "10.5.0",
+  "eventsRef": "v10.5.0",
+  "warnings": []
+}

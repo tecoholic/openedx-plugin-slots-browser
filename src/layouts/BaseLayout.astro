@@ -2,9 +2,16 @@
 import SearchBar from '../components/SearchBar.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { Icon } from 'astro-icon/components';
+import { releaseOptions } from '../lib/release-config';
+import { withBasePath } from '../lib/paths';
 
 export interface Props {
   title: string;
+  basePath: string;
+  release: string;
+  pluginData: { pluginSlots: any[]; mfes: any[] };
+  filtersData: { filters: any[] };
+  eventsData: { events: any[] };
   showSidebar?: boolean;
   currentMfeId?: string;
   currentSlotId?: string;
@@ -15,7 +22,22 @@ export interface Props {
   lastUpdated?: string;
 }
 
-const { title, showSidebar = false, currentMfeId, currentSlotId, currentEventId, currentFilterId, showEvents = false, showFilters = false, lastUpdated } = Astro.props;
+const {
+  title,
+  basePath,
+  release,
+  pluginData,
+  filtersData,
+  eventsData,
+  showSidebar = false,
+  currentMfeId,
+  currentSlotId,
+  currentEventId,
+  currentFilterId,
+  showEvents = false,
+  showFilters = false,
+  lastUpdated,
+} = Astro.props as Props;
 const formattedLastUpdated = lastUpdated
   ? new Date(lastUpdated).toLocaleString(undefined, {
       year: 'numeric',
@@ -25,6 +47,18 @@ const formattedLastUpdated = lastUpdated
       minute: '2-digit',
     })
   : null;
+
+const normalizedBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
+const currentPath = Astro.url.pathname;
+const pathSuffix = currentPath.startsWith(normalizedBasePath)
+  ? currentPath.slice(normalizedBasePath.length) || '/'
+  : '/';
+const normalizedSuffix = pathSuffix.startsWith('/') ? pathSuffix : `/${pathSuffix}`;
+const releaseLinks = releaseOptions.map((option) => {
+  const optionBase = option.basePath.endsWith('/') ? option.basePath.slice(0, -1) : option.basePath;
+  const targetPath = normalizedSuffix === '/' ? optionBase : `${optionBase}${normalizedSuffix}`;
+  return { ...option, targetPath };
+});
 ---
 
 <!DOCTYPE html>
@@ -78,14 +112,19 @@ const formattedLastUpdated = lastUpdated
         gap: 2rem;
       }
 
-      nav > a {
-        white-space: nowrap;
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
         flex-shrink: 0;
+        min-width: 0;
       }
 
       .nav-brand {
         display: flex;
         align-items: center;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
 
       .nav-brand strong {
@@ -118,6 +157,49 @@ const formattedLastUpdated = lastUpdated
         display: flex;
         gap: 1rem;
         flex-shrink: 0;
+      }
+
+      .release-switcher {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.6rem;
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        background: #f7f9ff;
+        color: #1d3b70;
+        font-size: 0.85rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .release-switcher label {
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 0.7rem;
+        padding-right: 0.5rem;
+        border-right: 1px solid var(--color-primary-darker);
+      }
+
+      .release-select {
+        border: none;
+        background: transparent;
+        font: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding-right: 0.75rem;
+        cursor: pointer;
+        appearance: none;
+        background-image: linear-gradient(45deg, transparent 50%, #1d3b70 50%),
+          linear-gradient(135deg, #1d3b70 50%, transparent 50%);
+        background-position: calc(100% - 12px) calc(50%),
+          calc(100% - 7px) calc(50%);
+        background-size: 5px 5px, 5px 5px;
+        background-repeat: no-repeat;
+      }
+
+      .release-select:focus {
+        outline: none;
       }
 
       nav a {
@@ -225,36 +307,64 @@ const formattedLastUpdated = lastUpdated
               display: none;
           }
       }
+
+      @media (max-width: 720px) {
+        .release-switcher label {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body>
     <header>
       <nav>
-        <a href="/openedx-plugin-slots-browser/" class="nav-brand">
-          <strong>
-            <span class="nav-brand-icon">
-              <Icon name="tabler:plug" width="1.25rem" height="1.25rem" />
-            </span>
-            Open edX Plugins System Catalog
-          </strong>
-        </a>
+        <div class="nav-left">
+          <a href={withBasePath(basePath, '/')} class="nav-brand">
+            <strong>
+              <span class="nav-brand-icon">
+                <Icon name="tabler:plug" width="1.25rem" height="1.25rem" />
+              </span>
+              Open edX Plugins System Catalog
+            </strong>
+          </a>
+          <div class="release-switcher">
+            <label for="release-select">Release</label>
+            <select
+              id="release-select"
+              class="release-select"
+              aria-label="Select release"
+              onchange="window.location.href = this.value"
+            >
+              {releaseLinks.map((option) => (
+                <option value={option.targetPath} selected={option.slug === release}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         <div class="nav-center">
-          <SearchBar />
+          <SearchBar
+            pluginData={pluginData}
+            filtersData={filtersData}
+            eventsData={eventsData}
+            basePath={basePath}
+          />
         </div>
         <div class="nav-right">
-          <a href="/openedx-plugin-slots-browser/mfes" class="nav-link-with-icon">
+          <a href={withBasePath(basePath, '/mfes')} class="nav-link-with-icon">
             <Icon name="tabler:puzzle" width="1em" height="1em" is:inline />
             MFE Slots
           </a>
-          <a href="/openedx-plugin-slots-browser/filters" class="nav-link-with-icon">
+          <a href={withBasePath(basePath, '/filters')} class="nav-link-with-icon">
             <Icon name="tabler:filter-code" width="1em" height="1em" is:inline />
             Filters
           </a>
-          <a href="/openedx-plugin-slots-browser/events" class="nav-link-with-icon">
+          <a href={withBasePath(basePath, '/events')} class="nav-link-with-icon">
             <Icon name="tabler:bell" width="1em" height="1em" is:inline />
             Events
           </a>
-          <a href="/openedx-plugin-slots-browser/about" class="nav-link-with-icon">
+          <a href={withBasePath(basePath, '/about')} class="nav-link-with-icon">
             <Icon name="tabler:info-circle" width="1em" height="1em" />
             About
           </a>
@@ -262,7 +372,20 @@ const formattedLastUpdated = lastUpdated
       </nav>
     </header>
     <div class="content-wrapper">
-      {showSidebar && <Sidebar currentMfeId={currentMfeId} currentSlotId={currentSlotId} currentEventId={currentEventId} currentFilterId={currentFilterId} showEvents={showEvents} showFilters={showFilters} />}
+      {showSidebar && (
+        <Sidebar
+          pluginData={pluginData}
+          filtersData={filtersData}
+          eventsData={eventsData}
+          basePath={basePath}
+          currentMfeId={currentMfeId}
+          currentSlotId={currentSlotId}
+          currentEventId={currentEventId}
+          currentFilterId={currentFilterId}
+          showEvents={showEvents}
+          showFilters={showFilters}
+        />
+      )}
       <main class={showSidebar ? 'with-sidebar' : ''}>
         <slot />
       </main>

@@ -1,0 +1,2244 @@
+{
+  "lastUpdated": "2026-02-12T03:38:54.309Z",
+  "repository": "https://github.com/openedx/openedx-events",
+  "events": [
+    {
+      "id": "analytics.TRACKING_EVENT_EMITTED",
+      "eventName": "TRACKING_EVENT_EMITTED",
+      "namespace": "analytics",
+      "eventType": "org.openedx.analytics.tracking.event.emitted.v1",
+      "description": "emitted when a tracking log is created.",
+      "filePath": "openedx_events/analytics/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/analytics/signals.py",
+      "lastUpdated": "2026-02-12T03:38:50.349Z",
+      "dataClasses": [
+        {
+          "name": "TrackingLogData",
+          "description": "Data describing tracking events.",
+          "attributes": [
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "timestamp",
+              "type": "datetime"
+            },
+            {
+              "name": "data",
+              "type": "str"
+            },
+            {
+              "name": "context",
+              "type": "str"
+            }
+          ],
+          "dataKey": "tracking_log"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.COURSE_CATALOG_INFO_CHANGED",
+      "eventName": "COURSE_CATALOG_INFO_CHANGED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.course.catalog_info.changed.v1",
+      "description": "Fired when a course changes in Studio in a way that is relevant for catalog consumers.",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "CourseCatalogData",
+          "description": "Data needed for a course catalog entry.",
+          "attributes": [
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "schedule_data",
+              "type": "CourseScheduleData"
+            },
+            {
+              "name": "hidden",
+              "type": "bool"
+            },
+            {
+              "name": "invitation_only",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "catalog_info"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.XBLOCK_CREATED",
+      "eventName": "XBLOCK_CREATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.xblock.created.v1",
+      "description": "Fired when an XBlock is created.",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "XBlockData",
+          "description": "Data about changed XBlock.",
+          "attributes": [
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "block_type",
+              "type": "str"
+            },
+            {
+              "name": "version",
+              "type": "UsageKey"
+            }
+          ],
+          "dataKey": "xblock_info"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.XBLOCK_UPDATED",
+      "eventName": "XBLOCK_UPDATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.xblock.updated.v1",
+      "description": "Fired when an XBlock is updated.",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "XBlockData",
+          "description": "Data about changed XBlock.",
+          "attributes": [
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "block_type",
+              "type": "str"
+            },
+            {
+              "name": "version",
+              "type": "UsageKey"
+            }
+          ],
+          "dataKey": "xblock_info"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.XBLOCK_PUBLISHED",
+      "eventName": "XBLOCK_PUBLISHED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.xblock.published.v1",
+      "description": "Fired when an XBlock is published. If a parent block with changes in one or more child blocks is published, only a single XBLOCK_PUBLISHED event is fired with parent block details. For example: If a section is published with changes in multiple units, only a single event is fired with section details like : `XBlockData(usage_key=\"section-usage-key\", block_type=\"chapter\")`",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "XBlockData",
+          "description": "Data about changed XBlock.",
+          "attributes": [
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "block_type",
+              "type": "str"
+            },
+            {
+              "name": "version",
+              "type": "UsageKey"
+            }
+          ],
+          "dataKey": "xblock_info"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.XBLOCK_DELETED",
+      "eventName": "XBLOCK_DELETED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.xblock.deleted.v1",
+      "description": "Fired when an XBlock is deleted.",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "XBlockData",
+          "description": "Data about changed XBlock.",
+          "attributes": [
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "block_type",
+              "type": "str"
+            },
+            {
+              "name": "version",
+              "type": "UsageKey"
+            }
+          ],
+          "dataKey": "xblock_info"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.XBLOCK_DUPLICATED",
+      "eventName": "XBLOCK_DUPLICATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.xblock.duplicated.v1",
+      "description": "Fired when an XBlock is duplicated in Studio.",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "DuplicatedXBlockData",
+          "description": "Data about duplicated XBlock.",
+          "attributes": [
+            {
+              "name": "source_usage_key",
+              "type": "UsageKey"
+            }
+          ],
+          "dataKey": "xblock_info"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.COURSE_CERTIFICATE_CONFIG_CHANGED",
+      "eventName": "COURSE_CERTIFICATE_CONFIG_CHANGED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.course.certificate_config.changed.v1",
+      "description": "Fired when a course certificate configuration changes in Studio. Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "CertificateConfigData",
+          "description": "Attributes defined for Open edX CertificateConfig data object.",
+          "attributes": [
+            {
+              "name": "certificate_type",
+              "type": "str"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "title",
+              "type": "str"
+            },
+            {
+              "name": "signatories",
+              "type": "List[CertificateSignatoryData]"
+            },
+            {
+              "name": "is_active",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "certificate_config"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.COURSE_CERTIFICATE_CONFIG_DELETED",
+      "eventName": "COURSE_CERTIFICATE_CONFIG_DELETED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.course.certificate_config.deleted.v1",
+      "description": "Fired when a course certificate configuration deletes in Studio. Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.145Z",
+      "dataClasses": [
+        {
+          "name": "CertificateConfigData",
+          "description": "Attributes defined for Open edX CertificateConfig data object.",
+          "attributes": [
+            {
+              "name": "certificate_type",
+              "type": "str"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "title",
+              "type": "str"
+            },
+            {
+              "name": "signatories",
+              "type": "List[CertificateSignatoryData]"
+            },
+            {
+              "name": "is_active",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "certificate_config"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.COURSE_CREATED",
+      "eventName": "COURSE_CREATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.course.created.v1",
+      "description": "emitted when a course is created",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "CourseData",
+          "description": "Attributes defined for Open edX Course object.",
+          "attributes": [
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            }
+          ],
+          "dataKey": "course"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.CONTENT_LIBRARY_CREATED",
+      "eventName": "CONTENT_LIBRARY_CREATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content_library.created.v1",
+      "description": "emitted when a content library is created",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "ContentLibraryData",
+          "description": "Data about changed ContentLibrary.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "update_blocks",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "content_library"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.CONTENT_LIBRARY_UPDATED",
+      "eventName": "CONTENT_LIBRARY_UPDATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content_library.updated.v1",
+      "description": "emitted when a content library is updated",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "ContentLibraryData",
+          "description": "Data about changed ContentLibrary.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "update_blocks",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "content_library"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.CONTENT_LIBRARY_DELETED",
+      "eventName": "CONTENT_LIBRARY_DELETED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content_library.deleted.v1",
+      "description": "emitted when a content library is deleted",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "ContentLibraryData",
+          "description": "Data about changed ContentLibrary.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "update_blocks",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "content_library"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.LIBRARY_BLOCK_CREATED",
+      "eventName": "LIBRARY_BLOCK_CREATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.library_block.created.v1",
+      "description": "emitted when a library block is created",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "LibraryBlockData",
+          "description": "Data about changed LibraryBlock.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "usage_key",
+              "type": "LibraryUsageLocatorV2"
+            }
+          ],
+          "dataKey": "library_block"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.LIBRARY_BLOCK_UPDATED",
+      "eventName": "LIBRARY_BLOCK_UPDATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.library_block.updated.v1",
+      "description": "emitted when a library block is updated",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "LibraryBlockData",
+          "description": "Data about changed LibraryBlock.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "usage_key",
+              "type": "LibraryUsageLocatorV2"
+            }
+          ],
+          "dataKey": "library_block"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.LIBRARY_BLOCK_DELETED",
+      "eventName": "LIBRARY_BLOCK_DELETED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.library_block.deleted.v1",
+      "description": "emitted when a library block is deleted",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "LibraryBlockData",
+          "description": "Data about changed LibraryBlock.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "usage_key",
+              "type": "LibraryUsageLocatorV2"
+            }
+          ],
+          "dataKey": "library_block"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.CONTENT_OBJECT_ASSOCIATIONS_CHANGED",
+      "eventName": "CONTENT_OBJECT_ASSOCIATIONS_CHANGED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content.object.associations.changed.v1",
+      "description": "emitted when an object's associations are changed, e.g tags, collections",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "ContentObjectChangedData",
+          "description": "Data about a changed content object.",
+          "attributes": [
+            {
+              "name": "changes",
+              "type": "List[str]"
+            }
+          ],
+          "dataKey": "content_object"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.CONTENT_OBJECT_TAGS_CHANGED",
+      "eventName": "CONTENT_OBJECT_TAGS_CHANGED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content.object.tags.changed.v1",
+      "description": "emitted when an object's tags are changed DEPRECATED: please use CONTENT_OBJECT_ASSOCIATIONS_CHANGED instead.",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "ContentObjectData",
+          "description": "Data about a content object.",
+          "attributes": [
+            {
+              "name": "object_id",
+              "type": "str"
+            }
+          ],
+          "dataKey": "content_object"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.LIBRARY_COLLECTION_CREATED",
+      "eventName": "LIBRARY_COLLECTION_CREATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content_library.collection.created.v1",
+      "description": "emitted when a content library collection is created",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "LibraryCollectionData",
+          "description": "Data about changed content library Collection.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "collection_key",
+              "type": "str"
+            },
+            {
+              "name": "background",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "library_collection"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.LIBRARY_COLLECTION_UPDATED",
+      "eventName": "LIBRARY_COLLECTION_UPDATED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content_library.collection.updated.v1",
+      "description": "emitted when when a content library collection is updated",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "LibraryCollectionData",
+          "description": "Data about changed content library Collection.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "collection_key",
+              "type": "str"
+            },
+            {
+              "name": "background",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "library_collection"
+        }
+      ]
+    },
+    {
+      "id": "content-authoring.LIBRARY_COLLECTION_DELETED",
+      "eventName": "LIBRARY_COLLECTION_DELETED",
+      "namespace": "content-authoring",
+      "eventType": "org.openedx.content_authoring.content_library.collection.deleted.v1",
+      "description": "emitted when an when a content library collection is deleted",
+      "filePath": "openedx_events/content_authoring/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/content_authoring/signals.py",
+      "lastUpdated": "2026-02-12T03:38:51.146Z",
+      "dataClasses": [
+        {
+          "name": "LibraryCollectionData",
+          "description": "Data about changed content library Collection.",
+          "attributes": [
+            {
+              "name": "library_key",
+              "type": "LibraryLocatorV2"
+            },
+            {
+              "name": "collection_key",
+              "type": "str"
+            },
+            {
+              "name": "background",
+              "type": "bool"
+            }
+          ],
+          "dataKey": "library_collection"
+        }
+      ]
+    },
+    {
+      "id": "enterprise.SUBSIDY_REDEEMED",
+      "eventName": "SUBSIDY_REDEEMED",
+      "namespace": "enterprise",
+      "eventType": "org.openedx.enterprise.subsidy.redeemed.v1",
+      "description": "emitted when an enterprise subsidy is utilized.",
+      "filePath": "openedx_events/enterprise/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/enterprise/signals.py",
+      "lastUpdated": "2026-02-12T03:38:52.098Z"
+    },
+    {
+      "id": "enterprise.SUBSIDY_REDEMPTION_REVERSED",
+      "eventName": "SUBSIDY_REDEMPTION_REVERSED",
+      "namespace": "enterprise",
+      "eventType": "org.openedx.enterprise.subsidy.redemption-reversed.v1",
+      "description": "emitted when an enterprise subsidy is reversed.",
+      "filePath": "openedx_events/enterprise/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/enterprise/signals.py",
+      "lastUpdated": "2026-02-12T03:38:52.098Z"
+    },
+    {
+      "id": "enterprise.LEDGER_TRANSACTION_CREATED",
+      "eventName": "LEDGER_TRANSACTION_CREATED",
+      "namespace": "enterprise",
+      "eventType": "org.openedx.enterprise.subsidy_ledger_transaction.created.v1",
+      "description": "emitted when an enterprise ledger transaction is created. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
+      "filePath": "openedx_events/enterprise/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/enterprise/signals.py",
+      "lastUpdated": "2026-02-12T03:38:52.098Z"
+    },
+    {
+      "id": "enterprise.LEDGER_TRANSACTION_COMMITTED",
+      "eventName": "LEDGER_TRANSACTION_COMMITTED",
+      "namespace": "enterprise",
+      "eventType": "org.openedx.enterprise.subsidy_ledger_transaction.committed.v1",
+      "description": "emitted when an enterprise ledger transaction is committed. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
+      "filePath": "openedx_events/enterprise/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/enterprise/signals.py",
+      "lastUpdated": "2026-02-12T03:38:52.098Z"
+    },
+    {
+      "id": "enterprise.LEDGER_TRANSACTION_FAILED",
+      "eventName": "LEDGER_TRANSACTION_FAILED",
+      "namespace": "enterprise",
+      "eventType": "org.openedx.enterprise.subsidy_ledger_transaction.failed.v1",
+      "description": "emitted when an enterprise ledger transaction fails. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
+      "filePath": "openedx_events/enterprise/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/enterprise/signals.py",
+      "lastUpdated": "2026-02-12T03:38:52.098Z"
+    },
+    {
+      "id": "enterprise.LEDGER_TRANSACTION_REVERSED",
+      "eventName": "LEDGER_TRANSACTION_REVERSED",
+      "namespace": "enterprise",
+      "eventType": "org.openedx.enterprise.subsidy_ledger_transaction.reversed.v1",
+      "description": "emitted when an enterprise ledger transaction is reversed. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
+      "filePath": "openedx_events/enterprise/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/enterprise/signals.py",
+      "lastUpdated": "2026-02-12T03:38:52.098Z"
+    },
+    {
+      "id": "enterprise.LEARNER_CREDIT_COURSE_ENROLLMENT_REVOKED",
+      "eventName": "LEARNER_CREDIT_COURSE_ENROLLMENT_REVOKED",
+      "namespace": "enterprise",
+      "eventType": "org.openedx.enterprise.learner_credit_course_enrollment.revoked.v1",
+      "description": "emitted when a LearnerCreditEnterpriseCourseEnrollment is revoked. This most often happens when an enterprise learner unenrolls from a course which was LC-subsidized.",
+      "filePath": "openedx_events/enterprise/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/enterprise/signals.py",
+      "lastUpdated": "2026-02-12T03:38:52.098Z"
+    },
+    {
+      "id": "learning.STUDENT_REGISTRATION_COMPLETED",
+      "eventName": "STUDENT_REGISTRATION_COMPLETED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.student.registration.completed.v1",
+      "description": "emitted when the user registration process in the LMS is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "UserData",
+          "description": "Attributes defined for Open edX user object.",
+          "attributes": [
+            {
+              "name": "pii",
+              "type": "UserPersonalData"
+            }
+          ],
+          "dataKey": "user"
+        }
+      ]
+    },
+    {
+      "id": "learning.SESSION_LOGIN_COMPLETED",
+      "eventName": "SESSION_LOGIN_COMPLETED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.auth.session.login.completed.v1",
+      "description": "emitted when the user's login process in the LMS is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "UserData",
+          "description": "Attributes defined for Open edX user object.",
+          "attributes": [
+            {
+              "name": "pii",
+              "type": "UserPersonalData"
+            }
+          ],
+          "dataKey": "user"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_ENROLLMENT_CREATED",
+      "eventName": "COURSE_ENROLLMENT_CREATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.course.enrollment.created.v1",
+      "description": "emitted when the user's enrollment process is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "CourseEnrollmentData",
+          "description": "Attributes defined for Open edX Course Enrollment object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "mode",
+              "type": "str"
+            },
+            {
+              "name": "is_active",
+              "type": "bool"
+            },
+            {
+              "name": "creation_date",
+              "type": "datetime"
+            },
+            {
+              "name": "created_by",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "enrollment"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_ENROLLMENT_CHANGED",
+      "eventName": "COURSE_ENROLLMENT_CHANGED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.course.enrollment.changed.v1",
+      "description": "emitted when the user's enrollment update process is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "CourseEnrollmentData",
+          "description": "Attributes defined for Open edX Course Enrollment object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "mode",
+              "type": "str"
+            },
+            {
+              "name": "is_active",
+              "type": "bool"
+            },
+            {
+              "name": "creation_date",
+              "type": "datetime"
+            },
+            {
+              "name": "created_by",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "enrollment"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_UNENROLLMENT_COMPLETED",
+      "eventName": "COURSE_UNENROLLMENT_COMPLETED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.course.unenrollment.completed.v1",
+      "description": "emitted when the user's unenrollment process is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "CourseEnrollmentData",
+          "description": "Attributes defined for Open edX Course Enrollment object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "mode",
+              "type": "str"
+            },
+            {
+              "name": "is_active",
+              "type": "bool"
+            },
+            {
+              "name": "creation_date",
+              "type": "datetime"
+            },
+            {
+              "name": "created_by",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "enrollment"
+        }
+      ]
+    },
+    {
+      "id": "learning.CERTIFICATE_CREATED",
+      "eventName": "CERTIFICATE_CREATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.certificate.created.v1",
+      "description": "emitted when the user's certificate creation process is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "CertificateData",
+          "description": "Attributes defined for Open edX Certificate data object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "mode",
+              "type": "str"
+            },
+            {
+              "name": "grade",
+              "type": "str"
+            },
+            {
+              "name": "download_url",
+              "type": "str"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "current_status",
+              "type": "str"
+            },
+            {
+              "name": "previous_status",
+              "type": "str"
+            }
+          ],
+          "dataKey": "certificate"
+        }
+      ]
+    },
+    {
+      "id": "learning.PROGRAM_CERTIFICATE_AWARDED",
+      "eventName": "PROGRAM_CERTIFICATE_AWARDED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.program.certificate.awarded.v1",
+      "description": "Emit when a program certificate is awarded to a learner",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "ProgramCertificateData",
+          "description": "Attributes defined for the Open edX Program Certificate data object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "program",
+              "type": "ProgramData"
+            },
+            {
+              "name": "uuid",
+              "type": "str"
+            },
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "url",
+              "type": "str"
+            },
+            {
+              "name": "certificate_available_date",
+              "type": "datetime"
+            }
+          ],
+          "dataKey": "program_certificate"
+        }
+      ]
+    },
+    {
+      "id": "learning.CERTIFICATE_CHANGED",
+      "eventName": "CERTIFICATE_CHANGED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.certificate.changed.v1",
+      "description": "emitted when the user's certificate update process is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "CertificateData",
+          "description": "Attributes defined for Open edX Certificate data object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "mode",
+              "type": "str"
+            },
+            {
+              "name": "grade",
+              "type": "str"
+            },
+            {
+              "name": "download_url",
+              "type": "str"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "current_status",
+              "type": "str"
+            },
+            {
+              "name": "previous_status",
+              "type": "str"
+            }
+          ],
+          "dataKey": "certificate"
+        }
+      ]
+    },
+    {
+      "id": "learning.CERTIFICATE_REVOKED",
+      "eventName": "CERTIFICATE_REVOKED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.certificate.revoked.v1",
+      "description": "emitted when the user's certificate annulation process is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "CertificateData",
+          "description": "Attributes defined for Open edX Certificate data object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "mode",
+              "type": "str"
+            },
+            {
+              "name": "grade",
+              "type": "str"
+            },
+            {
+              "name": "download_url",
+              "type": "str"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "current_status",
+              "type": "str"
+            },
+            {
+              "name": "previous_status",
+              "type": "str"
+            }
+          ],
+          "dataKey": "certificate"
+        }
+      ]
+    },
+    {
+      "id": "learning.PROGRAM_CERTIFICATE_REVOKED",
+      "eventName": "PROGRAM_CERTIFICATE_REVOKED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.program.certificate.revoked.v1",
+      "description": "Emit when a program certificate is revoked from a learner",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.542Z",
+      "dataClasses": [
+        {
+          "name": "ProgramCertificateData",
+          "description": "Attributes defined for the Open edX Program Certificate data object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "program",
+              "type": "ProgramData"
+            },
+            {
+              "name": "uuid",
+              "type": "str"
+            },
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "url",
+              "type": "str"
+            },
+            {
+              "name": "certificate_available_date",
+              "type": "datetime"
+            }
+          ],
+          "dataKey": "program_certificate"
+        }
+      ]
+    },
+    {
+      "id": "learning.COHORT_MEMBERSHIP_CHANGED",
+      "eventName": "COHORT_MEMBERSHIP_CHANGED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.cohort_membership.changed.v1",
+      "description": "emitted when the user's cohort update is completed.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.543Z",
+      "dataClasses": [
+        {
+          "name": "CohortData",
+          "description": "Attributes defined for Open edX Cohort Membership object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            }
+          ],
+          "dataKey": "cohort"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_DISCUSSIONS_CHANGED",
+      "eventName": "COURSE_DISCUSSIONS_CHANGED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.discussions.configuration.changed.v1",
+      "description": "emitted when the configuration for a course's discussions changes in the course Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.543Z",
+      "dataClasses": [
+        {
+          "name": "CourseDiscussionConfigurationData",
+          "description": "Attributes defined for Open edX Course Discussion Configuration Data object.",
+          "attributes": [
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "provider_type",
+              "type": "str"
+            },
+            {
+              "name": "enable_in_context",
+              "type": "bool"
+            },
+            {
+              "name": "enable_graded_units",
+              "type": "bool"
+            },
+            {
+              "name": "unit_level_visibility",
+              "type": "bool"
+            },
+            {
+              "name": "plugin_configuration",
+              "type": "dict"
+            },
+            {
+              "name": "contexts",
+              "type": "List[DiscussionTopicContext]"
+            }
+          ],
+          "dataKey": "configuration"
+        }
+      ]
+    },
+    {
+      "id": "learning.PERSISTENT_GRADE_SUMMARY_CHANGED",
+      "eventName": "PERSISTENT_GRADE_SUMMARY_CHANGED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.course.persistent_grade_summary.changed.v1",
+      "description": "emitted when a grade changes in the course",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.543Z",
+      "dataClasses": [
+        {
+          "name": "PersistentCourseGradeData",
+          "description": "Attributes defined for Open edX PersistentCourseGrade data object.",
+          "attributes": [
+            {
+              "name": "user_id",
+              "type": "int"
+            },
+            {
+              "name": "course",
+              "type": "CourseData"
+            },
+            {
+              "name": "course_edited_timestamp",
+              "type": "datetime"
+            },
+            {
+              "name": "course_version",
+              "type": "str"
+            },
+            {
+              "name": "grading_policy_hash",
+              "type": "str"
+            },
+            {
+              "name": "percent_grade",
+              "type": "float"
+            },
+            {
+              "name": "letter_grade",
+              "type": "str"
+            },
+            {
+              "name": "passed_timestamp",
+              "type": "datetime"
+            }
+          ],
+          "dataKey": "grade"
+        }
+      ]
+    },
+    {
+      "id": "learning.XBLOCK_SKILL_VERIFIED",
+      "eventName": "XBLOCK_SKILL_VERIFIED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.xblock.skill.verified.v1",
+      "description": "Fired when an XBlock skill is verified.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.543Z",
+      "dataClasses": [
+        {
+          "name": "XBlockSkillVerificationData",
+          "description": "Data needed to update verification count  of tags/skills for an XBlock.",
+          "attributes": [
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "verified_skills",
+              "type": "List[int]"
+            },
+            {
+              "name": "ignored_skills",
+              "type": "List[int]"
+            }
+          ],
+          "dataKey": "xblock_info"
+        }
+      ]
+    },
+    {
+      "id": "learning.USER_NOTIFICATION_REQUESTED",
+      "eventName": "USER_NOTIFICATION_REQUESTED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.user.notification.requested.v1",
+      "description": "Can be fired from apps to send user notifications. Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.543Z",
+      "dataClasses": [
+        {
+          "name": "UserNotificationData",
+          "description": "Attributes defined for Open edX User Notification data object.",
+          "attributes": [
+            {
+              "name": "user_ids",
+              "type": "List[int]"
+            },
+            {
+              "name": "notification_type",
+              "type": "str"
+            },
+            {
+              "name": "content_url",
+              "type": "str"
+            },
+            {
+              "name": "app_name",
+              "type": "str"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "context",
+              "type": "dict"
+            }
+          ],
+          "dataKey": "notification_data"
+        }
+      ]
+    },
+    {
+      "id": "learning.EXAM_ATTEMPT_SUBMITTED",
+      "eventName": "EXAM_ATTEMPT_SUBMITTED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.exam.attempt.submitted.v1",
+      "description": "Emitted when an exam attempt is submitted by a learner in edx-exams.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.543Z",
+      "dataClasses": [
+        {
+          "name": "ExamAttemptData",
+          "description": "Attributes defined for the Open edX Exam downstream effects.",
+          "attributes": [
+            {
+              "name": "student_user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "exam_type",
+              "type": "str"
+            },
+            {
+              "name": "requesting_user",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "exam_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.EXAM_ATTEMPT_REJECTED",
+      "eventName": "EXAM_ATTEMPT_REJECTED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.exam.attempt.rejected.v1",
+      "description": "Emitted when an exam attempt is marked rejected in edx-exams.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.544Z",
+      "dataClasses": [
+        {
+          "name": "ExamAttemptData",
+          "description": "Attributes defined for the Open edX Exam downstream effects.",
+          "attributes": [
+            {
+              "name": "student_user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "exam_type",
+              "type": "str"
+            },
+            {
+              "name": "requesting_user",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "exam_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.EXAM_ATTEMPT_VERIFIED",
+      "eventName": "EXAM_ATTEMPT_VERIFIED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.exam.attempt.verified.v1",
+      "description": "Emitted when an exam attempt is marked verified in edx-exams.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.544Z",
+      "dataClasses": [
+        {
+          "name": "ExamAttemptData",
+          "description": "Attributes defined for the Open edX Exam downstream effects.",
+          "attributes": [
+            {
+              "name": "student_user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "exam_type",
+              "type": "str"
+            },
+            {
+              "name": "requesting_user",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "exam_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.EXAM_ATTEMPT_ERRORED",
+      "eventName": "EXAM_ATTEMPT_ERRORED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.exam.attempt.errored.v1",
+      "description": "Emitted when a learner's exam attempt errors out in edx-exams.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.544Z",
+      "dataClasses": [
+        {
+          "name": "ExamAttemptData",
+          "description": "Attributes defined for the Open edX Exam downstream effects.",
+          "attributes": [
+            {
+              "name": "student_user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "exam_type",
+              "type": "str"
+            },
+            {
+              "name": "requesting_user",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "exam_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.EXAM_ATTEMPT_RESET",
+      "eventName": "EXAM_ATTEMPT_RESET",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.exam.attempt.reset.v1",
+      "description": "Emitted when an exam attempt is reset in edx-exams.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.544Z",
+      "dataClasses": [
+        {
+          "name": "ExamAttemptData",
+          "description": "Attributes defined for the Open edX Exam downstream effects.",
+          "attributes": [
+            {
+              "name": "student_user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "usage_key",
+              "type": "UsageKey"
+            },
+            {
+              "name": "exam_type",
+              "type": "str"
+            },
+            {
+              "name": "requesting_user",
+              "type": "UserData"
+            }
+          ],
+          "dataKey": "exam_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_ACCESS_ROLE_ADDED",
+      "eventName": "COURSE_ACCESS_ROLE_ADDED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.user.course_access_role.added.v1",
+      "description": "Emitted when a user is given a course access role.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "CourseAccessRoleData",
+          "description": "Attributes defined for the Open edX Course Access Role data object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "org_key",
+              "type": "str"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "role",
+              "type": "str"
+            }
+          ],
+          "dataKey": "course_access_role_data"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_ACCESS_ROLE_REMOVED",
+      "eventName": "COURSE_ACCESS_ROLE_REMOVED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.user.course_access_role.removed.v1",
+      "description": "Emitted when a course access role is removed from a user.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "CourseAccessRoleData",
+          "description": "Attributes defined for the Open edX Course Access Role data object.",
+          "attributes": [
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "org_key",
+              "type": "str"
+            },
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "role",
+              "type": "str"
+            }
+          ],
+          "dataKey": "course_access_role_data"
+        }
+      ]
+    },
+    {
+      "id": "learning.FORUM_THREAD_CREATED",
+      "eventName": "FORUM_THREAD_CREATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.thread.created.v1",
+      "description": "Emitted when a new thread is created in a discussion Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "DiscussionThreadData",
+          "description": "Attributes defined for the Open edX to represent events in the Forum such as comments, responses, and threads.",
+          "attributes": [
+            {
+              "name": "anonymous",
+              "type": "bool"
+            },
+            {
+              "name": "anonymous_to_peers",
+              "type": "bool"
+            },
+            {
+              "name": "body",
+              "type": "str"
+            },
+            {
+              "name": "category_id",
+              "type": "int"
+            },
+            {
+              "name": "category_name",
+              "type": "str"
+            },
+            {
+              "name": "commentable_id",
+              "type": "str"
+            },
+            {
+              "name": "group_id",
+              "type": "int"
+            },
+            {
+              "name": "id",
+              "type": "int"
+            },
+            {
+              "name": "team_id",
+              "type": "int"
+            },
+            {
+              "name": "thread_type",
+              "type": "str"
+            },
+            {
+              "name": "title",
+              "type": "str"
+            },
+            {
+              "name": "title_truncated",
+              "type": "bool"
+            },
+            {
+              "name": "truncated",
+              "type": "bool"
+            },
+            {
+              "name": "url",
+              "type": "str"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_id",
+              "type": "CourseKey"
+            },
+            {
+              "name": "discussion",
+              "type": "dict"
+            },
+            {
+              "name": "user_course_roles",
+              "type": "List[str]"
+            },
+            {
+              "name": "user_forums_roles",
+              "type": "List[str]"
+            },
+            {
+              "name": "options",
+              "type": "dict"
+            }
+          ],
+          "dataKey": "thread"
+        }
+      ]
+    },
+    {
+      "id": "learning.FORUM_THREAD_RESPONSE_CREATED",
+      "eventName": "FORUM_THREAD_RESPONSE_CREATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.response.created.v1",
+      "description": "Emitted when a new response is added to a thread Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "DiscussionThreadData",
+          "description": "Attributes defined for the Open edX to represent events in the Forum such as comments, responses, and threads.",
+          "attributes": [
+            {
+              "name": "anonymous",
+              "type": "bool"
+            },
+            {
+              "name": "anonymous_to_peers",
+              "type": "bool"
+            },
+            {
+              "name": "body",
+              "type": "str"
+            },
+            {
+              "name": "category_id",
+              "type": "int"
+            },
+            {
+              "name": "category_name",
+              "type": "str"
+            },
+            {
+              "name": "commentable_id",
+              "type": "str"
+            },
+            {
+              "name": "group_id",
+              "type": "int"
+            },
+            {
+              "name": "id",
+              "type": "int"
+            },
+            {
+              "name": "team_id",
+              "type": "int"
+            },
+            {
+              "name": "thread_type",
+              "type": "str"
+            },
+            {
+              "name": "title",
+              "type": "str"
+            },
+            {
+              "name": "title_truncated",
+              "type": "bool"
+            },
+            {
+              "name": "truncated",
+              "type": "bool"
+            },
+            {
+              "name": "url",
+              "type": "str"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_id",
+              "type": "CourseKey"
+            },
+            {
+              "name": "discussion",
+              "type": "dict"
+            },
+            {
+              "name": "user_course_roles",
+              "type": "List[str]"
+            },
+            {
+              "name": "user_forums_roles",
+              "type": "List[str]"
+            },
+            {
+              "name": "options",
+              "type": "dict"
+            }
+          ],
+          "dataKey": "thread"
+        }
+      ]
+    },
+    {
+      "id": "learning.FORUM_RESPONSE_COMMENT_CREATED",
+      "eventName": "FORUM_RESPONSE_COMMENT_CREATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.response.created.v1",
+      "description": "Emitted when a new comment is added to a response Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "DiscussionThreadData",
+          "description": "Attributes defined for the Open edX to represent events in the Forum such as comments, responses, and threads.",
+          "attributes": [
+            {
+              "name": "anonymous",
+              "type": "bool"
+            },
+            {
+              "name": "anonymous_to_peers",
+              "type": "bool"
+            },
+            {
+              "name": "body",
+              "type": "str"
+            },
+            {
+              "name": "category_id",
+              "type": "int"
+            },
+            {
+              "name": "category_name",
+              "type": "str"
+            },
+            {
+              "name": "commentable_id",
+              "type": "str"
+            },
+            {
+              "name": "group_id",
+              "type": "int"
+            },
+            {
+              "name": "id",
+              "type": "int"
+            },
+            {
+              "name": "team_id",
+              "type": "int"
+            },
+            {
+              "name": "thread_type",
+              "type": "str"
+            },
+            {
+              "name": "title",
+              "type": "str"
+            },
+            {
+              "name": "title_truncated",
+              "type": "bool"
+            },
+            {
+              "name": "truncated",
+              "type": "bool"
+            },
+            {
+              "name": "url",
+              "type": "str"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "course_id",
+              "type": "CourseKey"
+            },
+            {
+              "name": "discussion",
+              "type": "dict"
+            },
+            {
+              "name": "user_course_roles",
+              "type": "List[str]"
+            },
+            {
+              "name": "user_forums_roles",
+              "type": "List[str]"
+            },
+            {
+              "name": "options",
+              "type": "dict"
+            }
+          ],
+          "dataKey": "thread"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_NOTIFICATION_REQUESTED",
+      "eventName": "COURSE_NOTIFICATION_REQUESTED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.course.notification.requested.v1",
+      "description": "Emitted when a notification is requested for a course Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "CourseNotificationData",
+          "description": "Attributes defined for Open edX Course Notification data object.",
+          "attributes": [
+            {
+              "name": "course_key",
+              "type": "CourseKey"
+            },
+            {
+              "name": "app_name",
+              "type": "str"
+            },
+            {
+              "name": "notification_type",
+              "type": "str"
+            },
+            {
+              "name": "content_url",
+              "type": "str"
+            },
+            {
+              "name": "content_context",
+              "type": "dict"
+            },
+            {
+              "name": "audience_filters",
+              "type": "dict"
+            }
+          ],
+          "dataKey": "course_notification_data"
+        }
+      ]
+    },
+    {
+      "id": "learning.ORA_SUBMISSION_CREATED",
+      "eventName": "ORA_SUBMISSION_CREATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.ora.submission.created.v1",
+      "description": "Emitted when a new ORA submission is created Warning: This event is currently incompatible with the event bus, list/dict cannot be serialized yet",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "ORASubmissionData",
+          "description": "Attributes defined to represent event when a user submits an ORA assignment.",
+          "attributes": [
+            {
+              "name": "uuid",
+              "type": "str"
+            },
+            {
+              "name": "anonymous_user_id",
+              "type": "str"
+            },
+            {
+              "name": "location",
+              "type": "str"
+            },
+            {
+              "name": "attempt_number",
+              "type": "int"
+            },
+            {
+              "name": "created_at",
+              "type": "datetime"
+            },
+            {
+              "name": "submitted_at",
+              "type": "datetime"
+            },
+            {
+              "name": "answer",
+              "type": "ORASubmissionAnswer"
+            }
+          ],
+          "dataKey": "submission"
+        }
+      ]
+    },
+    {
+      "id": "learning.COURSE_PASSING_STATUS_UPDATED",
+      "eventName": "COURSE_PASSING_STATUS_UPDATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.course.passing.status.updated.v1",
+      "description": "Emitted when course grade updates.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.545Z",
+      "dataClasses": [
+        {
+          "name": "CoursePassingStatusData",
+          "description": "Represents the event data when a user's grade is updated, indicates if current grade is enough for course passing.",
+          "attributes": [
+            {
+              "name": "is_passing",
+              "type": "bool",
+              "description": "Indicates whether the user's grade is enough to pass the course."
+            },
+            {
+              "name": "course",
+              "type": "CourseData",
+              "description": "An instance of CourseData containing details about the course in which the grade was updated."
+            },
+            {
+              "name": "user",
+              "type": "UserData",
+              "description": "An instance of UserData containing information about the user whose grade was updated."
+            }
+          ],
+          "dataKey": "course_passing_status"
+        }
+      ]
+    },
+    {
+      "id": "learning.CCX_COURSE_PASSING_STATUS_UPDATED",
+      "eventName": "CCX_COURSE_PASSING_STATUS_UPDATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.ccx.course.passing.status.updated.v1",
+      "description": "Emitted when a CCX course grade updates.",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.546Z",
+      "dataClasses": [
+        {
+          "name": "CcxCoursePassingStatusData",
+          "description": "Extends CoursePassingStatusData for CCX courses, specifying CCX course data.",
+          "attributes": [
+            {
+              "name": "course",
+              "type": "CcxCourseData",
+              "description": "An instance of CcxCourseData containing details about the CCX course in which the grade threshold was crossed. All other attributes are inherited from CoursePassingStatusData."
+            }
+          ],
+          "dataKey": "course_passing_status"
+        }
+      ]
+    },
+    {
+      "id": "learning.BADGE_AWARDED",
+      "eventName": "BADGE_AWARDED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.badge.awarded.v1",
+      "description": "Emit when a badge is awarded to a learner",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.546Z",
+      "dataClasses": [
+        {
+          "name": "BadgeData",
+          "description": "Attributes defined for the Open edX badge data object.",
+          "attributes": [
+            {
+              "name": "uuid",
+              "type": "str"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "template",
+              "type": "BadgeTemplateData"
+            }
+          ],
+          "dataKey": "badge"
+        }
+      ]
+    },
+    {
+      "id": "learning.BADGE_REVOKED",
+      "eventName": "BADGE_REVOKED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.badge.revoked.v1",
+      "description": "Emit when a badge is revoked for a learner",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.546Z",
+      "dataClasses": [
+        {
+          "name": "BadgeData",
+          "description": "Attributes defined for the Open edX badge data object.",
+          "attributes": [
+            {
+              "name": "uuid",
+              "type": "str"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "template",
+              "type": "BadgeTemplateData"
+            }
+          ],
+          "dataKey": "badge"
+        }
+      ]
+    },
+    {
+      "id": "learning.IDV_ATTEMPT_CREATED",
+      "eventName": "IDV_ATTEMPT_CREATED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.idv_attempt.created.v1",
+      "description": "Emitted when an IDV attempt is created",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.546Z",
+      "dataClasses": [
+        {
+          "name": "VerificationAttemptData",
+          "description": "Attributes defined for the Open edX IDV attempt data object.",
+          "attributes": [
+            {
+              "name": "attempt_id",
+              "type": "int"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "expiration_date",
+              "type": "datetime"
+            }
+          ],
+          "dataKey": "idv_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.IDV_ATTEMPT_PENDING",
+      "eventName": "IDV_ATTEMPT_PENDING",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.idv_attempt.pending.v1",
+      "description": "Emitted when an IDV attempt is marked as pending",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.546Z",
+      "dataClasses": [
+        {
+          "name": "VerificationAttemptData",
+          "description": "Attributes defined for the Open edX IDV attempt data object.",
+          "attributes": [
+            {
+              "name": "attempt_id",
+              "type": "int"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "expiration_date",
+              "type": "datetime"
+            }
+          ],
+          "dataKey": "idv_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.IDV_ATTEMPT_APPROVED",
+      "eventName": "IDV_ATTEMPT_APPROVED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.idv_attempt.approved.v1",
+      "description": "Emitted when an IDV attempt is approved",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.546Z",
+      "dataClasses": [
+        {
+          "name": "VerificationAttemptData",
+          "description": "Attributes defined for the Open edX IDV attempt data object.",
+          "attributes": [
+            {
+              "name": "attempt_id",
+              "type": "int"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "expiration_date",
+              "type": "datetime"
+            }
+          ],
+          "dataKey": "idv_attempt"
+        }
+      ]
+    },
+    {
+      "id": "learning.IDV_ATTEMPT_DENIED",
+      "eventName": "IDV_ATTEMPT_DENIED",
+      "namespace": "learning",
+      "eventType": "org.openedx.learning.idv_attempt.denied.v1",
+      "description": "Emitted when an IDV attempt is denied",
+      "filePath": "openedx_events/learning/signals.py",
+      "sourceUrl": "https://github.com/openedx/openedx-events/tree/v9.15.0/openedx_events/learning/signals.py",
+      "lastUpdated": "2026-02-12T03:38:53.546Z",
+      "dataClasses": [
+        {
+          "name": "VerificationAttemptData",
+          "description": "Attributes defined for the Open edX IDV attempt data object.",
+          "attributes": [
+            {
+              "name": "attempt_id",
+              "type": "int"
+            },
+            {
+              "name": "user",
+              "type": "UserData"
+            },
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "name",
+              "type": "str"
+            },
+            {
+              "name": "expiration_date",
+              "type": "datetime"
+            }
+          ],
+          "dataKey": "idv_attempt"
+        }
+      ]
+    }
+  ]
+}

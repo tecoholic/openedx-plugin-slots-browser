@@ -1,0 +1,14 @@
+---
+import EventsPage from '../../../../views/EventsPage.astro';
+import { releaseSlugs } from '../../../../lib/release-config';
+
+export function getStaticPaths() {
+  return releaseSlugs.map((slug) => ({
+    params: { release: slug },
+  }));
+}
+
+const { release } = Astro.params;
+---
+
+<EventsPage releaseSlug={release} />

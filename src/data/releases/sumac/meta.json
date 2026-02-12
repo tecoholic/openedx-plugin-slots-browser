@@ -1,0 +1,10 @@
+{
+  "slug": "sumac",
+  "name": "Sumac",
+  "edxPlatformRef": "open-release/sumac.master",
+  "filtersVersion": "1.11.0",
+  "filtersRef": "v1.11.0",
+  "eventsVersion": "9.15.0",
+  "eventsRef": "v9.15.0",
+  "warnings": []
+}

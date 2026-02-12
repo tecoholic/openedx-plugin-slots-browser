@@ -1,18 +1,25 @@
 ---
 import { Icon } from 'astro-icon/components';
-import pluginSlotsData from '../data/plugin-slots.json';
-import filtersData from '../data/filters.json';
-import eventsData from '../data/events.json';
+import { withBasePath } from '../lib/paths';
+
+interface Props {
+  pluginData: { pluginSlots: any[] };
+  filtersData: { filters: any[] };
+  eventsData: { events: any[] };
+  basePath: string;
+}
+
+const { pluginData, filtersData, eventsData, basePath } = Astro.props as Props;
 
 // Transform and combine data for search
 const searchData = [
-  ...pluginSlotsData.pluginSlots.map((slot: any) => ({
+  ...pluginData.pluginSlots.map((slot: any) => ({
     type: 'slot',
     id: slot.id,
     name: slot.id,
     category: slot.mfeName + ' MFE',
     description: slot.description,
-    url: `/openedx-plugin-slots-browser/mfes/${slot.mfeId}#${slot.id}`,
+    url: `${withBasePath(basePath, `/mfes/${slot.mfeId}`)}#${slot.id}`,
   })),
   ...filtersData.filters.map((filter: any) => ({
     type: 'filter',
@@ -21,7 +28,7 @@ const searchData = [
     description: filter.description,
     category: filter.category,
     filterType: filter.filterType,
-    url: `/openedx-plugin-slots-browser/filters/${filter.id}`,
+    url: withBasePath(basePath, `/filters/${filter.id}`),
   })),
   ...eventsData.events.map((event: any) => ({
     type: 'event',
@@ -29,7 +36,7 @@ const searchData = [
     name: event.eventName,
     description: event.description,
     category: event.namespace,
-    url: `/openedx-plugin-slots-browser/events/${event.id}`,
+    url: withBasePath(basePath, `/events/${event.id}`),
   })),
 ];
 

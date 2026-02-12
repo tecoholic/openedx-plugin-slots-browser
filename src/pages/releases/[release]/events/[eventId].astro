@@ -1,0 +1,31 @@
+---
+import EventDetailPage from '../../../../views/EventDetailPage.astro';
+import { getReleaseData } from '../../../../lib/release-data';
+import { releaseSlugs } from '../../../../lib/release-config';
+import { withBasePath } from '../../../../lib/paths';
+
+export function getStaticPaths() {
+  return releaseSlugs.flatMap((slug) => {
+    const { eventsData } = getReleaseData(slug);
+    return eventsData.events.map((event) => ({
+      params: { release: slug, eventId: event.id },
+    }));
+  });
+}
+
+const { release, eventId } = Astro.params;
+const { release: releaseInfo, pluginData, filtersData, eventsData } = getReleaseData(release);
+const event = eventsData.events.find((e) => e.id === eventId);
+
+if (!event) {
+  return Astro.redirect(withBasePath(releaseInfo.basePath, '/events'));
+}
+---
+
+<EventDetailPage
+  release={releaseInfo}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+  event={event}
+/>

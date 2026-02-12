@@ -1,0 +1,1000 @@
+{
+  "lastUpdated": "2026-02-12T03:55:54.743Z",
+  "filters": [
+    {
+      "id": "LMSPageURLRequested",
+      "filterType": "org.openedx.content_authoring.lms.page.url.requested.v1",
+      "name": "LMSPageURLRequested",
+      "category": "content_authoring",
+      "description": "This filter is triggered when a user loads a page in Studio that references an LMS page, allowing the filter to\n        modify the URL of the page requested by the user.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/content_authoring/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/content_authoring/filters.py#L8",
+      "arguments": [
+        {
+          "name": "url",
+          "type": "str",
+          "description": "the URL of the page to be modified."
+        },
+        {
+          "name": "org",
+          "type": "str",
+          "description": "Course org filter used as context data to get LMS configurations."
+        }
+      ],
+      "returns": [
+        {
+          "type": "str",
+          "description": "the modified URL of the page requested by the user."
+        },
+        {
+          "type": "str",
+          "description": "the course org."
+        }
+      ],
+      "exceptions": [],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "cms/djangoapps/contentstore/asset_storage_handler.py",
+        "function": "get_asset_json"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.742Z"
+    },
+    {
+      "id": "CertificateCreationRequested",
+      "filterType": "org.openedx.learning.certificate.creation.requested.v1",
+      "name": "CertificateCreationRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests a certificate, just before the certificate is created allowing the\n        filter to act on the user, course key, mode, status, grade, and generation mode.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L342",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "Django User object."
+        },
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "course key associated with the certificate."
+        },
+        {
+          "name": "mode",
+          "type": "str",
+          "description": "specifies what kind of certificate."
+        },
+        {
+          "name": "status",
+          "type": "str",
+          "description": "specifies the status of the certificate."
+        },
+        {
+          "name": "grade",
+          "type": "float",
+          "description": "grade of the certificate."
+        },
+        {
+          "name": "generation_mode",
+          "type": "str",
+          "description": "specifies the mode of generation."
+        }
+      ],
+      "returns": [
+        {
+          "type": "User",
+          "description": "Django User object."
+        },
+        {
+          "type": "CourseKey",
+          "description": "course key associated with the certificate."
+        },
+        {
+          "type": "str",
+          "description": "mode of the certificate."
+        },
+        {
+          "type": "str",
+          "description": "status of the certificate."
+        },
+        {
+          "type": "float",
+          "description": "grade of the certificate."
+        },
+        {
+          "type": "str",
+          "description": "mode of generation."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "PreventCertificateCreation",
+          "description": "Raise to prevent the certificate creation process to continue.\n\n        This exception is propagated from the certificate generation function and handled by the caller to stop the\n        certificate creation process before starting the async task."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/certificates/generated_certificate.py",
+        "function": "_generate_certificate_task"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "CertificateRenderStarted",
+      "filterType": "org.openedx.learning.certificate.render.started.v1",
+      "name": "CertificateRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the certificate, just before the certificate is rendered\n        allowing the filter to act on the context and the template used to render the certificate.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L417",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for certificate template."
+        },
+        {
+          "name": "custom_template",
+          "type": "CertificateTemplate",
+          "description": "custom web certificate template."
+        }
+      ],
+      "returns": [
+        {
+          "type": "dict",
+          "description": "context dictionary for the certificate template, possibly modified."
+        },
+        {
+          "type": "CertificateTemplate",
+          "description": "custom web certificate template, possibly modified."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Raise to redirect to a different page instead of rendering the certificate.\n\n        This exception is propagated to the certificate view and handled by the view to redirect the user to a new page."
+        },
+        {
+          "name": "RenderAlternativeInvalidCertificate",
+          "description": "Raise to render a different certificate template instead of the default one.\n\n        This exception is propagated to the certificate view and handled by the view to render a different template\n        instead."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Raise to stop the certificate rendering process and return a custom response.\n\n        This exception is propagated to the certificate view and handled by the view to return a custom response\n        instead."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/certificates/views/webview.py",
+        "function": "render_html_view"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "CohortAssignmentRequested",
+      "filterType": "org.openedx.learning.cohort.assignment.requested.v1",
+      "name": "CohortAssignmentRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a user is assigned to a cohort, just before the assignment is completed allowing\n        the filter to act on the user and the target cohort.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L566",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "Django User object representing the user."
+        },
+        {
+          "name": "target_cohort",
+          "type": "CourseUserGroup",
+          "description": "CourseUserGroup instance representing the new user's cohort."
+        }
+      ],
+      "returns": [
+        {
+          "type": "User",
+          "description": "Django User object representing the user."
+        },
+        {
+          "type": "CourseUserGroup",
+          "description": "CourseUserGroup instance representing the new user's cohort."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "PreventCohortAssignment",
+          "description": "Raise to prevent the cohort assignment process to continue.\n\n        This exception is propagated to the assign method and handled by it to stop the cohort assignment process."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "openedx/core/djangoapps/course_groups/models.py",
+        "function": "assign"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "CohortChangeRequested",
+      "filterType": "org.openedx.learning.cohort.change.requested.v1",
+      "name": "CohortChangeRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a user's cohort is changed, just before the change is completed allowing the\n        filter to act on the user and the target cohort.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L522",
+      "arguments": [
+        {
+          "name": "current_membership",
+          "type": "CohortMembership",
+          "description": "CohortMembership instance representing the current user's cohort."
+        },
+        {
+          "name": "target_cohort",
+          "type": "CourseUserGroup",
+          "description": "CourseUserGroup instance representing the new user's cohort."
+        }
+      ],
+      "returns": [
+        {
+          "type": "CohortMembership",
+          "description": "CohortMembership instance representing the current user's cohort."
+        },
+        {
+          "type": "CourseUserGroup",
+          "description": "CourseUserGroup instance representing the new user's cohort."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "PreventCohortChange",
+          "description": "Raise to prevent the cohort change process to continue.\n\n        This exception is propagated to the assign method and handled by it to stop the cohort change process."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "openedx/core/djangoapps/course_groups/models.py",
+        "function": "assign"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "CourseAboutPageURLRequested",
+      "filterType": "org.openedx.learning.course_about.page.url.requested.v1",
+      "name": "CourseAboutPageURLRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the course about page, just before the page is rendered\n        allowing the filter to act on the URL of the page and the course org.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1377",
+      "arguments": [
+        {
+          "name": "url",
+          "type": "str",
+          "description": "the URL of the page to be modified."
+        },
+        {
+          "name": "org",
+          "type": "str",
+          "description": "Course org filter used as context data to get LMS configurations."
+        }
+      ],
+      "returns": [
+        {
+          "type": "str",
+          "description": "the modified URL of the page."
+        },
+        {
+          "type": "str",
+          "description": "Course org filter used as context data to get LMS configurations."
+        }
+      ],
+      "exceptions": [],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "common/djangoapps/util/course.py",
+        "function": "get_link_for_about_page"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "CourseAboutRenderStarted",
+      "filterType": "org.openedx.learning.course_about.render.started.v1",
+      "name": "CourseAboutRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the course about page, just before the page is rendered\n        allowing the filter to act on the context and the template used to render the page.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L614",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for course about template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the course about."
+        }
+      ],
+      "returns": [
+        {
+          "type": "dict",
+          "description": "context dictionary for the course about template, possibly modified."
+        },
+        {
+          "type": "str",
+          "description": "template name to be rendered by the course about, possibly modified."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Raise to redirect to a different page instead of rendering the course about.\n\n        This exception is propagated to the course about view and handled by the view to redirect the user to a new\n        page."
+        },
+        {
+          "name": "RenderInvalidCourseAbout",
+          "description": "Raise to render a different course about template instead of the default one.\n\n        This exception is propagated to the course about view and handled by the view to render a different template\n        instead."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Raise to stop the course about rendering process and return a custom response.\n\n        This exception is propagated to the course about view and handled by the view to return a custom response\n        instead."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/courseware/views/views.py",
+        "function": "course_about"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.389Z"
+    },
+    {
+      "id": "CourseEnrollmentQuerysetRequested",
+      "filterType": "org.openedx.learning.course_enrollment_queryset.requested.v1",
+      "name": "CourseEnrollmentQuerysetRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a QuerySet of course enrollments is requested, allowing the filter to act on the\n        enrollments data.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L890",
+      "arguments": [
+        {
+          "name": "enrollments",
+          "type": "QuerySet",
+          "description": "data with all user's course enrollments."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventEnrollmentQuerysetRequest",
+          "description": "Raise to prevent the course enrollment queryset request to continue."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:55:54.389Z"
+    },
+    {
+      "id": "CourseEnrollmentStarted",
+      "filterType": "org.openedx.learning.course.enrollment.started.v1",
+      "name": "CourseEnrollmentStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user initiates the enrollment process, just before the enrollment is completed\n        allowing the filter to act on the user, course key, and mode.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L251",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "Django User enrolling in the course."
+        },
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "course key associated with the enrollment."
+        },
+        {
+          "name": "mode",
+          "type": "str",
+          "description": "specifies what kind of enrollment."
+        }
+      ],
+      "returns": [
+        {
+          "type": "User",
+          "description": "Django User object."
+        },
+        {
+          "type": "CourseKey",
+          "description": "course key associated with the enrollment."
+        },
+        {
+          "type": "str",
+          "description": "mode of the enrollment."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "PreventEnrollment",
+          "description": "Raise to prevent the enrollment process to continue.\n\n        This exception is propagated to the course enrollment model and handled by the model to stop the enrollment\n        process. All components using the enroll method handle this exception in the appropriate way."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "common/djangoapps/student/models/course_enrollment.py",
+        "function": "enroll"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "CourseHomeUrlCreationStarted",
+      "filterType": "org.openedx.learning.course.homepage.url.creation.started.v1",
+      "name": "CourseHomeUrlCreationStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a course home url is being generated, just before the generation process is\n        completed allowing the filter to act on the course key and course home url.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1056",
+      "arguments": [
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "The course key for which the home url is being requested."
+        },
+        {
+          "name": "course_home_url",
+          "type": "str",
+          "description": "The url string for the course home."
+        }
+      ],
+      "returns": [
+        {
+          "type": "CourseKey",
+          "description": "The course key for which the home url is being requested."
+        },
+        {
+          "type": "str",
+          "description": "The url string for the course home."
+        }
+      ],
+      "exceptions": [],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "openedx/features/course_experience/__init__.py",
+        "function": "course_home_url"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "CourseUnenrollmentStarted",
+      "filterType": "org.openedx.learning.course.unenrollment.started.v1",
+      "name": "CourseUnenrollmentStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user initiates the unenrollment process, just before the unenrollment is\n        completed allowing the filter to act on the user's enrollment in the course.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L300",
+      "arguments": [
+        {
+          "name": "enrollment",
+          "type": "CourseEnrollment",
+          "description": "user's enrollment in the course."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventUnenrollment",
+          "description": "Raised to prevent the unenrollment process to continue.\n\n        This exception is propagated to the course enrollment model and handled by the model to stop the unenrollment\n        process. All components using the unenroll method handle this exception in the appropriate way."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "common/djangoapps/student/models/course_enrollment.py",
+        "function": "unenroll"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "DashboardRenderStarted",
+      "filterType": "org.openedx.learning.dashboard.render.started.v1",
+      "name": "DashboardRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the dashboard, just before the page is rendered allowing\n        the filter to act on the context and the template used to render the page.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L727",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for student's dashboard template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the student's dashboard."
+        }
+      ],
+      "returns": [
+        {
+          "type": "dict",
+          "description": "context dictionary for the student's dashboard template, possibly modified."
+        },
+        {
+          "type": "str",
+          "description": "template name to be rendered by the student's dashboard, possibly modified."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Raise to redirect to a different page instead of rendering the dashboard.\n\n        This exception is propagated to the dashboard view and handled by the view to redirect the user to a new page."
+        },
+        {
+          "name": "RenderInvalidDashboard",
+          "description": "Raise to render a different dashboard template instead of the default one.\n\n        This exception is propagated to the dashboard view and handled by the view to render a different template\n        instead."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Raise to stop the dashboard rendering process and return a custom response.\n\n        This exception is propagated to the dashboard view and handled by the view to return a custom response instead."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "common/djangoapps/student/views/dashboard.py",
+        "function": "student_dashboard"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.389Z"
+    },
+    {
+      "id": "CourseRunAPIRenderStarted",
+      "filterType": "org.openedx.learning.home.courserun.api.rendered.started.v1",
+      "name": "CourseRunAPIRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the course run API, just before the API is rendered\n        allowing the filter to act on the serialized course run data.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1134",
+      "arguments": [
+        {
+          "name": "serialized_courserun",
+          "type": "dict",
+          "description": "courserun data."
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/learner_home/serializers.py",
+        "function": "CourseRunSerializer.to_representation"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "CourseEnrollmentAPIRenderStarted",
+      "filterType": "org.openedx.learning.home.enrollment.api.rendered.v1",
+      "name": "CourseEnrollmentAPIRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the course enrollment API, just before the API is rendered\n        allowing the filter to act on the course key and serialized enrollment data.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1093",
+      "arguments": [
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "The course key for which isStarted is being modify."
+        },
+        {
+          "name": "serialized_enrollment",
+          "type": "dict",
+          "description": "enrollment data."
+        }
+      ],
+      "returns": [
+        {
+          "type": "CourseKey",
+          "description": "The course key for which isStarted is being modify."
+        },
+        {
+          "type": "dict",
+          "description": "enrollment data."
+        }
+      ],
+      "exceptions": [],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/learner_home/serializers.py",
+        "function": "EnrollmentSerializer.to_representation"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "IDVPageURLRequested",
+      "filterType": "org.openedx.learning.idv.page.url.requested.v1",
+      "name": "IDVPageURLRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the ID verification page, just before the page is rendered\n        allowing the filter to act on the URL of the page.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1343",
+      "arguments": [
+        {
+          "name": "url",
+          "type": "str",
+          "description": "The url for the ID verification page to be modified."
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/verify_student/services.py",
+        "function": "XBlockVerificationService.get_verify_location"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "InstructorDashboardRenderStarted",
+      "filterType": "org.openedx.learning.instructor.dashboard.render.started.v1",
+      "name": "InstructorDashboardRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when an instructor requests to view the dashboard, just before the page is rendered\n        allowing the filter to act on the context and the template used to render the page.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1168",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for instructor's tab template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the instructor's tab."
+        }
+      ],
+      "returns": [
+        {
+          "type": "dict",
+          "description": "context dictionary for the instructor's tab template, possibly modified."
+        },
+        {
+          "type": "str",
+          "description": "template name to be rendered by the instructor's tab, possibly modified."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Raise to redirect to a different page instead of rendering the instructor dashboard.\n\n        This exception is propagated to the instructor dashboard view and handled by the view to redirect the user to a\n        new page."
+        },
+        {
+          "name": "RenderInvalidDashboard",
+          "description": "Raise to render a different instructor dashboard template instead of the default one.\n\n        This exception is propagated to the instructor dashboard view and handled by the view to render a different\n        template instead."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Raise to stop the instructor dashboard rendering process and return a custom response.\n\n        This exception is propagated to the instructor dashboard view and handled by the view to return a custom\n        response instead."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/instructor/views/instructor_dashboard.py",
+        "function": "instructor_dashboard_2"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "ORASubmissionViewRenderStarted",
+      "filterType": "org.openedx.learning.ora.submission_view.render.started.v1",
+      "name": "ORASubmissionViewRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user requests to view the submission, just before the page is rendered allowing\n        the filter to act on the context and the template used to render the page.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1285",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for submission view template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the student's dashboard."
+        }
+      ],
+      "returns": [
+        {
+          "type": "dict",
+          "description": "context dictionary for the submission view template, possibly modified."
+        },
+        {
+          "type": "str",
+          "description": "template name to be rendered by the submission view, possibly modified."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "RenderInvalidTemplate",
+          "description": "Raise to render a different submission view template instead of the default one.\n\n        This exception is propagated to the submission view and handled by the view to render a different template\n        instead.\n\n        Arguments:\n            message (str): error message for the exception.\n      "
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-ora2",
+        "path": "openassessment/xblock/ui_mixins/legacy/views/submission.py",
+        "function": "render_submission"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "ScheduleQuerySetRequested",
+      "filterType": "org.openedx.learning.schedule.queryset.requested.v1",
+      "name": "ScheduleQuerySetRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a QuerySet of Schedules is requested, allowing the filter to act on the schedules\n        data. If you want to know more about the Schedules feature, please refer to the official documentation:\n            - https://github.com/openedx/edx-platform/tree/master/openedx/co",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1414",
+      "arguments": [
+        {
+          "name": "schedules",
+          "type": "QuerySet",
+          "description": "The original QuerySet of schedules to be filtered."
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "openedx/core/djangoapps/schedules/resolvers.py",
+        "function": "BinnedSchedulesBaseResolver.get_schedules_with_target_date_by_bin_and_orgs"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.390Z"
+    },
+    {
+      "id": "StudentLoginRequested",
+      "filterType": "org.openedx.learning.student.login.requested.v1",
+      "name": "StudentLoginRequested",
+      "category": "learning",
+      "description": "This filter is triggered when a user tries to log in, just before the login process is completed allowing the\n        filter to act on the user object.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L186",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "Django User object trying to log in."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventLogin",
+          "description": "Raise to prevent the login process to continue.\n\n        This exception is propagated to the login view and handled by the view to stop the login process."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "openedx/core/djangoapps/user_authn/views/login.py",
+        "function": "login_user"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "AccountSettingsRenderStarted",
+      "filterType": "org.openedx.learning.student.settings.render.started.v1",
+      "name": "AccountSettingsRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a user visits the account settings page, just before the page is rendered allowing\n        the filter to modify the context and the template used to render the page.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L16",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "template context for the account settings page."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template path used to render the account settings page."
+        }
+      ],
+      "returns": [
+        {
+          "type": "dict",
+          "description": "context dictionary for the account settings page, possibly modified."
+        },
+        {
+          "type": "str",
+          "description": "template name to be rendered by the account settings page, possibly modified."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Raise to trigger a redirect before the account settings page is rendered.\n\n        This exception is propagated to the account settings view and handled by the view to redirect the user to\n        a new page."
+        },
+        {
+          "name": "RenderInvalidAccountSettings",
+          "description": "Raise to render a different template instead of the account settings page.\n\n        This exception is propagated to the account settings view and handled by the view to render a different\n        template instead."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Raise to return a custom response instead of the usual account settings page.\n\n        This exception is propagated to the account settings view and handled by the view to return a custom response\n        instead."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "openedx/core/djangoapps/user_api/accounts/settings_views.py",
+        "function": "account_settings"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.388Z"
+    },
+    {
+      "id": "VerticalBlockChildRenderStarted",
+      "filterType": "org.openedx.learning.vertical_block_child.render.started.v1",
+      "name": "VerticalBlockChildRenderStarted",
+      "category": "learning",
+      "description": "This filter is triggered when a child block is about to be rendered within a vertical block, allowing the filter\n        to act on the block and the context used to render the child block.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L845",
+      "arguments": [
+        {
+          "name": "block",
+          "type": "XBlock",
+          "description": "the XBlock that is about to be rendered into HTML"
+        },
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title..etc"
+        }
+      ],
+      "returns": [
+        {
+          "type": "XBlock",
+          "description": "the XBlock that is about to be rendered into HTML"
+        },
+        {
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title..etc"
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "PreventChildBlockRender",
+          "description": "Raise to prevent a child block from rendering.\n\n        This exception is propagated to the vertical block view and handled by the view to stop the rendering of the\n        child block."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "xmodule/vertical_block.py",
+        "function": "VerticalBlock._student_or_public_view"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.389Z"
+    },
+    {
+      "id": "VerticalBlockRenderCompleted",
+      "filterType": "org.openedx.learning.vertical_block.render.completed.v1",
+      "name": "VerticalBlockRenderCompleted",
+      "category": "learning",
+      "description": "This filter is triggered when a vertical block is rendered, just after the rendering process is completed\n        allowing the filter to act on the block, fragment, context, and view used to render the vertical block.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L1001",
+      "arguments": [
+        {
+          "name": "block",
+          "type": "VerticalBlock",
+          "description": "The VeriticalBlock instance which is being rendered."
+        },
+        {
+          "name": "fragment",
+          "type": "web_fragments.Fragment",
+          "description": "The web-fragment containing the rendered content of VerticalBlock."
+        },
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title..etc."
+        },
+        {
+          "name": "view",
+          "type": "str",
+          "description": "the rendering view. Can be either 'student_view', or 'public_view'."
+        }
+      ],
+      "returns": [
+        {
+          "type": "VerticalBlock",
+          "description": "The VeriticalBlock instance which is being rendered."
+        },
+        {
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title..etc."
+        },
+        {
+          "type": "str",
+          "description": "the rendering view. Can be either 'student_view', or 'public_view'."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "PreventVerticalBlockRender",
+          "description": "Raise to prevent the vertical block from rendering for the user.\n\n        This exception is propagated to the vertical block view and handled by the view to stop the rendering of the\n        vertical block."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "xmodule/vertical_block.py",
+        "function": "VerticalBlock._student_or_public_view"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.389Z"
+    },
+    {
+      "id": "RenderXBlockStarted",
+      "filterType": "org.openedx.learning.xblock.render.started.v1",
+      "name": "RenderXBlockStarted",
+      "category": "learning",
+      "description": "This filter is triggered when an XBlock is about to be rendered, just before the rendering process is completed\n        allowing the filter to act on the context and student_view_context used to render the XBlock.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v2.0.1/openedx_filters/learning/filters.py#L930",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title, etc."
+        },
+        {
+          "name": "student_view_context",
+          "type": "dict",
+          "description": "context passed to the student_view of the block context."
+        }
+      ],
+      "returns": [
+        {
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title, etc."
+        },
+        {
+          "type": "dict",
+          "description": "context passed to the student_view of the block context."
+        }
+      ],
+      "exceptions": [
+        {
+          "name": "PreventXBlockBlockRender",
+          "description": "Raise to prevent the XBlock from rendering for the user.\n\n        This exception is propagated to the XBlock render view and handled by the view to stop the rendering of the\n        XBlock."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Raise to stop the XBlock rendering process by returning a custom response.\n\n        This exception is propagated to the XBlock render view and handled by the view to return a custom response\n        instead."
+        }
+      ],
+      "trigger": {
+        "repository": "openedx/edx-platform",
+        "path": "lms/djangoapps/courseware/views/views.py",
+        "function": "render_xblock"
+      },
+      "lastUpdated": "2026-02-12T03:55:54.389Z"
+    }
+  ],
+  "categories": [
+    "content_authoring",
+    "learning"
+  ]
+}

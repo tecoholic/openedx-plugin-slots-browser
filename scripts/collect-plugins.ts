@@ -1,26 +1,9 @@
-import { Octokit } from '@octokit/rest';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { pathToFileURL } from 'url';
+import { octokit, getTextFile, listDir, type GitRef } from './lib/github.js';
 
-const token = process.env.GITHUB_TOKEN;
-const isTestMode = process.argv.includes('--test');
-const isDryRun = process.argv.includes('--dry-run');
-const isDevMode = process.argv.includes('--dev');
-
-const DEV_LIMIT = 3; // Collect only first 3 MFEs for development
-
-if (!token && !isTestMode && !isDryRun) {
-  console.warn('[WARNING] GITHUB_TOKEN environment variable not found');
-  console.warn('   API calls will be rate-limited to 60/hour');
-  console.warn('   Use: export GITHUB_TOKEN=your_token_here');
-}
-
-const octokit = new Octokit({
-  auth: token || 'test-token',
-});
-
-interface MFE {
+export interface MFE {
   id: string;
   name: string;
   description: string | null;
@@ -30,7 +13,7 @@ interface MFE {
   pluginSlotsCount?: number;
 }
 
-interface PluginSlot {
+export interface PluginSlot {
   id: string;
   mfeId: string;
   mfeName: string;
@@ -43,20 +26,22 @@ interface PluginSlot {
   hasExamples: boolean;
 }
 
-interface PluginsData {
+export interface PluginsData {
   lastUpdated: string;
   mfes: MFE[];
   pluginSlots: PluginSlot[];
 }
 
-async function collectPlugins() {
-  if (isDryRun) {
-    console.log('[DRY RUN] No API calls will be made');
-    return;
-  }
+export async function collectPlugins(opts?: {
+  refForRepo?: (repoName: string) => Promise<string | null>;
+  outputPath?: string;
+  devLimit?: number;
+}): Promise<PluginsData> {
+  const outputPath = opts?.outputPath ?? 'data/plugin-slots.json';
+  const limit = opts?.devLimit;
 
-  if (isDevMode) {
-    console.log('[DEV MODE] Collecting first 3 MFEs only...');
+  if (limit) {
+    console.log(`[DEV MODE] Collecting first ${limit} MFEs only...`);
   } else {
     console.log('[START] Starting plugin data collection...');
   }
@@ -65,7 +50,6 @@ async function collectPlugins() {
   const pluginSlots: PluginSlot[] = [];
 
   try {
-    // 1. Fetch all repos from openedx org
     console.log('[FETCH] Fetching repositories from openedx organization...');
 
     let page = 1;
@@ -86,7 +70,6 @@ async function collectPlugins() {
       }
 
       for (const repo of repos.data) {
-        // Filter for frontend-app-* and frontend-component-* repos
         if (
           !repo.name.startsWith('frontend-app-') &&
           !repo.name.startsWith('frontend-component-')
@@ -94,9 +77,18 @@ async function collectPlugins() {
           continue;
         }
 
-        // Dev mode: stop after 3 MFEs
-        if (isDevMode && mfes.length >= DEV_LIMIT) {
+        if (limit && mfes.length >= limit) {
           break;
+        }
+
+        let ref: string | undefined;
+        if (opts?.refForRepo) {
+          const resolved = await opts.refForRepo(repo.name);
+          if (resolved === null) {
+            console.log(`  ↳ Skipping ${repo.name} (no ref found)`);
+            continue;
+          }
+          ref = resolved;
         }
 
         console.log(`  ↳ Processing ${repo.name}...`);
@@ -110,30 +102,29 @@ async function collectPlugins() {
           topics: repo.topics || [],
         };
 
-        // 2. Check for plugin-slots directory
         try {
-          const contents = await octokit.rest.repos.getContent({
+          const entries = await listDir({
             owner: 'openedx',
             repo: repo.name,
             path: 'src/plugin-slots',
+            ref,
           });
 
-          if (Array.isArray(contents.data)) {
+          if (entries) {
             console.log(
-              `    ✓ Found plugin-slots directory (${contents.data.length} items)`
+              `    ✓ Found plugin-slots directory (${entries.length} items)`
             );
 
             let slotCount = 0;
 
-            // 3. Parse each slot directory
-            for (const item of contents.data) {
+            for (const item of entries) {
               if (item.type === 'dir') {
                 const slotData = await parsePluginSlot(
                   repo.name,
                   formatName(repo.name),
                   repo.html_url,
                   item.path,
-                  octokit
+                  ref
                 );
 
                 if (slotData) {
@@ -150,39 +141,34 @@ async function collectPlugins() {
             }
           }
         } catch (err) {
-          // Plugin-slots directory doesn't exist, skip this repo
           console.log(`    !! plugin-slots directory missing. Skipping repo.`);
         }
       }
 
-      // Dev mode: stop after first page since we already have 3 MFEs
-      if (isDevMode && mfes.length >= DEV_LIMIT) {
+      if (limit && mfes.length >= limit) {
         break;
       }
 
       page++;
     }
 
-    // 4. Write output
     const output: PluginsData = {
       lastUpdated: new Date().toISOString(),
       mfes,
       pluginSlots,
     };
 
-    // Ensure data directory exists
-    mkdirSync(dirname('data/plugin-slots.json'), { recursive: true });
+    mkdirSync(dirname(outputPath), { recursive: true });
 
-    writeFileSync(
-      'data/plugin-slots.json',
-      JSON.stringify(output, null, 2)
-    );
+    writeFileSync(outputPath, JSON.stringify(output, null, 2));
 
     console.log('\n[SUCCESS] Collection complete!');
     console.log(`[RESULTS]:`);
     console.log(`  • MFEs with plugin slots: ${mfes.length}`);
     console.log(`  • Total plugin slots: ${pluginSlots.length}`);
     console.log(`  • Last updated: ${output.lastUpdated}`);
+
+    return output;
   } catch (error) {
     if (error instanceof Error) {
       console.error('[ERROR] Error during collection:', error.message);
@@ -199,44 +185,30 @@ async function parsePluginSlot(
   mfeName: string,
   repoUrl: string,
   slotPath: string,
-  octokit: Octokit
+  ref?: string
 ): Promise<PluginSlot | null> {
   try {
     const slotId = slotPath.split('/').pop() || 'Unknown';
 
-    // Try to read README.md (no retry - file likely doesn't exist)
     let readmeText = '';
     let readmePresent = false;
-    try {
-      const response = await octokit.rest.repos.getContent({
-        owner: 'openedx',
-        repo: repoName,
-        path: `${slotPath}/README.md`,
-      });
 
-      if (
-        response &&
-        response.data &&
-        typeof response.data === 'object' &&
-        !Array.isArray(response.data) &&
-        'content' in response.data
-      ) {
-        readmeText = Buffer.from(
-          (response.data as any).content as string,
-          'base64'
-        ).toString('utf-8');
-        readmePresent = true;
-      } else {
-        // README doesn't exist, but we can still create a slot from directory name
-        readmeText = `# ${slotId}\n\nPlugin slot for ${mfeName}`;
-      }
-    } catch (err) {
-      // README doesn't exist - create default from slot name
+    const content = await getTextFile({
+      owner: 'openedx',
+      repo: repoName,
+      path: `${slotPath}/README.md`,
+      ref,
+    });
+
+    if (content !== null) {
+      readmeText = content;
+      readmePresent = true;
+    } else {
       readmeText = `# ${slotId}\n\nPlugin slot for ${mfeName}`;
     }
 
-    // Check if Examples section exists in README
     const hasExamples = /^#+\s+examples?/im.test(readmeText);
+    const treeRef = ref || 'master';
 
     return {
       id: slotId,
@@ -245,13 +217,12 @@ async function parsePluginSlot(
       filePath: `${slotPath}/README.md`,
       description: extractDescription(readmeText),
       readmeContent: readmePresent ? readmeText : undefined,
-      sourceUrl: `${repoUrl}/tree/master/${slotPath}`,
+      sourceUrl: `${repoUrl}/tree/${treeRef}/${slotPath}`,
       lastUpdated: new Date().toISOString(),
       readmePresent,
       hasExamples,
     };
   } catch (err) {
-    // Error parsing slot
     return null;
   }
 }
@@ -266,7 +237,6 @@ function formatName(repoName: string): string {
 }
 
 export function extractDescription(content: string): string {
-  // Extract first paragraph after heading
   const lines = content.split('\n');
   let description = '';
   let descTitleFound = false;
@@ -299,7 +269,20 @@ const isMain = (() => {
   return import.meta.url === pathToFileURL(resolve(entry)).href;
 })();
 
-// Run collection when invoked directly.
 if (isMain) {
-  collectPlugins();
+  const isTestMode = process.argv.includes('--test');
+  const isDryRun = process.argv.includes('--dry-run');
+  const isDevMode = process.argv.includes('--dev');
+
+  if (!process.env.GITHUB_TOKEN && !isTestMode && !isDryRun) {
+    console.warn('[WARNING] GITHUB_TOKEN environment variable not found');
+    console.warn('   API calls will be rate-limited to 60/hour');
+    console.warn('   Use: export GITHUB_TOKEN=your_token_here');
+  }
+
+  if (isDryRun) {
+    console.log('[DRY RUN] No API calls will be made');
+  } else {
+    collectPlugins(isDevMode ? { devLimit: 3 } : undefined);
+  }
 }

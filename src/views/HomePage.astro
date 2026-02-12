@@ -1,0 +1,338 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { getReleaseData } from '../lib/release-data';
+import { withBasePath } from '../lib/paths';
+
+interface Props {
+  releaseSlug?: string;
+}
+
+const { releaseSlug } = Astro.props as Props;
+const { release, pluginData, filtersData, eventsData } = getReleaseData(releaseSlug);
+const basePath = release.basePath;
+
+const slotCount = pluginData.pluginSlots.length;
+const filterCount = filtersData.filters.length;
+const eventCount = eventsData.events.length;
+const lastUpdated = pluginData.lastUpdated;
+const documentedCount = pluginData.pluginSlots.filter((slot) => slot.readmePresent).length;
+const examplesCount = pluginData.pluginSlots.filter((slot) => slot.hasExamples).length;
+const filterDomains = new Set(filtersData.filters.map((filter) => filter.category)).size;
+const eventNamespaces = new Set(eventsData.events.map((event) => event.namespace)).size;
+---
+
+<BaseLayout
+  title="Home"
+  basePath={basePath}
+  release={release.slug}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+  lastUpdated={lastUpdated}
+>
+  <div class="hero">
+    <h1>Open edX Plugins System Catalog</h1>
+    <div class="subtitle-block">
+      A continuously updated catalog of Open edX frontend plugin slots, backend filters, and events,
+      with source links and documentation to help you extend and customize Open edX without
+      forking core code.
+    </div>
+
+    <div class="cards-grid">
+      <div class="data-card">
+        <Icon name="tabler:puzzle" class="card-icon icon-red" is:inline />
+        <div class="card-stat">
+          <div class="stat-number">{slotCount}</div>
+          <div class="stat-label">Frontend Plugin Slots</div>
+        </div>
+        <a href={withBasePath(basePath, '/mfes')} class="btn btn-primary">
+            Browse MFE Slots <Icon name="tabler:arrow-right" class="btn-icon" />
+        </a>
+        <div class="card-footer">
+          <div class="footer-item">
+            <span class="footer-label">With README</span>
+            <span class="footer-value">{documentedCount}</span>
+          </div>
+          <div class="footer-item">
+            <span class="footer-label">With Examples</span>
+            <span class="footer-value">{examplesCount}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-card">
+        <Icon name="tabler:filter-code" class="card-icon icon-green" is:inline />
+        <div class="card-stat">
+          <div class="stat-number">{filterCount}</div>
+          <div class="stat-label">Backend Filters</div>
+        </div>
+        <a href={withBasePath(basePath, '/filters')} class="btn btn-primary">
+          Browse Filters  <Icon name="tabler:arrow-right" class="btn-icon" />
+        </a>
+        <div class="card-footer">
+          <div class="footer-item">
+            <span class="footer-label">Domains</span>
+            <span class="footer-value">{filterDomains}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-card">
+        <Icon name="tabler:bell" class="card-icon icon-purple" is:inline />
+        <div class="card-stat">
+          <div class="stat-number">{eventCount}</div>
+          <div class="stat-label">Backend Events</div>
+        </div>
+        <a href={withBasePath(basePath, '/events')} class="btn btn-primary">
+          Browse Events  <Icon name="tabler:arrow-right" class="btn-icon" />
+        </a>
+        <div class="card-footer">
+          <div class="footer-item">
+            <span class="footer-label">Namespaces</span>
+            <span class="footer-value">{eventNamespaces}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spotlight-band">
+        <div class="spotlight-section">
+            <h2>Getting started</h2>
+            <p class="spotlight-subtitle">Short, curated notes with links to deeper dives.</p>
+            <ul class="spotlight-list">
+                <li class="spotlight-card">
+                    <h3>Frontend Plugin Implementation Guide</h3>
+                    <p>A complete guide that demonstrates how to customize Open edX micro-frontends (MFEs) using the Frontend Plugin Framework.</p>
+                    <a href="https://github.com/openedx/sample-plugin/tree/main/frontend" class="spotlight-link">
+                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+                    </a>
+                </li>
+                <li class="spotlight-card">
+                    <h3>How to use Open edX Filters?</h3>
+                    <p>Official documentation covering pipeline step implementation, hook, trigger and testing.</p>
+                    <a href="https://docs.openedx.org/projects/openedx-filters/en/open-release-sumac.master/how-tos/using-filters.html" class="spotlight-link">
+                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+                    </a>
+                </li>
+                <li class="spotlight-card">
+                    <h3>Using Open edX Events</h3>
+                    <p>Official docs covering events - sending, receiving and testing.</p>
+                    <a href="https://docs.openedx.org/projects/openedx-events/en/stable/how-tos/using-events.html" class="spotlight-link">
+                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="contribute-section">
+      <h2>Help improve this catalog!</h2>
+      <p>Visit the <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank">GitHub repository</a> to report issues, suggest features, or submit pull requests.</p>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    margin: 3rem 0;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 3rem;
+  }
+
+  .subtitle-block {
+    max-width: 720px;
+    margin: 0 auto 3rem auto;
+    font-size: 1.05rem;
+    color: #5a5a5a;
+    line-height: 1.7;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 3rem auto;
+    max-width: 1000px;
+  }
+
+  .data-card {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .footer-label {
+    color: #666;
+    font-weight: 500;
+  }
+
+  .footer-value {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .card-icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto;
+  }
+
+  .card-icon.icon-red {
+    color: #dd0000;
+  }
+
+  .card-icon.icon-green {
+    color: #008855;
+  }
+
+  .card-icon.icon-purple {
+    color: #7c3aed;
+  }
+
+  .card-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .stat-label {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-darker);
+  }
+
+  .btn-icon {
+    width: 1em;
+    height: 1em;
+  }
+
+  .spotlight-band {
+    margin: 4rem auto;
+    max-width: 1000px;
+    background: #f8f9ff;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid #e2e6ff;
+    text-align: left;
+  }
+
+  .spotlight-section h2 {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .spotlight-subtitle {
+    margin-bottom: 1.5rem;
+    color: #555;
+  }
+
+  .spotlight-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .spotlight-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .spotlight-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .spotlight-card p {
+    margin: 0 0 1rem 0;
+    color: #555;
+  }
+
+  .spotlight-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .spotlight-link:hover {
+    text-decoration: underline;
+  }
+
+  .contribute-section {
+    margin-top: 4rem;
+    background: #f5f5f5;
+    padding: 2rem;
+    border-radius: 12px;
+  }
+
+  .contribute-section h2 {
+    margin-top: 0;
+  }
+
+  .contribute-section a {
+    font-weight: 600;
+  }
+</style>

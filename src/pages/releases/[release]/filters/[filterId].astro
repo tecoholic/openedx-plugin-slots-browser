@@ -1,0 +1,32 @@
+---
+import FilterDetailPage from '../../../../views/FilterDetailPage.astro';
+import { getReleaseData } from '../../../../lib/release-data';
+import { releaseSlugs } from '../../../../lib/release-config';
+import { withBasePath } from '../../../../lib/paths';
+
+export function getStaticPaths() {
+  return releaseSlugs.flatMap((slug) => {
+    const { filtersData } = getReleaseData(slug);
+    return filtersData.filters.map((filter) => ({
+      params: { release: slug, filterId: filter.id },
+      props: { filter },
+    }));
+  });
+}
+
+const { release } = Astro.params;
+const { filter } = Astro.props;
+const { release: releaseInfo, pluginData, filtersData, eventsData } = getReleaseData(release);
+
+if (!filter) {
+  return Astro.redirect(withBasePath(releaseInfo.basePath, '/filters'));
+}
+---
+
+<FilterDetailPage
+  release={releaseInfo}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+  filter={filter}
+/>

@@ -9,10 +9,11 @@ interface Filter {
 
 interface Props {
   filter: Filter;
+  basePath: string;
 }
 
-const { filter } = Astro.props;
-const detailUrl = `/openedx-plugin-slots-browser/filters/${filter.id}`;
+const { filter, basePath } = Astro.props;
+const detailUrl = `${basePath}/filters/${filter.id}`;
 ---
 
 <div class="filter-card">

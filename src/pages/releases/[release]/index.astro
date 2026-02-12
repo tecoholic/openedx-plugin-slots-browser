@@ -1,0 +1,14 @@
+---
+import HomePage from '../../../views/HomePage.astro';
+import { releaseSlugs } from '../../../lib/release-config';
+
+export function getStaticPaths() {
+  return releaseSlugs.map((slug) => ({
+    params: { release: slug },
+  }));
+}
+
+const { release } = Astro.params;
+---
+
+<HomePage releaseSlug={release} />

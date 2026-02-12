@@ -1,0 +1,667 @@
+{
+  "lastUpdated": "2026-02-12T03:38:49.166Z",
+  "filters": [
+    {
+      "id": "CertificateCreationRequested",
+      "filterType": "org.openedx.learning.certificate.creation.requested.v1",
+      "name": "CertificateCreationRequested",
+      "category": "learning",
+      "description": "Custom class used to create certificate creation filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L195",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "is a Django User object."
+        },
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "course key associated with the certificate."
+        },
+        {
+          "name": "mode",
+          "type": "str",
+          "description": "mode of the certificate."
+        },
+        {
+          "name": "status",
+          "type": "str",
+          "description": "status of the certificate."
+        },
+        {
+          "name": "grade",
+          "type": "CourseGrade",
+          "description": "user's grade in this course run."
+        },
+        {
+          "name": "generation_mode",
+          "type": "str",
+          "description": "Options are \"self\" (implying the user generated the cert themself) and \"batch\""
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventCertificateCreation",
+          "description": "Custom class used to stop the certificate creation process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CertificateRenderStarted",
+      "filterType": "org.openedx.learning.certificate.render.started.v1",
+      "name": "CertificateRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create certificate render filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L234",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for certificate template."
+        },
+        {
+          "name": "custom_template",
+          "type": "CertificateTemplate",
+          "description": "edxapp object representing custom web"
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Custom class used to stop the certificate rendering process."
+        },
+        {
+          "name": "RenderAlternativeInvalidCertificate",
+          "description": "Custom class used to stop the certificate rendering process."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Custom class used to stop the certificate rendering process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CohortAssignmentRequested",
+      "filterType": "org.openedx.learning.cohort.assignment.requested.v1",
+      "name": "CohortAssignmentRequested",
+      "category": "learning",
+      "description": "Custom class used to create cohort assignment filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L329",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "is a Django User object to be added in the cohort."
+        },
+        {
+          "name": "target_cohort",
+          "type": "CourseUserGroup",
+          "description": "edxapp object representing the new user's cohort."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventCohortAssignment",
+          "description": "Custom class used to stop the cohort assignment process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CohortChangeRequested",
+      "filterType": "org.openedx.learning.cohort.change.requested.v1",
+      "name": "CohortChangeRequested",
+      "category": "learning",
+      "description": "Custom class used to create cohort change filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L303",
+      "arguments": [
+        {
+          "name": "current_membership",
+          "type": "CohortMembership",
+          "description": "edxapp object representing the user's cohort"
+        },
+        {
+          "name": "target_cohort",
+          "type": "CourseUserGroup",
+          "description": "edxapp object representing the new user's cohort."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventCohortChange",
+          "description": "Custom class used to stop the cohort change process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CourseAboutPageURLRequested",
+      "filterType": "org.openedx.learning.course_about.page.url.requested.v1",
+      "name": "CourseAboutPageURLRequested",
+      "category": "learning",
+      "description": "Custom class used to get course about page url filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L803",
+      "arguments": [
+        {
+          "name": "url",
+          "type": "str",
+          "description": "the URL of the page to be modified."
+        },
+        {
+          "name": "org",
+          "type": "str",
+          "description": "Course org filter used as context data to get LMS configurations."
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "lastUpdated": "2026-02-12T03:38:49.166Z"
+    },
+    {
+      "id": "CourseAboutRenderStarted",
+      "filterType": "org.openedx.learning.course_about.render.started.v1",
+      "name": "CourseAboutRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create course about render filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L354",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for course about template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the course about."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Custom class used to stop the course about rendering process."
+        },
+        {
+          "name": "RenderInvalidCourseAbout",
+          "description": "Custom class used to stop the course about rendering process."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Custom class used to stop the course about rendering process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CourseEnrollmentQuerysetRequested",
+      "filterType": "org.openedx.learning.course_enrollment_queryset.requested.v1",
+      "name": "CourseEnrollmentQuerysetRequested",
+      "category": "learning",
+      "description": "Custom class used to create course enrollments queryset filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L525",
+      "arguments": [
+        {
+          "name": "enrollments",
+          "type": "QuerySet",
+          "description": "data with all user's course enrollments"
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventEnrollmentQuerysetRequest",
+          "description": "Custom class used to stop the course enrollment queryset request process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CourseEnrollmentStarted",
+      "filterType": "org.openedx.learning.course.enrollment.started.v1",
+      "name": "CourseEnrollmentStarted",
+      "category": "learning",
+      "description": "Custom class used to create enrollment filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L143",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "is a Django User object."
+        },
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "course key associated with the enrollment."
+        },
+        {
+          "name": "mode",
+          "type": "str",
+          "description": "is a string specifying what kind of enrollment."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventEnrollment",
+          "description": "Custom class used to stop the enrollment process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CourseHomeUrlCreationStarted",
+      "filterType": "org.openedx.learning.course.homepage.url.creation.started.v1",
+      "name": "CourseHomeUrlCreationStarted",
+      "category": "learning",
+      "description": "Custom class used to create filters to act on course home url creation.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L616",
+      "arguments": [
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "The course key for which the home url is being requested."
+        },
+        {
+          "name": "course_home_url",
+          "type": "String",
+          "description": "The url string for the course home"
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CourseUnenrollmentStarted",
+      "filterType": "org.openedx.learning.course.unenrollment.started.v1",
+      "name": "CourseUnenrollmentStarted",
+      "category": "learning",
+      "description": "Custom class used to create unenrollment filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L171",
+      "arguments": [
+        {
+          "name": "enrollment",
+          "type": "CourseEnrollment",
+          "description": "edxapp object representing course enrollments."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventUnenrollment",
+          "description": "Custom class used to stop the unenrollment process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "DashboardRenderStarted",
+      "filterType": "org.openedx.learning.dashboard.render.started.v1",
+      "name": "DashboardRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create dashboard render filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L427",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for student's dashboard template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the student's dashboard."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Custom class used to stop the dashboard rendering process."
+        },
+        {
+          "name": "RenderInvalidDashboard",
+          "description": "Custom class used to stop the dashboard render process."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Custom class used to stop the dashboard rendering process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "CourseRunAPIRenderStarted",
+      "filterType": "org.openedx.learning.home.courserun.api.rendered.started.v1",
+      "name": "CourseRunAPIRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create filters for course run data.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L656",
+      "arguments": [
+        {
+          "name": "serialized_courserun",
+          "type": "dict",
+          "description": "courserun data"
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "lastUpdated": "2026-02-12T03:38:49.165Z"
+    },
+    {
+      "id": "CourseEnrollmentAPIRenderStarted",
+      "filterType": "org.openedx.learning.home.enrollment.api.rendered.v1",
+      "name": "CourseEnrollmentAPIRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create filters for enrollment data.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L636",
+      "arguments": [
+        {
+          "name": "course_key",
+          "type": "CourseKey",
+          "description": "The course key for which isStarted is being modify."
+        },
+        {
+          "name": "serialized_enrollment",
+          "type": "dict",
+          "description": "enrollment data"
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "lastUpdated": "2026-02-12T03:38:49.165Z"
+    },
+    {
+      "id": "IDVPageURLRequested",
+      "filterType": "org.openedx.learning.idv.page.url.requested.v1",
+      "name": "IDVPageURLRequested",
+      "category": "learning",
+      "description": "Custom class used to create filters to act on ID verification page URL requests.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L784",
+      "arguments": [
+        {
+          "name": "url",
+          "type": "str",
+          "description": "The url for the ID verification page to be modified."
+        }
+      ],
+      "returns": [],
+      "exceptions": [],
+      "lastUpdated": "2026-02-12T03:38:49.165Z"
+    },
+    {
+      "id": "InstructorDashboardRenderStarted",
+      "filterType": "org.openedx.learning.instructor.dashboard.render.started.v1",
+      "name": "InstructorDashboardRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create instructor dashboard filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L675",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for instructor's tab template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the instructor's tab."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Custom class used to stop the instructor dashboard render by redirecting to a new page."
+        },
+        {
+          "name": "RenderInvalidDashboard",
+          "description": "Custom class used to render a custom template instead of the instructor dashboard."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Custom class used to stop the instructor dashboard rendering by returning a custom response."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.165Z"
+    },
+    {
+      "id": "ORASubmissionViewRenderStarted",
+      "filterType": "org.openedx.learning.ora.submission_view.render.started.v1",
+      "name": "ORASubmissionViewRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create ORA submission view filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L748",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "context dictionary for submission view template."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template name to be rendered by the student's dashboard."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "RenderInvalidTemplate",
+          "description": "Custom class used to stop the submission view render process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.165Z"
+    },
+    {
+      "id": "StudentLoginRequested",
+      "filterType": "org.openedx.learning.student.login.requested.v1",
+      "name": "StudentLoginRequested",
+      "category": "learning",
+      "description": "Custom class used to create login filters and its custom methods.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L113",
+      "arguments": [
+        {
+          "name": "user",
+          "type": "User",
+          "description": "is a Django User object."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventLogin",
+          "description": "Custom class used to stop the login process."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "AccountSettingsRenderStarted",
+      "filterType": "org.openedx.learning.student.settings.render.started.v1",
+      "name": "AccountSettingsRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create Account settings filters.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L12",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "template context for the account settings page."
+        },
+        {
+          "name": "template_name",
+          "type": "str",
+          "description": "template path used to render the account settings page."
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "RedirectToPage",
+          "description": "Custom class used to redirect before the account settings rendering process."
+        },
+        {
+          "name": "RenderInvalidAccountSettings",
+          "description": "Custom class used to stop the account settings rendering process."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Custom class used to stop the account settings rendering process and return a custom response."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.163Z"
+    },
+    {
+      "id": "VerticalBlockChildRenderStarted",
+      "filterType": "org.openedx.learning.vertical_block_child.render.started.v1",
+      "name": "VerticalBlockChildRenderStarted",
+      "category": "learning",
+      "description": "Custom class used to create vertical block children's render filters.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L500",
+      "arguments": [
+        {
+          "name": "block",
+          "type": "XBlock",
+          "description": "the XBlock that is about to be rendered into HTML"
+        },
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title..etc"
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventChildBlockRender",
+          "description": "Custom class used to stop a particular child block from being rendered."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "VerticalBlockRenderCompleted",
+      "filterType": "org.openedx.learning.vertical_block.render.completed.v1",
+      "name": "VerticalBlockRenderCompleted",
+      "category": "learning",
+      "description": "Custom class used to create filters to act on vertical block rendering completed.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L589",
+      "arguments": [
+        {
+          "name": "block",
+          "type": "VerticalBlock",
+          "description": "The VeriticalBlock instance which is being rendered"
+        },
+        {
+          "name": "fragment",
+          "type": "web_fragments.Fragment",
+          "description": "The web-fragment containing the rendered content of VerticalBlock"
+        },
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title..etc.,"
+        },
+        {
+          "name": "view",
+          "type": "str",
+          "description": "the rendering view. Can be either 'student_view', or 'public_view'"
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventVerticalBlockRender",
+          "description": "Custom class used to prevent the vertical block from rendering for the user."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    },
+    {
+      "id": "RenderXBlockStarted",
+      "filterType": "org.openedx.learning.xblock.render.started.v1",
+      "name": "RenderXBlockStarted",
+      "category": "learning",
+      "description": "Filter in between context generation and rendering of XBlock scope.",
+      "repository": "https://github.com/openedx/openedx-filters",
+      "filePath": "openedx_filters/learning/filters.py",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/v1.11.0/openedx_filters/learning/filters.py#L549",
+      "arguments": [
+        {
+          "name": "context",
+          "type": "dict",
+          "description": "rendering context values like is_mobile_app, show_title, etc."
+        },
+        {
+          "name": "student_view_context",
+          "type": "dict",
+          "description": "context passed to the student_view of the block context"
+        }
+      ],
+      "returns": [],
+      "exceptions": [
+        {
+          "name": "PreventXBlockBlockRender",
+          "description": "Custom class used to prevent the XBlock from rendering for the user."
+        },
+        {
+          "name": "RenderCustomResponse",
+          "description": "Custom class used to stop the XBlock rendering process and return a custom response."
+        }
+      ],
+      "lastUpdated": "2026-02-12T03:38:49.164Z"
+    }
+  ],
+  "categories": [
+    "learning"
+  ]
+}

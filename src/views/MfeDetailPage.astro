@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { withBasePath } from '../lib/paths';
+
+interface Props {
+  release: { slug: string; basePath: string };
+  pluginData: { pluginSlots: any[]; mfes: any[] };
+  filtersData: { filters: any[] };
+  eventsData: { events: any[] };
+  mfeInfo: any;
+  slots: any[];
+}
+
+const { release, pluginData, filtersData, eventsData, mfeInfo, slots } = Astro.props as Props;
+const basePath = release.basePath;
+---
+
+<BaseLayout
+  title={mfeInfo.name}
+  basePath={basePath}
+  release={release.slug}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+  showSidebar
+  currentMfeId={mfeInfo.id}
+>
+  <div class="header">
+    <Breadcrumbs
+      items={[
+        { label: 'MFEs', href: withBasePath(basePath, '/mfes') },
+        { label: mfeInfo.name },
+      ]}
+    />
+    <div class="header-top">
+      <h1>{mfeInfo.name}</h1>
+       <a href={mfeInfo.repository} target="_blank" rel="noopener noreferrer" class="btn btn-small">
+         <Icon name="tabler:file-text" /> Repository
+       </a>
+    </div>
+    {mfeInfo.description && <p class="description">{mfeInfo.description}</p>}
+  </div>
+
+  <section>
+    <h2>Plugin Slots ({slots.length})</h2>
+
+    {
+      slots.length === 0 ? (
+        <p class="no-slots">
+          No plugin slots found in this MFE. The plugin-slots directory may not exist or may be
+          empty.
+        </p>
+      ) : (
+        <>
+          <div class="slots-grid">
+          {slots.map((slot) => (
+            <div class="slot-card">
+                <a href={withBasePath(basePath, `/slots/${slot.id}`)}><h3>{slot.id}</h3></a>
+
+              <div class="slot-badges">
+                {!slot.readmePresent && (
+                  <span class="badge badge-missing" title="README documentation is missing">
+                    <Icon name="tabler:x" /> README missing
+                  </span>
+                )}
+                {slot.hasExamples && (
+                  <span class="badge badge-examples" title="Example code available">
+                    <Icon name="tabler:code" /> Example Code
+                  </span>
+                )}
+                {slot.readmePresent && !slot.hasExamples && (
+                  <span class="badge badge-no-examples" title="No example code available">
+                    <Icon name="tabler:alert-circle" /> Example missing
+                  </span>
+                )}
+              </div>
+
+              {slot.description && <p class="slot-description">{slot.description}</p>}
+
+              <div class="slot-footer">
+                <a href={slot.sourceUrl} target="_blank" rel="noopener noreferrer" class="source-link">
+                  View on Github →
+                </a>
+              </div>
+            </div>
+          ))}
+            </div>
+        </>
+      )
+    }
+  </section>
+
+  <div class="back-link">
+    <a href={withBasePath(basePath, '/mfes')}>← Back to MFEs</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .header-top h1 {
+    margin: 0;
+    flex: 1;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .btn-small {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .btn-small:hover {
+    background: #0052a3;
+  }
+
+  .no-slots {
+    background: var(--color-secondary);
+    padding: 1.5rem;
+    border-radius: 6px;
+    color: #666;
+  }
+
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .slot-card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slot-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--color-primary);
+  }
+
+  .slot-card.hidden {
+    display: none;
+  }
+
+  .slot-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .slot-card h3 {
+      margin: 0 0 0.25rem 0;
+    color: var(--color-primary);
+    word-break: break-word;
+  }
+
+  .slot-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .slot-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .badge-missing {
+    background: #ffe1e1;
+    color: #cc0000;
+  }
+
+  .badge-examples {
+    background: #e0f5e8;
+    color: #006b3c;
+  }
+
+  .badge-no-examples {
+    background: #fff4db;
+    color: #b87300;
+  }
+
+  .badge :global(svg) {
+    width: 1em;
+    height: 1em;
+    display: inline;
+  }
+
+  .slot-description {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1rem 0;
+  }
+
+  .slot-footer {
+    margin-top: auto;
+  }
+
+  .source-link {
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .source-link:hover {
+    text-decoration: underline;
+  }
+
+  .back-link {
+    margin-top: 2rem;
+  }
+</style>

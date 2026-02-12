@@ -1,0 +1,14 @@
+---
+import FiltersPage from '../../../../views/FiltersPage.astro';
+import { releaseSlugs } from '../../../../lib/release-config';
+
+export function getStaticPaths() {
+  return releaseSlugs.map((slug) => ({
+    params: { release: slug },
+  }));
+}
+
+const { release } = Astro.params;
+---
+
+<FiltersPage releaseSlug={release} />

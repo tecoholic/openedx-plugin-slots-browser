@@ -1,0 +1,293 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { withBasePath } from '../lib/paths';
+
+interface Props {
+  release: { slug: string; basePath: string };
+  pluginData: { pluginSlots: any[]; mfes: any[] };
+  filtersData: { filters: any[] };
+  eventsData: { events: any[] };
+  event: any;
+}
+
+const { release, pluginData, filtersData, eventsData, event } = Astro.props as Props;
+const basePath = release.basePath;
+---
+
+<BaseLayout
+  title={event.eventName}
+  basePath={basePath}
+  release={release.slug}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+  showSidebar
+  showEvents
+  currentEventId={event.id}
+>
+  <div class="header">
+    <Breadcrumbs
+      items={[
+        { label: 'Events', href: withBasePath(basePath, '/events') },
+        { label: event.eventName },
+      ]}
+    />
+    <div class="header-top">
+      <h1>{event.eventName}</h1>
+      <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-small">
+        <Icon name="tabler:external-link" /> View Source
+      </a>
+    </div>
+  </div>
+
+  <section class="event-details">
+    <table class="details-table">
+      <tbody>
+        <tr>
+          <td class="label">Namespace</td>
+          <td class="value">{event.namespace}</td>
+        </tr>
+        <tr>
+          <td class="label">Event Type</td>
+          <td class="value monospace">{event.eventType}</td>
+        </tr>
+        {event.description && (
+          <tr>
+            <td class="label">Description</td>
+            <td class="value">{event.description}</td>
+          </tr>
+        )}
+        <tr>
+          <td class="label">File Path</td>
+          <td class="value monospace">{event.filePath}</td>
+        </tr>
+        <tr>
+          <td class="label">Last Updated</td>
+          <td class="value">{new Date(event.lastUpdated).toLocaleDateString()}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  {event.dataClasses && event.dataClasses.length > 0 && (
+    <section class="event-data-section">
+      <h2>Event data</h2>
+      <div class="event-data-list">
+        {event.dataClasses.map((dataClass) => (
+          <div class="event-data-item">
+            <div class="event-data-key">
+              {dataClass.dataKey && <code>{dataClass.dataKey}</code>}
+            </div>
+            <div class="event-data-definition">
+              <h3>{dataClass.name}</h3>
+              {dataClass.description && <p class="description">{dataClass.description}</p>}
+              {dataClass.attributes && dataClass.attributes.length > 0 && (
+                <div>
+                  <h4 class="attributes-title">Attributes</h4>
+                  <table class="attributes-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataClass.attributes.map((attr) => (
+                        <tr>
+                          <td class="attr-name">{attr.name}</td>
+                          <td class="attr-type">{attr.type}</td>
+                          <td class="attr-desc">{attr.description || '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <div class="back-link">
+    <a href={withBasePath(basePath, '/events')}>← Back to Events</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .header-top h1 {
+    margin: 0;
+    flex: 1;
+  }
+
+  .btn-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .btn-small:hover {
+    background: #0052a3;
+  }
+
+  .btn-small :global(svg) {
+    width: 1em;
+    height: 1em;
+    display: inline;
+  }
+
+  .event-details {
+    margin-bottom: 3rem;
+  }
+
+  .details-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .details-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .details-table td.label {
+    font-weight: 600;
+    color: var(--color-primary);
+    background: #fafafa;
+    width: 20%;
+    vertical-align: top;
+  }
+
+  .details-table td.value {
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .details-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .monospace {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    background: white;
+    padding: 0.75rem;
+    border-radius: 4px;
+    word-break: break-all;
+  }
+
+  .event-data-section {
+    margin-bottom: 3rem;
+  }
+
+  .event-data-section h2 {
+    margin: 0 0 1.5rem 0;
+  }
+
+  .event-data-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .event-data-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+  }
+
+  .event-data-key code {
+    background: #f5f5f5;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+  }
+
+  .event-data-definition h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-data-definition .description {
+    margin: 0 0 1rem 0;
+    color: #666;
+  }
+
+  .attributes-title {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .attributes-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .attributes-table th,
+  .attributes-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .attributes-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+  }
+
+  .attributes-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .attr-name {
+    font-weight: 600;
+  }
+
+  .attr-type {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  .attr-desc {
+    color: #666;
+  }
+
+  .back-link {
+    margin-top: 2rem;
+  }
+</style>

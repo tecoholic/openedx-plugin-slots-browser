@@ -1,43 +1,31 @@
-import { Octokit } from '@octokit/rest';
 import { writeFileSync, mkdirSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { pathToFileURL } from 'url';
+import { octokit, getTextFile, listDir, type GitRef } from './lib/github.js';
 
-const token = process.env.GITHUB_TOKEN;
-const isDryRun = process.argv.includes('--dry-run');
-
-if (!token && !isDryRun) {
-  console.warn('[WARNING] GITHUB_TOKEN environment variable not found');
-  console.warn('   API calls will be rate-limited to 60/hour');
-}
-
-const octokit = new Octokit({
-  auth: token || 'test-token',
-});
-
-interface FilterArgument {
+export interface FilterArgument {
   name: string;
   type: string;
   description: string;
 }
 
-interface FilterReturn {
+export interface FilterReturn {
   type: string;
   description: string;
 }
 
-interface FilterException {
+export interface FilterException {
   name: string;
   description: string;
 }
 
-interface Trigger {
+export interface Trigger {
   repository: string;
   path: string;
   function: string;
 }
 
-interface Filter {
+export interface Filter {
   id: string;
   filterType: string;
   name: string;
@@ -53,17 +41,18 @@ interface Filter {
   lastUpdated: string;
 }
 
-interface FiltersData {
+export interface FiltersData {
   lastUpdated: string;
   filters: Filter[];
   categories: string[];
 }
 
-async function collectFilters() {
-  if (isDryRun) {
-    console.log('[DRY RUN] No API calls will be made');
-    return;
-  }
+export async function collectFilters(opts?: {
+  ref?: string;
+  outputPath?: string;
+}): Promise<FiltersData> {
+  const outputPath = opts?.outputPath ?? 'data/filters.json';
+  const ref = opts?.ref;
 
   console.log('[START] Starting filter data collection...');
 
@@ -71,15 +60,15 @@ async function collectFilters() {
   const categoriesSet = new Set<string>();
 
   try {
-    // 1. Fetch openedx-filters repository
     console.log('[FETCH] Fetching openedx-filters repository...');
 
-    const filterFiles = await findFilterFiles();
+    const effectiveRef = ref ?? await getDefaultBranch();
 
-    // 2. Parse each filter file
+    const filterFiles = await findFilterFiles(effectiveRef);
+
     for (const filePath of filterFiles) {
       console.log(`  ↳ Processing ${filePath}...`);
-      const fileFilters = await parseFilterFile(filePath);
+      const fileFilters = await parseFilterFile(filePath, effectiveRef);
 
       for (const filter of fileFilters) {
         filters.push(filter);
@@ -87,22 +76,23 @@ async function collectFilters() {
       }
     }
 
-    // 3. Write output
     const output: FiltersData = {
       lastUpdated: new Date().toISOString(),
       filters: filters.sort((a, b) => a.filterType.localeCompare(b.filterType)),
       categories: Array.from(categoriesSet).sort(),
     };
 
-    mkdirSync(dirname('data/filters.json'), { recursive: true });
+    mkdirSync(dirname(outputPath), { recursive: true });
 
-    writeFileSync('data/filters.json', JSON.stringify(output, null, 2));
+    writeFileSync(outputPath, JSON.stringify(output, null, 2));
 
     console.log('\n[SUCCESS] Filter collection complete!');
     console.log(`[RESULTS]:`);
     console.log(`  • Total filters: ${filters.length}`);
     console.log(`  • Categories: ${output.categories.join(', ')}`);
     console.log(`  • Last updated: ${output.lastUpdated}`);
+
+    return output;
   } catch (error) {
     if (error instanceof Error) {
       console.error('[ERROR] Error during collection:', error.message);
@@ -111,73 +101,59 @@ async function collectFilters() {
   }
 }
 
-async function findFilterFiles(): Promise<string[]> {
+async function getDefaultBranch(): Promise<string> {
+  const repo = await octokit.rest.repos.get({
+    owner: 'openedx',
+    repo: 'openedx-filters',
+  });
+  return repo.data.default_branch;
+}
+
+async function findFilterFiles(ref: string): Promise<string[]> {
   const filterFiles: string[] = [];
 
-  try {
-    // Get the default branch
-    const repo = await octokit.rest.repos.get({
-      owner: 'openedx',
-      repo: 'openedx-filters',
-    });
+  const filterDirs = [
+    'openedx_filters/learning',
+    'openedx_filters/content_authoring',
+  ];
 
-    const defaultBranch = repo.data.default_branch;
+  for (const dir of filterDirs) {
+    try {
+      const entries = await listDir({
+        owner: 'openedx',
+        repo: 'openedx-filters',
+        path: dir,
+        ref,
+      });
 
-    // Search for filter definitions in the main filters directory
-    const filterDirs = [
-      'openedx_filters/learning',
-      'openedx_filters/content_authoring',
-    ];
-
-    for (const dir of filterDirs) {
-      try {
-        const contents = await octokit.rest.repos.getContent({
-          owner: 'openedx',
-          repo: 'openedx-filters',
-          path: dir,
-        });
-
-        if (Array.isArray(contents.data)) {
-          for (const item of contents.data) {
-            if (item.type === 'file' && item.name === 'filters.py') {
-              filterFiles.push(item.path);
-            }
+      if (entries) {
+        for (const item of entries) {
+          if (item.type === 'file' && item.name === 'filters.py') {
+            filterFiles.push(item.path);
           }
         }
-      } catch (err) {
-        // Directory doesn't exist, skip
       }
+    } catch (err) {
+      // Directory doesn't exist, skip
     }
-  } catch (error) {
-    console.error('Error finding filter files:', error);
   }
 
   return filterFiles;
 }
 
-async function parseFilterFile(filePath: string): Promise<Filter[]> {
+async function parseFilterFile(filePath: string, ref: string): Promise<Filter[]> {
   const filters: Filter[] = [];
 
   try {
-    const response = await octokit.rest.repos.getContent({
+    const content = await getTextFile({
       owner: 'openedx',
       repo: 'openedx-filters',
       path: filePath,
+      ref,
     });
 
-    if (
-      response &&
-      response.data &&
-      typeof response.data === 'object' &&
-      !Array.isArray(response.data) &&
-      'content' in response.data
-    ) {
-      const content = Buffer.from(
-        (response.data as any).content as string,
-        'base64'
-      ).toString('utf-8');
-
-      const classMatches = extractFilterClasses(content, filePath);
+    if (content) {
+      const classMatches = extractFilterClasses(content, filePath, ref);
       filters.push(...classMatches);
     }
   } catch (err) {
@@ -187,7 +163,7 @@ async function parseFilterFile(filePath: string): Promise<Filter[]> {
   return filters;
 }
 
-function extractFilterClasses(content: string, filePath: string): Filter[] {
+function extractFilterClasses(content: string, filePath: string, ref: string): Filter[] {
   const filters: Filter[] = [];
   const lines = content.split('\n');
 
@@ -195,14 +171,12 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
   while (i < lines.length) {
     const line = lines[i];
 
-    // Look for class definition
     const classMatch = line.match(/^class\s+(\w+)\(OpenEdxPublicFilter\):/);
     if (classMatch) {
       const className = classMatch[1];
       const classStartLine = i;
       const classStartIndex = lines.slice(0, i).join('\n').length + (i > 0 ? 1 : 0);
 
-      // Extract class block (up to next class or end of file)
       let classEndLine = i + 1;
       let indentLevel = 0;
 
@@ -220,7 +194,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
       const classLines = lines.slice(i, classEndLine);
       const classBlock = classLines.join('\n');
 
-      // Extract filter_type
       let filterType = `org.openedx.${className}`;
       for (const classLine of classLines) {
         const ftMatch = classLine.match(/filter_type\s*=\s*['"](.*?)['"]/);
@@ -230,7 +203,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
         }
       }
 
-      // Extract docstring
       let docstring = '';
       let inDocstring = false;
       for (let j = 0; j < classLines.length; j++) {
@@ -248,7 +220,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
       }
       docstring = docstring.trim();
 
-      // Extract purpose from docstring
       let purpose = docstring;
       const purposeMatch = docstring.match(/Purpose:\s*([\s\S]*?)(?:Filter Type:|Trigger:|$)/);
       if (purposeMatch) {
@@ -256,7 +227,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
       }
       purpose = purpose.substring(0, 300);
 
-      // Extract trigger info
       let trigger: Trigger | undefined;
       const triggerMatch = docstring.match(/Trigger:\s*-\s*Repository:\s*(\S+)\s*-\s*Path:\s*(\S+)\s*-\s*Function\s+or\s+Method:\s*(\S+)/);
       if (triggerMatch) {
@@ -267,7 +237,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
         };
       }
 
-      // Find run_filter method
       let runFilterStart = -1;
       for (let j = 0; j < classLines.length; j++) {
         if (classLines[j].includes('def run_filter')) {
@@ -281,7 +250,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
       const filterExceptions: FilterException[] = [];
 
       if (runFilterStart !== -1) {
-        // Extract arguments and returns from docstring in run_filter
         let inRunFilterDocstring = false;
         let runFilterDocstring = '';
         for (let j = runFilterStart; j < classLines.length; j++) {
@@ -297,13 +265,11 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
           if (inRunFilterDocstring) {
             runFilterDocstring += rl + '\n';
           }
-          // Stop if we hit next method
           if (j > runFilterStart && rl.match(/^\s{4}def\s/) && !inRunFilterDocstring) {
             break;
           }
         }
 
-        // Parse arguments from docstring
         const argsMatch = runFilterDocstring.match(/Arguments:\s*([\s\S]*?)(?:Returns:|$)/);
         if (argsMatch) {
           const argsText = argsMatch[1];
@@ -318,7 +284,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
           }
         }
 
-        // Parse returns from docstring
         const returnsMatch = runFilterDocstring.match(/Returns:\s*([\s\S]*?)$/);
         if (returnsMatch) {
           const returnsText = returnsMatch[1];
@@ -333,14 +298,12 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
         }
       }
 
-      // Extract exceptions defined as nested classes
       for (let j = i; j < classEndLine; j++) {
         const excLine = classLines[j - i];
         const excMatch = excLine.match(/^\s+class\s+(\w+)\(OpenEdxFilterException\):/);
         if (excMatch) {
           const excName = excMatch[1];
 
-          // Extract exception docstring
           let excDocstring = '';
           let inExcDocstring = false;
           for (let k = j + 1; k < classEndLine && k - i < classLines.length; k++) {
@@ -358,7 +321,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
             }
           }
 
-          // Clean up docstring - remove attributes and init sections, keep first description
           excDocstring = excDocstring.trim();
           const descMatch = excDocstring.match(/^([\s\S]*?)(?:Attributes:|__init__|$)/);
           const description = descMatch ? descMatch[1].trim().substring(0, 300) : excDocstring.substring(0, 300);
@@ -370,7 +332,6 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
         }
       }
 
-      // Extract category from filter_type
       const category = extractCategory(filterType);
 
       const filter: Filter = {
@@ -381,7 +342,7 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
         description: purpose,
         repository: 'https://github.com/openedx/openedx-filters',
         filePath,
-        sourceUrl: `https://github.com/openedx/openedx-filters/blob/main/${filePath}#L${classStartLine + 1}`,
+        sourceUrl: `https://github.com/openedx/openedx-filters/blob/${ref}/${filePath}#L${classStartLine + 1}`,
         arguments: filterArgs,
         returns: filterReturns,
         exceptions: filterExceptions,
@@ -399,11 +360,7 @@ function extractFilterClasses(content: string, filePath: string): Filter[] {
   return filters;
 }
 
-
-
 function extractCategory(filterType: string): string {
-  // Extract category from filter_type string
-  // org.openedx.{category}.{component}.{action}.v1
   const parts = filterType.split('.');
   if (parts.length >= 3) {
     return parts[2];
@@ -420,5 +377,10 @@ const isMain = (() => {
 })();
 
 if (isMain) {
-  collectFilters();
+  const isDryRun = process.argv.includes('--dry-run');
+  if (isDryRun) {
+    console.log('[DRY RUN] No API calls will be made');
+  } else {
+    collectFilters();
+  }
 }

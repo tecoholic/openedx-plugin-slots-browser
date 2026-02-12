@@ -1,0 +1,10 @@
+{
+  "slug": "teak",
+  "name": "Teak",
+  "edxPlatformRef": "release/teak",
+  "filtersVersion": "2.0.1",
+  "filtersRef": "v2.0.1",
+  "eventsVersion": "10.2.0",
+  "eventsRef": "v10.2.0",
+  "warnings": []
+}

@@ -1,0 +1,303 @@
+{
+  "lastUpdated": "2026-02-12T03:38:47.697Z",
+  "mfes": [
+    {
+      "id": "frontend-app-learner-dashboard",
+      "name": "Learner Dashboard",
+      "description": "Learner Dashboard MFE",
+      "repository": "https://github.com/openedx/frontend-app-learner-dashboard",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 5
+    },
+    {
+      "id": "frontend-app-discussions",
+      "name": "Discussions",
+      "description": "A React-based micro frontend for the Open edX discussion forums.",
+      "repository": "https://github.com/openedx/frontend-app-discussions",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 1
+    },
+    {
+      "id": "frontend-app-profile",
+      "name": "Profile",
+      "description": "Open edX micro-frontend application for managing user profile information.",
+      "repository": "https://github.com/openedx/frontend-app-profile",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 1
+    },
+    {
+      "id": "frontend-app-learning",
+      "name": "Learning",
+      "description": "Front-end for the Open edX course experience, implemented using React and Paragon.",
+      "repository": "https://github.com/openedx/frontend-app-learning",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 4
+    },
+    {
+      "id": "frontend-app-account",
+      "name": "Account",
+      "description": "Open edX micro-frontend application for managing user account information.",
+      "repository": "https://github.com/openedx/frontend-app-account",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 2
+    },
+    {
+      "id": "frontend-app-gradebook",
+      "name": "Gradebook",
+      "description": "Instructor grade book tool",
+      "repository": "https://github.com/openedx/frontend-app-gradebook",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 1
+    },
+    {
+      "id": "frontend-app-communications",
+      "name": "Communications",
+      "description": "Frontend to manage instructor-learner communications",
+      "repository": "https://github.com/openedx/frontend-app-communications",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 1
+    },
+    {
+      "id": "frontend-app-ora-grading",
+      "name": "Ora Grading",
+      "description": "Open Response Assessment - Enhanced Staff Grader - Allows graders to easily review, evaluate and grade ORAs",
+      "repository": "https://github.com/openedx/frontend-app-ora-grading",
+      "owner": "openedx",
+      "topics": [
+        "frontend-app",
+        "pr-sandboxes-enabled",
+        "tutor-supported"
+      ],
+      "pluginSlotsCount": 1
+    }
+  ],
+  "pluginSlots": [
+    {
+      "id": "CourseCardActionSlot",
+      "mfeId": "frontend-app-learner-dashboard",
+      "mfeName": "Learner Dashboard",
+      "filePath": "src/plugin-slots/CourseCardActionSlot/README.md",
+      "description": "This slot is used for adding content in the Action buttons section of each Course Card.",
+      "readmeContent": "# Course Card Action Slot\n\n### Slot ID: `course_card_action_slot`\n### Props:\n* `cardId`\n\n## Description\n\nThis slot is used for adding content in the Action buttons section of each Course Card.\n\n## Example\n\nThe following `env.config.jsx` will render the `cardId` of the course as `<p>` elements in a `<div>`.\n\n![Screenshot of Content added after the Sequence Container](./images/post_course_card_action.png)\n\n```js\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\nimport ActionButton from 'containers/CourseCard/components/CourseCardActions/ActionButton';\n\nconst config = {\n  pluginSlots: {\n    course_card_action_slot: {\n      keepDefault: false,\n      plugins: [\n        {\n          // Insert Custom Button in Course Card\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_course_card_action',\n            priority: 60,\n            type: DIRECT_PLUGIN,\n            RenderWidget: ({cardId}) => (\n              <ActionButton\n                variant=\"outline-primary\"\n              >\n                Custom Button\n              </ ActionButton>\n            ),\n          },\n        },\n          {\n            // Insert Another Button in Course Card\n            op: PLUGIN_OPERATIONS.Insert,\n            widget: {\n              id: 'another_custom_course_card_action',\n              priority: 70,\n              type: DIRECT_PLUGIN,\n              RenderWidget: ({cardId}) => (\n                <ActionButton\n                  variant=\"outline-primary\"\n                >\n                  📚: {cardId}\n                </ ActionButton>\n              ),\n            },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learner-dashboard/tree/open-release/sumac.master/src/plugin-slots/CourseCardActionSlot",
+      "lastUpdated": "2026-02-12T03:38:14.745Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "CourseListSlot",
+      "mfeId": "frontend-app-learner-dashboard",
+      "mfeName": "Learner Dashboard",
+      "filePath": "src/plugin-slots/CourseListSlot/README.md",
+      "description": "This slot is used for replacing or adding content around the `CourseList` component. The `CourseListSlot` is only rendered if the learner has enrolled in at least one course.",
+      "readmeContent": "# Course List Slot\n\n### Slot ID: `course_list_slot`\n\n## Plugin Props\n\n* courseListData\n\n## Description\n\nThis slot is used for replacing or adding content around the `CourseList` component. The `CourseListSlot` is only rendered if the learner has enrolled in at least one course.\n\n## Example\n\nThe space will show the `CourseList` component by default. This can be disabled in the configuration with the `keepDefault` boolean. \n\n![Screenshot of the CourseListSlot](./images/course_list_slot.png)\n\nSetting the MFE's `env.config.jsx` to the following will replace the default experience with a list of course titles.\n\n![Screenshot of a custom course list](./images/readme_custom_course_list.png)\n\n```js\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    course_list_slot: {\n      // Hide the default CourseList component\n      keepDefault: false,\n      plugins: [\n        {\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_course_list',\n            type: DIRECT_PLUGIN,\n            priority: 60,\n            RenderWidget: ({ courseListData }) => {\n              // Extract the \"visibleList\"\n              const courses = courseListData.visibleList;\n              // Render a list of course names\n              return (\n                <div>\n                  {courses.map(courseData => (\n                    <p>\n                      {courseData.course.courseName}\n                    </p>\n                  ))}\n                </div>\n              )\n            },\n          },\n        },\n      ],\n    },\n  },\n}\n\nexport default config;\n```",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learner-dashboard/tree/open-release/sumac.master/src/plugin-slots/CourseListSlot",
+      "lastUpdated": "2026-02-12T03:38:15.045Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-learner-dashboard",
+      "mfeName": "Learner Dashboard",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-slot-footer` repository](https://github.com/openedx/frontend-slot-footer/).\n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learner-dashboard/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:15.336Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "NoCoursesViewSlot",
+      "mfeId": "frontend-app-learner-dashboard",
+      "mfeName": "Learner Dashboard",
+      "filePath": "src/plugin-slots/NoCoursesViewSlot/README.md",
+      "description": "This slot is used for replacing or adding content around the `NoCoursesView` component. The `NoCoursesViewSlot` only renders if the learner has not yet enrolled in any courses.",
+      "readmeContent": "# No Courses View Slot\n\n### Slot ID: `no_courses_view_slot`\n\n## Description\n\nThis slot is used for replacing or adding content around the `NoCoursesView` component. The `NoCoursesViewSlot` only renders if the learner has not yet enrolled in any courses.\n\n## Example\n\nThe space will show the `NoCoursesView` by default. This can be disabled in the configuration with the `keepDefault` boolean.\n\n![Screenshot of the no courses view](./images/no_courses_view_slot.png)\n\nSetting the MFE's `env.config.jsx` to the following will replace the default experience with a custom call-to-action component.\n\n![Screenshot of a custom no courses view](./images/readme_custom_no_courses_view.png)\n\n```js\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    no_courses_view_slot: {\n      // Hide the default NoCoursesView component\n      keepDefault: false,\n      plugins: [\n        {\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_no_courses_CTA',\n            type: DIRECT_PLUGIN,\n            priority: 60,\n            RenderWidget: () => (\n              <h3>\n                Check out our catalog of courses and start learning today!\n              </h3>\n            ),\n          },\n        },\n      ],\n    },\n  },\n}\n\nexport default config;\n```",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learner-dashboard/tree/open-release/sumac.master/src/plugin-slots/NoCoursesViewSlot",
+      "lastUpdated": "2026-02-12T03:38:15.640Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "WidgetSidebarSlot",
+      "mfeId": "frontend-app-learner-dashboard",
+      "mfeName": "Learner Dashboard",
+      "filePath": "src/plugin-slots/WidgetSidebarSlot/README.md",
+      "description": "This slot is used for adding content to the right-hand sidebar.",
+      "readmeContent": "# Widget Sidebar Slot\n\n### Slot ID: `widget_sidebar_slot`\n\n## Description\n\nThis slot is used for adding content to the right-hand sidebar.\n\n## Example\n\nThe space will show the `LookingForChallengeWidget` by default. This can be disabled in the configuration with the `keepDefault` boolean.\n\n![Screenshot of the widget sidebar](./images/widget_sidebar_slot.png)\n\nSetting the MFE's `env.config.jsx` to the following will replace the default experience with a custom sidebar component.\n\n![Screenshot of a custom call-to-action in the sidebar](./images/readme_custom_sidebar.png)\n\n```js\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n     widget_sidebar_slot: {\n      // Hide the default LookingForChallenge component\n      keepDefault: false,\n      plugins: [\n        {\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_sidebar_panel',\n            type: DIRECT_PLUGIN,\n            priority: 60,\n            RenderWidget: () => (\n              <div>\n                <h3>\n                  Sidebar Menu\n                </h3>\n                <p>\n                  sidebar item #1\n                </p>\n                <p>\n                  sidebar item #2\n                </p>\n                <p>\n                  sidebar item #3\n                </p>\n              </div>\n            ),\n          },\n        },\n      ],\n    },\n  },\n}\n\nexport default config;\n```",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learner-dashboard/tree/open-release/sumac.master/src/plugin-slots/WidgetSidebarSlot",
+      "lastUpdated": "2026-02-12T03:38:15.955Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-discussions",
+      "mfeName": "Discussions",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-slot-footer` repository](https://github.com/openedx/frontend-slot-footer/).\n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-discussions/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:18.977Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-profile",
+      "mfeName": "Profile",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-slot-footer` repository](https://github.com/openedx/frontend-slot-footer/).\n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-profile/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:23.456Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-learning",
+      "mfeName": "Learning",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-slot-footer` repository](https://github.com/openedx/frontend-slot-footer/).\n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learning/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:25.376Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "HeaderSlot",
+      "mfeId": "frontend-app-learning",
+      "mfeName": "Learning",
+      "filePath": "src/plugin-slots/HeaderSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the entire learning header.",
+      "readmeContent": "# Header Slot\n\n### Slot ID: `header_slot`\n### Props:\n* `courseOrg`\n* `courseNumber`\n* `courseTitle`\n* `showUserDropdown`\n\n## Description\n\nThis slot is used to replace/modify/hide the entire learning header.\n\n## Example\n\nThe following `env.config.jsx` will replace the learning header entirely.\n\n![Screenshot of custom component](./images/header_custom_component.png)\n\n```js\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    header_slot: {\n      keepDefault: false,\n      plugins: [\n        {\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_header_component',\n            type: DIRECT_PLUGIN,\n            RenderWidget: ({courseOrg, courseNumber, courseTitle, showUserDropdown}) => (\n              <>\n                <h1 style={{textAlign: 'center'}}>🌞</h1>\n                <p style={{textAlign: 'center'}}>courseOrg: {courseOrg}</p>\n                <p style={{textAlign: 'center'}}>courseNumber: {courseNumber}</p>\n                <p style={{textAlign: 'center'}}>courseTitle: {courseTitle}</p>\n                <p style={{textAlign: 'center'}}>showUserDropdown: {showUserDropdown ? '👍' : '👎'}</p>\n                <h1 style={{textAlign: 'center'}}>🌚</h1>\n              </>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learning/tree/open-release/sumac.master/src/plugin-slots/HeaderSlot",
+      "lastUpdated": "2026-02-12T03:38:26.123Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "SequenceContainerSlot",
+      "mfeId": "frontend-app-learning",
+      "mfeName": "Learning",
+      "filePath": "src/plugin-slots/SequenceContainerSlot/README.md",
+      "description": "This slot is used for adding content after the Sequence content section.",
+      "readmeContent": "# Sequence Container Slot\n\n### Slot ID: `sequence_container_slot`\n### Props:\n* `courseId`\n* `unitId`\n\n## Description\n\nThis slot is used for adding content after the Sequence content section.\n\n## Example\n\nThe following `env.config.jsx` will render the `course_id` and `unit_id` of the course as `<p>` elements in a `<div>`.\n\n![Screenshot of Content added after the Sequence Container](./images/post_sequence_container.png)\n\n```js\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    sequence_container_slot: {\n      plugins: [\n        {\n          // Insert custom content after sequence content\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_sequence_container_content',\n            type: DIRECT_PLUGIN,\n            RenderWidget: ({courseId, unitId}) => (\n              <div>\n                <p>📚: {courseId}</p>\n                <p>📙: {unitId}</p>\n              </div>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learning/tree/open-release/sumac.master/src/plugin-slots/SequenceContainerSlot",
+      "lastUpdated": "2026-02-12T03:38:26.496Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "UnitTitleSlot",
+      "mfeId": "frontend-app-learning",
+      "mfeName": "Learning",
+      "filePath": "src/plugin-slots/UnitTitleSlot/README.md",
+      "description": "This slot is used for adding content after the Unit title.",
+      "readmeContent": "# Unit Title Slot\n\n### Slot ID: `unit_title_slot`\n### Props:\n* `courseId`\n* `unitId`\n* `unitTitle`\n\n## Description\n\nThis slot is used for adding content after the Unit title.\n\n## Example\n\nThe following `env.config.jsx` will render the `course_id`, `unit_id` and `unitTitle` of the course as `<p>` elements.\n\n![Screenshot of Content added after the Unit Title](./images/post_unit_title.png)\n\n```js\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    unit_title_slot: {\n      plugins: [\n        {\n          // Insert custom content after unit title\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_unit_title_content',\n            type: DIRECT_PLUGIN,\n            RenderWidget: ({courseId, unitId, unitTitle}) => (\n              <>\n                <p>📚: {courseId}</p>\n                <p>📙: {unitId}</p>\n                <p>📙: {unitTitle}</p>\n              </>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-learning/tree/open-release/sumac.master/src/plugin-slots/UnitTitleSlot",
+      "lastUpdated": "2026-02-12T03:38:26.804Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-account",
+      "mfeName": "Account",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-component-footer` repository](https://github.com/openedx/frontend-component-footer/tree/master/src/components/footer-slot). \n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-account/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:27.921Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "IdVerificationPageSlot",
+      "mfeId": "frontend-app-account",
+      "mfeName": "Account",
+      "filePath": "src/plugin-slots/IdVerificationPageSlot/README.md",
+      "description": "This slot is used to replace/modify the IDV Page.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `id_verification_page_plugin`\n\n## Description\n\nThis slot is used to replace/modify the IDV Page.\n\nThe implementation of the `IdVerificationPageSlot` component lives in `src/plugin-slots/IdVerificationPageSlot/index.jsx`.\n\n## Example\n\nThe following `env.config.jsx` will replace the default IDV Page.\n\n![Screenshot of Default IDV Page](./images/default_id-verification-page.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    id_verification_page_plugin: {\n      plugins: [\n        {\n          // Insert a custom IDV Page\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'id_verification_page_plugin',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <div>\n                <p>This is the new IDV page</p>\n                <a href=\"/\">Go Home</a>\n              </div>\n            ),\n          },\n        },\n      ],\n    },\n  },\n};\n\nexport default config;\n\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-account/tree/open-release/sumac.master/src/plugin-slots/IdVerificationPageSlot",
+      "lastUpdated": "2026-02-12T03:38:28.237Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-gradebook",
+      "mfeName": "Gradebook",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-slot-footer` repository](https://github.com/openedx/frontend-slot-footer/).\n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-gradebook/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:29.314Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-communications",
+      "mfeName": "Communications",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-slot-footer` repository](https://github.com/openedx/frontend-slot-footer/).\n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-communications/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:31.878Z",
+      "readmePresent": true,
+      "hasExamples": true
+    },
+    {
+      "id": "FooterSlot",
+      "mfeId": "frontend-app-ora-grading",
+      "mfeName": "Ora Grading",
+      "filePath": "src/plugin-slots/FooterSlot/README.md",
+      "description": "This slot is used to replace/modify/hide the footer.",
+      "readmeContent": "# Footer Slot\n\n### Slot ID: `footer_slot`\n\n## Description\n\nThis slot is used to replace/modify/hide the footer.\n\nThe implementation of the `FooterSlot` component lives in [the `frontend-slot-footer` repository](https://github.com/openedx/frontend-slot-footer/).\n\n## Example\n\nThe following `env.config.jsx` will replace the default footer.\n\n![Screenshot of Default Footer](./images/default_footer.png)\n\nwith a simple custom footer\n\n![Screenshot of Custom Footer](./images/custom_footer.png)\n\n```jsx\nimport { DIRECT_PLUGIN, PLUGIN_OPERATIONS } from '@openedx/frontend-plugin-framework';\n\nconst config = {\n  pluginSlots: {\n    footer_slot: {\n      plugins: [\n        {\n          // Hide the default footer\n          op: PLUGIN_OPERATIONS.Hide,\n          widgetId: 'default_contents',\n        },\n        {\n          // Insert a custom footer\n          op: PLUGIN_OPERATIONS.Insert,\n          widget: {\n            id: 'custom_footer',\n            type: DIRECT_PLUGIN,\n            RenderWidget: () => (\n              <h1 style={{textAlign: 'center'}}>🦶</h1>\n            ),\n          },\n        },\n      ]\n    }\n  },\n}\n\nexport default config;\n```\n",
+      "sourceUrl": "https://github.com/openedx/frontend-app-ora-grading/tree/open-release/sumac.master/src/plugin-slots/FooterSlot",
+      "lastUpdated": "2026-02-12T03:38:39.143Z",
+      "readmePresent": true,
+      "hasExamples": true
+    }
+  ]
+}
