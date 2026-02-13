@@ -23,9 +23,21 @@ const mfes = pluginData.mfes.sort((a, b) => a.name.localeCompare(b.name));
   eventsData={eventsData}
   showSidebar
 >
-  <section class="space-y-3">
-    <h1 class="text-4xl font-bold">Frontend Applications</h1>
-    <p class="text-base-content/75">All Open edX MFEs with plugin slots ({mfes.length})</p>
+  <section class="space-y-4">
+      <div class="flex flex-wrap items-center gap-2">
+          <h1 class="text-4xl font-bold">Frontend Applications</h1>
+          <span class="badge badge-primary gap-1 py-3">
+              <Icon name="tabler:puzzle" width="0.95rem" height="0.95rem" is:inline />
+              {pluginData.pluginSlots.length} Slots
+          </span>
+          <span class="badge badge-secondary gap-1 py-3">
+              <Icon name="tabler:blocks" width="0.95rem" height="0.95rem" is:inline />
+              {mfes.length} MFEs
+          </span>
+      </div>
+    <p class="max-w-3xl text-base-content/75">
+        All Open edX MFEs with plugin slots.
+    </p>
   </section>
 
   <section class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
