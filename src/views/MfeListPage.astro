@@ -23,127 +23,37 @@ const mfes = pluginData.mfes.sort((a, b) => a.name.localeCompare(b.name));
   eventsData={eventsData}
   showSidebar
 >
-  <h1>Frontend Applications</h1>
-  <p>All Open edX MFEs with plugin slots ({mfes.length})</p>
+  <section class="space-y-3">
+    <h1 class="text-4xl font-bold">Frontend Applications</h1>
+    <p class="text-base-content/75">All Open edX MFEs with plugin slots ({mfes.length})</p>
+  </section>
 
-  <div class="mfe-list">
-    {
-      mfes.map((mfe) => (
-        <div class="mfe-card">
-          <h3>
-            <a href={withBasePath(basePath, `/mfes/${mfe.id}`)}>
+  <section class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    {mfes.map((mfe) => (
+      <article class="mfe-card card border border-base-300 bg-base-100 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+        <div class="card-body gap-4 p-6">
+          <h2 class="card-title text-lg leading-tight">
+            <a href={withBasePath(basePath, `/mfes/${mfe.id}`)} class="link link-primary link-hover">
               {mfe.name}
             </a>
-          </h3>
-          <p class="description">{mfe.description || 'No description available'}</p>
-          <div class="meta">
-            <span class="slot-count">
-              <Icon name="tabler:plug" /> {mfe.pluginSlotsCount || 0} plugin slots
+          </h2>
+          <p class="text-sm leading-6 text-base-content/80">{mfe.description || 'No description available'}</p>
+          <div class="flex flex-wrap items-center justify-between gap-3 border-t border-base-300 pt-4 text-sm">
+            <span class="inline-flex items-center gap-1 text-primary">
+              <Icon name="tabler:plug" width="0.95rem" height="0.95rem" />
+              {mfe.pluginSlotsCount || 0} plugin slots
             </span>
-            <a href={mfe.repository} target="_blank" rel="noopener noreferrer" class="repo-link">
-              View on GitHub →
-            </a>
+            <a href={mfe.repository} target="_blank" rel="noopener noreferrer" class="link link-primary">View on GitHub</a>
           </div>
           {mfe.topics && mfe.topics.length > 0 && (
-            <div class="topics">
+            <div class="flex flex-wrap gap-2 pt-1">
               {mfe.topics.map((topic) => (
-                <span class="topic-tag">{topic}</span>
+                <span class="badge badge-ghost badge-sm">{topic}</span>
               ))}
             </div>
           )}
         </div>
-      ))
-    }
-  </div>
+      </article>
+    ))}
+  </section>
 </BaseLayout>
-
-<style>
-  .mfe-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-
-  .mfe-card {
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-  }
-
-  .mfe-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
-  }
-
-  .mfe-card h3 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-
-  .mfe-card a {
-    text-decoration: none;
-  }
-
-  .mfe-card a:hover {
-    text-decoration: underline;
-  }
-
-  .description {
-    color: #666;
-    margin: 1rem 0;
-    font-size: 0.95rem;
-  }
-
-  .meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 1.5rem 0 1rem 0;
-    font-size: 0.9rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .slot-count {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--color-primary);
-    font-weight: 500;
-  }
-
-  .slot-count :global(svg) {
-    width: 1em;
-    height: 1em;
-    display: inline;
-    vertical-align: -0.125em;
-  }
-
-  .repo-link {
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .repo-link:hover {
-    text-decoration: underline;
-  }
-
-  .topics {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-  }
-
-  .topic-tag {
-    display: inline-block;
-    background: var(--color-secondary);
-    color: #666;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-  }
-</style>

@@ -28,7 +28,6 @@ const {
   showFilters = false,
 } = Astro.props as Props;
 
-// Group events by namespace
 const eventsByNamespace = eventsData.events.reduce(
   (acc, event) => {
     if (!acc[event.namespace]) {
@@ -42,7 +41,6 @@ const eventsByNamespace = eventsData.events.reduce(
 
 const namespaces = Object.keys(eventsByNamespace).sort();
 
-// Group filters by category
 const filtersByCategory = filtersData.filters.reduce(
   (acc, filter) => {
     if (!acc[filter.category]) {
@@ -57,376 +55,173 @@ const filtersByCategory = filtersData.filters.reduce(
 const categories = Object.keys(filtersByCategory).sort();
 ---
 
-<aside class="sidebar">
-  <nav class="tree-nav">
+<aside class="sidebar-flat card sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto border border-base-300 bg-base-100 shadow-sm">
+  <div class="card-body gap-2 p-3">
     {showFilters ? (
-      <div class="tree-section">
-        <h3 class="tree-title">Filters by Category</h3>
-        <ul class="tree-list">
-          {
-            categories.map((category) => {
-              const catFilters = filtersByCategory[category];
-              const isActive = currentFilterId && catFilters.some(f => f.id === currentFilterId);
+      <>
+        <h3 class="px-2 text-xs font-semibold uppercase tracking-wider text-base-content/60">Filters by Category</h3>
+        {categories.map((category) => {
+          const catFilters = filtersByCategory[category];
+          const isActive = Boolean(currentFilterId && catFilters.some((filter) => filter.id === currentFilterId));
 
-              return (
-                <li class={`tree-item ${isActive ? 'active' : ''}`}>
-                  <details open={isActive}>
-                    <summary class="tree-toggle">
-                      <a href={withBasePath(basePath, '/filters')}>
-                        <span class="category-name">{category.charAt(0).toUpperCase() + category.slice(1)}</span>
-                        <span class="filter-badge">{catFilters.length}</span>
+          return (
+            <details class={`collapse collapse-arrow bg-transparent ${isActive ? 'open' : ''}`} open={isActive}>
+              <summary class="collapse-title min-h-0 py-2 pl-7 pr-2 text-sm font-medium">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="truncate">{category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                  <span class="badge badge-primary badge-sm">{catFilters.length}</span>
+                </div>
+              </summary>
+              <div class="collapse-content px-2 pb-2">
+                <ul class="menu menu-sm gap-1 p-1">
+                  {catFilters.map((filter) => (
+                    <li>
+                      <a href={withBasePath(basePath, `/filters/${filter.id}`)} class={currentFilterId === filter.id ? 'active' : ''}>
+                        <span class="truncate text-xs">{filter.name}</span>
                       </a>
-                    </summary>
-                    {catFilters.length > 0 && (
-                      <ul class="tree-sublist">
-                        {catFilters.map((filter) => (
-                          <li class={`tree-subitem ${currentFilterId === filter.id ? 'active' : ''}`}>
-                            <a href={withBasePath(basePath, `/filters/${filter.id}`)}>
-                              <span class="filter-name">{filter.name}</span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </details>
-                </li>
-              );
-            })
-          }
-        </ul>
-      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          );
+        })}
+      </>
     ) : showEvents ? (
-      <div class="tree-section">
-        <h3 class="tree-title">Events by Domain</h3>
-        <ul class="tree-list">
-          {
-            namespaces.map((namespace) => {
-              const nsEvents = eventsByNamespace[namespace];
-              const isActive = currentEventId?.startsWith(namespace);
+      <>
+        <h3 class="px-2 text-xs font-semibold uppercase tracking-wider text-base-content/60">Events by Domain</h3>
+        {namespaces.map((namespace) => {
+          const nsEvents = eventsByNamespace[namespace];
+          const isActive = Boolean(currentEventId?.startsWith(namespace));
 
-              return (
-                <li class={`tree-item ${isActive ? 'active' : ''}`}>
-                  <details open={isActive}>
-                    <summary class="tree-toggle">
-                      <a href={withBasePath(basePath, '/events')}>
-                        <span class="namespace-name">{namespace.replace(/-/g, ' ').split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</span>
-                        <span class="event-badge">{nsEvents.length}</span>
+          return (
+            <details class={`collapse collapse-arrow bg-transparent ${isActive ? 'open' : ''}`} open={isActive}>
+              <summary class="collapse-title min-h-0 py-2 pl-7 pr-2 text-sm font-medium">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="truncate">
+                    {namespace
+                      .replace(/-/g, ' ')
+                      .split(' ')
+                      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(' ')}
+                  </span>
+                  <span class="badge badge-secondary badge-sm">{nsEvents.length}</span>
+                </div>
+              </summary>
+              <div class="collapse-content px-2 pb-2">
+                <ul class="menu menu-sm gap-1 p-1">
+                  {nsEvents.map((event) => (
+                    <li>
+                      <a href={withBasePath(basePath, `/events/${event.id}`)} class={currentEventId === event.id ? 'active' : ''}>
+                        <span class="truncate text-xs">{event.eventName}</span>
                       </a>
-                    </summary>
-                    {nsEvents.length > 0 && (
-                      <ul class="tree-sublist">
-                        {nsEvents.map((event) => (
-                          <li class={`tree-subitem ${currentEventId === event.id ? 'active' : ''}`}>
-                            <a href={withBasePath(basePath, `/events/${event.id}`)}>
-                              <span class="event-name">{event.eventName}</span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </details>
-                </li>
-              );
-            })
-          }
-        </ul>
-      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          );
+        })}
+      </>
     ) : (
-      <div class="tree-section">
-        <h3 class="tree-title">Frontend Apps</h3>
-        <ul class="tree-list">
-          {
-            pluginData.mfes.map((mfe) => {
-              const mfeSlots = pluginData.pluginSlots.filter(s => s.mfeId === mfe.id);
-              const isActive = currentMfeId === mfe.id;
+      <>
+        <h3 class="px-2 text-xs font-semibold uppercase tracking-wider text-base-content/60">Frontend Apps</h3>
+        {pluginData.mfes.map((mfe) => {
+          const mfeSlots = pluginData.pluginSlots.filter((slot) => slot.mfeId === mfe.id);
+          const isActive = currentMfeId === mfe.id;
 
-              return (
-                <li class={`tree-item ${isActive ? 'active' : ''}`}>
-                  <details open={isActive}>
-                    <summary class="tree-toggle">
-                      <a href={withBasePath(basePath, `/mfes/${mfe.id}`)}>
-                        <span class="mfe-name">{mfe.name}</span>
-                        <span class="slot-badge">{mfeSlots.length}</span>
+          return (
+            <details class={`collapse collapse-arrow bg-transparent ${isActive ? 'open' : ''}`} open={isActive}>
+              <summary class="collapse-title min-h-0 py-2 pl-7 pr-2 text-sm font-medium">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="truncate">{mfe.name}</span>
+                  <span class="badge badge-accent badge-sm">{mfeSlots.length}</span>
+                </div>
+              </summary>
+              <div class="collapse-content px-2 pb-2">
+                <ul class="menu menu-sm gap-1 p-1">
+                  {mfeSlots.map((slot) => (
+                    <li>
+                      <a href={withBasePath(basePath, `/mfes/${slot.mfeId}/slots/${slot.id}`)} class={currentSlotId === slot.id ? 'active' : ''}>
+                        <span class="truncate text-xs">{slot.id}</span>
+                        {!slot.readmePresent && (
+                          <Icon name="tabler:alert-circle" class="text-error" width="0.95rem" height="0.95rem" title="README missing" />
+                        )}
                       </a>
-                    </summary>
-                    {mfeSlots.length > 0 && (
-                      <ul class="tree-sublist">
-                        {mfeSlots.map((slot) => (
-                          <li class={`tree-subitem ${currentSlotId === slot.id ? 'active' : ''}`}>
-                            <a href={withBasePath(basePath, `/slots/${slot.id}`)}>
-                              <span class="slot-name">{slot.id}</span>
-                              {!slot.readmePresent && (
-                                <Icon name="tabler:alert-circle" class="readme-missing-indicator" title="README missing" />
-                              )}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </details>
-                </li>
-              );
-            })
-          }
-        </ul>
-      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          );
+        })}
+      </>
     )}
-  </nav>
+  </div>
 </aside>
 
 <style>
-  .sidebar {
-    width: 340px;
-    background: #f8f9fa;
-    border-right: 1px solid var(--color-border);
-    padding: 1rem 0;
-    max-height: calc(100vh - 60px);
-    overflow-y: auto;
-    position: sticky;
-    top: 60px;
-  }
-
-  @media (max-width: 786px) {
-      .sidebar {
-          display: none;
-      }
-
-  }
-
-  .tree-nav {
-    padding: 0 0.75rem;
-  }
-
-  .tree-section {
-    margin-bottom: 1.5rem;
-    width: 100%;
-  }
-
-  .tree-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: #666;
-    padding: 0 0.75rem 0.75rem 0;
-    margin: 0;
-    letter-spacing: 0.5px;
-  }
-
-  .tree-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .tree-item {
-    margin: 0;
-  }
-
-  .tree-toggle {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    padding: 0.4rem 0.5rem;
-    margin: 0;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-  }
-
-  .tree-toggle:hover {
-    background-color: rgba(0, 102, 204, 0.05);
-  }
-
-  .tree-item.active > details > summary {
-    background-color: rgba(0, 102, 204, 0.1);
-  }
-
-  .tree-item a {
-    color: #333;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .tree-item a:hover {
-    color: var(--color-primary);
-    text-decoration: none;
-  }
-
-  .mfe-name,
-  .namespace-name {
-    flex: 1;
-    font-weight: 500;
-    font-size: 0.95rem;
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .slot-badge,
-  .event-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-primary);
-    color: white;
-    padding: 0.15rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-
-  .tree-sublist {
-    list-style: none;
-    padding: 0.3rem 0 0.3rem 1.2rem;
-    margin: 0.15rem 0 0 0;
-    border-left: 2px solid #ddd;
-    margin-left: 0.5rem;
-  }
-
-  .tree-subitem {
-    margin: 0;
-    padding: 0;
-  }
-
-  .tree-subitem a {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.4rem;
-    font-size: 0.8rem;
-    color: #666;
-    text-decoration: none;
-    border-radius: 3px;
-    transition: all 0.2s ease;
-  }
-
-  .slot-name,
-  .event-name {
-    flex: 1;
-    min-width: 0;
-    word-break: break-word;
-    overflow-wrap: break-word;
-  }
-
-  .readme-missing-indicator {
-    flex-shrink: 0;
-    width: 1em;
-    height: 1em;
-    color: #d9534f;
-    font-weight: bold;
-  }
-
-  .tree-subitem a:hover {
-    background-color: rgba(0, 102, 204, 0.05);
-    color: var(--color-primary);
-  }
-
-  .tree-subitem.active a {
-    background-color: rgba(0, 102, 204, 0.15);
-    color: var(--color-primary);
-    font-weight: 500;
-  }
-
-  /* Scrollbar styling */
-  .sidebar::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .sidebar::-webkit-scrollbar-track {
+  .sidebar-flat :global(.collapse) {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
     background: transparent;
   }
 
-  .sidebar::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 3px;
+  .sidebar-flat :global(.collapse-title) {
+    border-radius: 0.45rem;
+    transition: background-color 150ms ease;
   }
 
-  .sidebar::-webkit-scrollbar-thumb:hover {
-    background: #999;
+  .sidebar-flat :global(.collapse-arrow > .collapse-title::after),
+  .sidebar-flat :global(.collapse-arrow > .collapse-title:after) {
+    left: 0.55rem;
+    right: auto;
+    inset-inline-start: 0.55rem;
+    inset-inline-end: auto;
   }
 
-  /* Details disclosure triangle styling */
-  details > summary::before {
-    content: '▶';
-    display: inline-block;
-    margin-right: 0.5rem;
-    transition: transform 0.2s ease;
-    font-size: 0.7rem;
-    color: #999;
+  .sidebar-flat :global(.collapse-title:hover) {
+    background: color-mix(in oklab, var(--color-primary) 10%, transparent);
   }
 
-  details[open] > summary::before {
-    transform: rotate(90deg);
+  .sidebar-flat :global(details[open] > .collapse-title) {
+    background: color-mix(in oklab, var(--color-primary) 14%, transparent);
   }
 
-  @media (max-width: 768px) {
-    .sidebar {
-      width: 100%;
-      max-height: auto;
-      border-right: none;
-      border-bottom: 1px solid var(--color-border);
-      position: static;
-      overflow-y: visible;
-    }
+  .sidebar-flat :global(.menu) {
+    border-radius: 0;
+    background: transparent;
+  }
 
-    .tree-sublist {
-      padding-left: 1rem;
-      margin-left: 0.5rem;
-    }
+  .sidebar-flat :global(.menu li > a) {
+    border-radius: 0.35rem;
+    background: transparent;
+    transition: background-color 150ms ease;
+  }
+
+  .sidebar-flat :global(.menu li > a:hover) {
+    background: color-mix(in oklab, var(--color-primary) 8%, transparent);
+  }
+
+  .sidebar-flat :global(.menu li > a.active) {
+    background: color-mix(in oklab, var(--color-primary) 16%, transparent);
+  }
+
+  .sidebar-flat :global(.collapse-content) {
+    position: relative;
+    margin-left: 0.45rem;
+    padding-left: 1rem;
+  }
+
+  .sidebar-flat :global(details[open] > .collapse-content::before) {
+    content: "";
+    position: absolute;
+    left: 0.45rem;
+    top: 0.2rem;
+    bottom: 0.35rem;
+    width: 1px;
+    background: color-mix(in oklab, var(--color-primary) 26%, var(--color-base-300));
+    opacity: 0.65;
   }
 </style>
-
-<script>
-  // Store expanded state and enforce single-open accordion behavior
-  document.addEventListener('DOMContentLoaded', () => {
-    const details = document.querySelectorAll('.tree-item details');
-
-    details.forEach((detail) => {
-      const summary = detail.querySelector('summary');
-      const mfeName = summary?.textContent?.trim() || '';
-      const storageKey = `sidebar-expanded-${mfeName}`;
-
-      // Restore saved state
-      const wasExpanded = localStorage.getItem(storageKey) === 'true';
-      if (wasExpanded && !detail.open) {
-        detail.open = true;
-      }
-
-      // Save state on toggle and enforce single-open behavior
-      detail.addEventListener('toggle', () => {
-        if (detail.open) {
-          // Close all other details elements when this one opens
-          details.forEach((otherDetail) => {
-            if (otherDetail !== detail && otherDetail.open) {
-              otherDetail.open = false;
-            }
-          });
-          localStorage.setItem(storageKey, 'true');
-        } else {
-          localStorage.setItem(storageKey, 'false');
-        }
-      });
-
-      // Prevent navigation when clicking on the summary to toggle
-      if (summary) {
-        summary.addEventListener('click', (e) => {
-          // Only prevent default if clicking on the summary element itself or the link
-          // This allows the toggle to work without navigating
-          if (e.target === summary || e.target.closest('a') === summary.querySelector('a')) {
-            e.preventDefault();
-            // Manually toggle the details element
-            detail.open = !detail.open;
-          }
-        });
-      }
-    });
-  });
-</script>

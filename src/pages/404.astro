@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getReleaseData } from '../lib/release-data';
+import { withBasePath } from '../lib/paths';
+
+const { release, pluginData, filtersData, eventsData } = getReleaseData('main');
+const basePath = release.basePath;
+---
+
+<BaseLayout
+  title="Page Not Found"
+  basePath={basePath}
+  release={release.slug}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+>
+  <section class="mx-auto max-w-2xl rounded-box border border-base-300 bg-base-100 p-8 text-center shadow-sm">
+    <h1 class="text-4xl font-bold">Page Not Found</h1>
+    <p class="mt-3 text-base-content/75">
+      The page you are looking for does not exist or has moved.
+    </p>
+    <div class="mt-6">
+      <a href={withBasePath(basePath, '/')} class="btn btn-primary">Go to Home</a>
+    </div>
+  </section>
+</BaseLayout>

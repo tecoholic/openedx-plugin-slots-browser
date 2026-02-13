@@ -13,10 +13,10 @@ const { arguments: args } = Astro.props;
 ---
 
 {args.length > 0 && (
-  <div class="arguments-section">
-    <h3>Arguments</h3>
-    <div class="table-responsive">
-      <table class="arguments-table">
+  <section class="space-y-3">
+    <h3 class="text-xl font-semibold">Arguments</h3>
+    <div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+      <table class="table table-zebra">
         <thead>
           <tr>
             <th>Name</th>
@@ -27,104 +27,13 @@ const { arguments: args } = Astro.props;
         <tbody>
           {args.map((arg) => (
             <tr>
-              <td class="arg-name">
-                <code>{arg.name}</code>
-              </td>
-              <td class="arg-type">
-                <code>{arg.type}</code>
-              </td>
-              <td class="arg-description">{arg.description}</td>
+              <td><code>{arg.name}</code></td>
+              <td><code>{arg.type}</code></td>
+              <td>{arg.description}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  </div>
+  </section>
 )}
-
-<style>
-  .arguments-section {
-    margin: 2rem 0;
-  }
-
-  .arguments-section h3 {
-    margin-top: 0;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-  }
-
-  .table-responsive {
-    overflow-x: auto;
-  }
-
-  .arguments-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-
-  .arguments-table thead {
-    background: #f5f5f5;
-  }
-
-  .arguments-table th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    border-bottom: 2px solid var(--color-border);
-  }
-
-  .arguments-table td {
-    padding: 1rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .arguments-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-
-  .arg-name code,
-  .arg-type code {
-    background: #f5f5f5;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
-    font-size: 0.9rem;
-  }
-
-  .arg-name {
-    font-weight: 500;
-    width: 20%;
-    min-width: 120px;
-  }
-
-  .arg-type {
-    width: 20%;
-    min-width: 100px;
-    color: #666;
-  }
-
-  .arg-description {
-    color: #555;
-  }
-
-  @media (max-width: 768px) {
-    .arguments-table th,
-    .arguments-table td {
-      padding: 0.75rem;
-      font-size: 0.9rem;
-    }
-
-    .arg-type {
-      display: none;
-    }
-
-    .arg-name {
-      width: 30%;
-    }
-  }
-</style>

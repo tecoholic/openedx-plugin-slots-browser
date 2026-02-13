@@ -11,13 +11,12 @@ interface Props {
 
 const { pluginData, filtersData, eventsData, basePath } = Astro.props as Props;
 
-// Transform and combine data for search
 const searchData = [
   ...pluginData.pluginSlots.map((slot: any) => ({
     type: 'slot',
     id: slot.id,
     name: slot.id,
-    category: slot.mfeName + ' MFE',
+    category: `${slot.mfeName} MFE`,
     description: slot.description,
     url: `${withBasePath(basePath, `/mfes/${slot.mfeId}`)}#${slot.id}`,
   })),
@@ -40,25 +39,27 @@ const searchData = [
   })),
 ];
 
-// Convert to JSON string for inline script
 const searchDataJson = JSON.stringify(searchData);
 ---
 
-<div class="search-container">
-  <div class="search-wrapper">
+<div class="relative w-full">
+  <label class="input input-bordered flex w-full items-center gap-2 rounded-box">
+    <Icon name="tabler:search" width="1rem" height="1rem" class="text-base-content/70" is:inline />
     <input
       type="text"
       id="search-input"
-      class="search-input"
-      placeholder="Search plugins, filters, slots... (Cmd+K)"
+      class="grow"
+      placeholder="Search plugins, filters, slots..."
       aria-label="Search"
     />
-    <span class="search-hint">⌘K</span>
-  </div>
-  <div id="search-results" class="search-results hidden"></div>
+    <span class="hidden items-center gap-1 text-xs text-base-content/60 sm:flex">
+      <kbd class="kbd kbd-xs">Ctrl</kbd>
+      <kbd class="kbd kbd-xs">K</kbd>
+    </span>
+  </label>
+  <div id="search-results" class="absolute left-0 right-0 top-full z-40 mt-2 hidden rounded-box border border-base-300 bg-base-100 p-1 shadow-xl"></div>
 </div>
 
-<!-- Icon templates for cloning -->
 <template id="icon-slot">
   <Icon name="tabler:puzzle" class="result-icon" is:inline />
 </template>
@@ -69,134 +70,47 @@ const searchDataJson = JSON.stringify(searchData);
   <Icon name="tabler:bell" class="result-icon" is:inline />
 </template>
 
-<style scoped>
-  .search-container {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-  }
-
-  .search-wrapper {
-    position: relative;
-  }
-
-  .search-input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    padding-right: 2.5rem;
-    border: 2px solid var(--color-border);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: all 0.2s ease;
-  }
-
-  .search-input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-  }
-
-  .search-hint {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.75rem;
-    color: #999;
-    pointer-events: none;
-  }
-
-  .search-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    margin-top: 0.5rem;
-    background: white;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    max-height: 400px;
-    overflow-y: auto;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  .search-results.hidden {
-    display: none;
-  }
-
-  .search-results.empty {
-    padding: 1rem;
-    text-align: center;
-    color: #999;
-  }
-</style>
-
 <style is:global>
-  .search-result {
-    padding: 1rem;
-    border-bottom: 1px solid var(--color-border);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .search-result:last-child {
-    border-bottom: none;
-  }
-
-  .search-result:hover {
-    background: rgba(0, 102, 204, 0.05);
-    border-left: 3px solid var(--color-primary);
-    padding-left: calc(1rem - 3px);
-  }
-
-  .search-result a {
+  .search-result-item {
     display: block;
+    border-radius: 0.7rem;
+    padding: 0.6rem 0.7rem;
     text-decoration: none;
-    color: #333;
   }
 
-  .search-result a:hover {
-    text-decoration: none;
-    color: #333;
+  .search-result-item:hover {
+    background: color-mix(in oklab, var(--color-primary) 12%, transparent);
   }
 
-  .result-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .result-header {
+  .search-result-head {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.45rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .search-result-title {
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .search-result-type {
+    font-size: 0.77rem;
+    color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+  }
+
+  .search-result-description {
+    margin-top: 0.15rem;
+    font-size: 0.77rem;
+    color: color-mix(in oklab, var(--color-base-content) 62%, transparent);
+    line-height: 1.35;
   }
 
   .result-icon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
+    width: 0.95rem;
+    height: 0.95rem;
     color: var(--color-primary);
-  }
-
-  .result-title {
-    font-weight: 600;
-    color: var(--color-primary);
-    font-size: 0.95rem;
-  }
-
-  .result-type {
-    font-size: 0.8rem;
-    color: #222;
-    font-weight: 500;
-  }
-
-  .result-description {
-    font-size: 0.8rem;
-    color: #999;
-    line-height: 1.4;
   }
 </style>
 
@@ -205,7 +119,6 @@ const searchDataJson = JSON.stringify(searchData);
   const searchInput = document.getElementById('search-input');
   const resultsContainer = document.getElementById('search-results');
 
-  // Simple fuzzy search function
   function fuzzyMatch(query, text) {
     const queryLower = query.toLowerCase();
     const textLower = text.toLowerCase();
@@ -220,32 +133,24 @@ const searchDataJson = JSON.stringify(searchData);
     return queryIdx === queryLower.length;
   }
 
-  // Score search results based on match quality and location
   function scoreResults(item, query) {
     const queryLower = query.toLowerCase();
     let score = 0;
 
-    // Exact match in name: highest priority
     if (item.name.toLowerCase() === queryLower) {
       score += 1000;
-    }
-    // Name contains query: high priority
-    else if (item.name.toLowerCase().includes(queryLower)) {
+    } else if (item.name.toLowerCase().includes(queryLower)) {
       score += 500;
-    }
-    // Fuzzy match in name: medium-high priority
-    else if (fuzzyMatch(query, item.name)) {
+    } else if (fuzzyMatch(query, item.name)) {
       score += 300;
     }
 
-    // Description match: lower priority
     if (item.description && item.description.toLowerCase().includes(queryLower)) {
       score += 100;
     } else if (item.description && fuzzyMatch(query, item.description)) {
       score += 50;
     }
 
-    // Category match: low priority
     if (item.category && item.category.toLowerCase().includes(queryLower)) {
       score += 25;
     }
@@ -253,29 +158,24 @@ const searchDataJson = JSON.stringify(searchData);
     return { ...item, score };
   }
 
-  // Perform search and return scored, sorted results
   function performSearch(query) {
     if (!query.trim()) {
       resultsContainer.classList.add('hidden');
+      resultsContainer.innerHTML = '';
       return;
     }
 
-    const queryLower = query.toLowerCase();
-
     const results = searchData
       .filter((item) => {
-        const searchText = `${item.name} ${item.description || ''} ${
-          item.category || ''
-        } ${item.filterType || ''}`;
+        const searchText = `${item.name} ${item.description || ''} ${item.category || ''} ${item.filterType || ''}`;
         return fuzzyMatch(query, searchText);
       })
-      .map((item) => scoreResults(item, queryLower))
+      .map((item) => scoreResults(item, query))
       .sort((a, b) => b.score - a.score)
       .slice(0, 10);
 
     if (results.length === 0) {
-      resultsContainer.innerHTML =
-        '<div class="search-results empty">No results found</div>';
+      resultsContainer.innerHTML = '<div class="px-3 py-2 text-sm text-base-content/70">No results found</div>';
       resultsContainer.classList.remove('hidden');
       return;
     }
@@ -292,47 +192,36 @@ const searchDataJson = JSON.stringify(searchData);
         }
 
         return `
-        <div class="search-result">
-          <a href="${item.url}">
-            <div class="result-content">
-              <div class="result-header">
-                ${iconTemplate}
-                <div class="result-title">${item.name}</div>
-              </div>
-              <div class="result-type">${item.category}</div>
-              ${
-                item.description
-                  ? `<div class="result-description">${item.description.slice(0, 60)}${item.description.length > 60 ? '...' : ''}</div>`
-                  : ''
-              }
+          <a class="search-result-item" href="${item.url}">
+            <div class="search-result-head">
+              ${iconTemplate}
+              <div class="search-result-title">${item.name}</div>
             </div>
+            <div class="search-result-type">${item.category || ''}</div>
+            ${item.description ? `<div class="search-result-description">${item.description.slice(0, 80)}${item.description.length > 80 ? '...' : ''}</div>` : ''}
           </a>
-        </div>
-      `;
+        `;
       })
       .join('');
 
     resultsContainer.classList.remove('hidden');
   }
 
-  // Event listeners
-  searchInput.addEventListener('input', (e) => {
+  searchInput?.addEventListener('input', (e) => {
     performSearch(e.target.value);
   });
 
-  // Close results when clicking outside
   document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
-      resultsContainer.classList.add('hidden');
+    if (!searchInput?.contains(e.target) && !resultsContainer?.contains(e.target)) {
+      resultsContainer?.classList.add('hidden');
     }
   });
 
-  // Cmd+K or Ctrl+K to focus search
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
-      searchInput.focus();
-      searchInput.select();
+      searchInput?.focus();
+      searchInput?.select();
     }
   });
 </script>

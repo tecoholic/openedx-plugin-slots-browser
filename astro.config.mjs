@@ -3,6 +3,7 @@ import { copyFileSync, mkdirSync } from 'fs';
 import { dirname } from 'path';
 
 import icon from 'astro-icon';
+import tailwindcss from '@tailwindcss/vite';
 
 // Copy plugin-slots.json and filters.json to dist for client-side access
 function copyDataFiles() {
@@ -24,6 +25,7 @@ export default defineConfig({
   base: '/openedx-plugin-slots-browser',
   integrations: [copyDataFiles(), icon()],
   vite: {
+    plugins: [tailwindcss()],
     ssr: {
       external: ['fuse.js']
     }

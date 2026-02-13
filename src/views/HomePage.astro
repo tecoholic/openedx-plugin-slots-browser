@@ -32,367 +32,157 @@ const releaseGrowthData = getReleaseGrowthData();
   eventsData={eventsData}
   lastUpdated={lastUpdated}
 >
-  <div class="hero">
-    <h1>Open edX Plugins System Catalog</h1>
-    <div class="subtitle-block">
-      A continuously updated catalog of Open edX frontend plugin slots, backend filters, and events,
-      with source links and documentation to help you extend and customize Open edX without
-      forking core code.
-    </div>
-
-    <div class="cards-grid">
-      <div class="data-card">
-        <Icon name="tabler:puzzle" class="card-icon icon-red" is:inline />
-        <div class="card-stat">
-          <div class="stat-number">{slotCount}</div>
-          <div class="stat-label">Frontend Plugin Slots</div>
-        </div>
-        <a href={withBasePath(basePath, '/mfes')} class="btn btn-primary">
-            Browse MFE Slots <Icon name="tabler:arrow-right" class="btn-icon" />
-        </a>
-        <div class="card-footer">
-          <div class="footer-item">
-            <span class="footer-label">With README</span>
-            <span class="footer-value">{documentedCount}</span>
-          </div>
-          <div class="footer-item">
-            <span class="footer-label">With Examples</span>
-            <span class="footer-value">{examplesCount}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="data-card">
-        <Icon name="tabler:filter-code" class="card-icon icon-green" is:inline />
-        <div class="card-stat">
-          <div class="stat-number">{filterCount}</div>
-          <div class="stat-label">Backend Filters</div>
-        </div>
-        <a href={withBasePath(basePath, '/filters')} class="btn btn-primary">
-          Browse Filters  <Icon name="tabler:arrow-right" class="btn-icon" />
-        </a>
-        <div class="card-footer">
-          <div class="footer-item">
-            <span class="footer-label">Domains</span>
-            <span class="footer-value">{filterDomains}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="data-card">
-        <Icon name="tabler:bell" class="card-icon icon-purple" is:inline />
-        <div class="card-stat">
-          <div class="stat-number">{eventCount}</div>
-          <div class="stat-label">Backend Events</div>
-        </div>
-        <a href={withBasePath(basePath, '/events')} class="btn btn-primary">
-          Browse Events  <Icon name="tabler:arrow-right" class="btn-icon" />
-        </a>
-        <div class="card-footer">
-          <div class="footer-item">
-            <span class="footer-label">Namespaces</span>
-            <span class="footer-value">{eventNamespaces}</span>
-          </div>
-        </div>
+  <section class="home-hero hero rounded-box border border-base-300 bg-base-100">
+    <div class="hero-content py-12 text-center">
+      <div class="max-w-4xl space-y-5">
+        <h1 class="text-4xl font-bold sm:text-5xl">Open edX Plugins System Catalog</h1>
+        <p class="text-base leading-relaxed text-base-content/80 sm:text-lg">
+          A continuously updated catalog of Open edX frontend plugin slots, backend filters, and
+          events, with source links and documentation to help you extend and customize Open edX
+          without forking core code.
+        </p>
       </div>
     </div>
+  </section>
 
-    {release.slug === 'main' && (
-      <section class="graph-band" aria-labelledby="graph-subtitle">
-        <div class="graph-section">
-          <p class="graph-subtitle">Counts of slots, filters, and events across releases.</p>
-          <div class="graph-chart-wrap">
-            <canvas
-              id="release-growth-chart"
-              data-growth-chart={JSON.stringify(releaseGrowthData)}
-              role="img"
-              aria-label="Bar chart of slots, filters, and events by release"
-            />
-          </div>
+  <section class="metrics-grid mt-8 grid gap-4 lg:grid-cols-3">
+    <article class="metric-card card border border-base-300 bg-base-100 shadow-sm">
+      <div class="card-body gap-4">
+        <div class="flex items-center justify-between">
+          <h2 class="card-title text-lg">Frontend Plugin Slots</h2>
+          <Icon name="tabler:puzzle" class="text-primary" width="1.7rem" height="1.7rem" is:inline />
         </div>
-      </section>
-    )}
-
-    <div class="spotlight-band">
-        <div class="spotlight-section">
-            <h2>Getting started</h2>
-            <p class="spotlight-subtitle">Short, curated notes with links to deeper dives.</p>
-            <ul class="spotlight-list">
-                <li class="spotlight-card">
-                    <h3>Frontend Plugin Implementation Guide</h3>
-                    <p>A complete guide that demonstrates how to customize Open edX micro-frontends (MFEs) using the Frontend Plugin Framework.</p>
-                    <a href="https://github.com/openedx/sample-plugin/tree/main/frontend" class="spotlight-link">
-                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
-                    </a>
-                </li>
-                <li class="spotlight-card">
-                    <h3>How to use Open edX Filters?</h3>
-                    <p>Official documentation covering pipeline step implementation, hook, trigger and testing.</p>
-                    <a href="https://docs.openedx.org/projects/openedx-filters/en/open-release-sumac.master/how-tos/using-filters.html" class="spotlight-link">
-                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
-                    </a>
-                </li>
-                <li class="spotlight-card">
-                    <h3>Using Open edX Events</h3>
-                    <p>Official docs covering events - sending, receiving and testing.</p>
-                    <a href="https://docs.openedx.org/projects/openedx-events/en/stable/how-tos/using-events.html" class="spotlight-link">
-                        Learn more <Icon name="tabler:arrow-right" class="btn-icon" />
-                    </a>
-                </li>
-            </ul>
+        <p class="text-4xl font-bold text-primary">{slotCount}</p>
+        <a
+          href={withBasePath(basePath, '/mfes')}
+          class="btn btn-primary btn-lg w-full text-base font-semibold shadow-lg shadow-primary/25 sm:w-fit"
+        >
+          Browse MFE Slots <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
+        </a>
+        <div class="mt-auto space-y-1 border-t border-base-300/80 pt-3 text-xs text-base-content/65">
+          <p class="flex items-center justify-between">
+            <span class="uppercase tracking-wide">With README</span>
+            <span class="font-semibold text-base-content/75">{documentedCount}</span>
+          </p>
+          <p class="flex items-center justify-between">
+            <span class="uppercase tracking-wide">With Examples</span>
+            <span class="font-semibold text-base-content/75">{examplesCount}</span>
+          </p>
         </div>
-    </div>
+      </div>
+    </article>
 
-    <div class="contribute-section">
-      <h2>Help improve this catalog!</h2>
-      <p>Visit the <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank">GitHub repository</a> to report issues, suggest features, or submit pull requests.</p>
-    </div>
-  </div>
+    <article class="metric-card card border border-base-300 bg-base-100 shadow-sm">
+      <div class="card-body gap-4">
+        <div class="flex items-center justify-between">
+          <h2 class="card-title text-lg">Backend Filters</h2>
+          <Icon name="tabler:filter-code" class="text-secondary" width="1.7rem" height="1.7rem" is:inline />
+        </div>
+        <p class="text-4xl font-bold text-secondary">{filterCount}</p>
+        <a
+          href={withBasePath(basePath, '/filters')}
+          class="btn btn-secondary btn-lg w-full text-base font-semibold shadow-lg shadow-secondary/25 sm:w-fit"
+        >
+          Browse Filters <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
+        </a>
+        <div class="mt-auto space-y-1 border-t border-base-300/80 pt-3 text-xs text-base-content/65">
+          <p class="flex items-center justify-between">
+            <span class="uppercase tracking-wide">Domains</span>
+            <span class="font-semibold text-base-content/75">{filterDomains}</span>
+          </p>
+        </div>
+      </div>
+    </article>
 
+    <article class="metric-card card border border-base-300 bg-base-100 shadow-sm">
+      <div class="card-body gap-4">
+        <div class="flex items-center justify-between">
+          <h2 class="card-title text-lg">Backend Events</h2>
+          <Icon name="tabler:bell" class="text-accent" width="1.7rem" height="1.7rem" is:inline />
+        </div>
+        <p class="text-4xl font-bold text-accent">{eventCount}</p>
+        <a
+          href={withBasePath(basePath, '/events')}
+          class="btn btn-accent btn-lg w-full text-base font-semibold shadow-lg shadow-accent/25 sm:w-fit"
+        >
+          Browse Events <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
+        </a>
+        <div class="mt-auto space-y-1 border-t border-base-300/80 pt-3 text-xs text-base-content/65">
+          <p class="flex items-center justify-between">
+            <span class="uppercase tracking-wide">Namespaces</span>
+            <span class="font-semibold text-base-content/75">{eventNamespaces}</span>
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  {release.slug === 'main' && (
+    <section class="trend-card card mt-8 border border-base-300 bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Release Trends</h2>
+        <p class="text-sm text-base-content/75">Counts of slots, filters, and events across releases.</p>
+        <div class="h-80 w-full sm:h-96">
+          <canvas
+            id="release-growth-chart"
+            data-growth-chart={JSON.stringify(releaseGrowthData)}
+            role="img"
+            aria-label="Bar chart of slots, filters, and events by release"
+            class="h-full w-full"
+          />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="card mt-8 border border-base-300 bg-base-100 shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title">Getting Started</h2>
+      <p class="text-sm text-base-content/75">Short, curated notes with links to deeper dives.</p>
+      <ul class="grid gap-4 lg:grid-cols-3">
+        <li class="resource-card rounded-box border border-base-300 bg-base-200/70 p-4">
+          <h3 class="mb-2 text-lg font-semibold">Frontend Plugin Implementation Guide</h3>
+          <p class="mb-3 text-sm text-base-content/80">
+            A complete guide that demonstrates how to customize Open edX micro-frontends using the
+            Frontend Plugin Framework.
+          </p>
+          <a href="https://github.com/openedx/sample-plugin/tree/main/frontend" class="link link-primary inline-flex items-center gap-1">
+            Learn more <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
+          </a>
+        </li>
+        <li class="resource-card rounded-box border border-base-300 bg-base-200/70 p-4">
+          <h3 class="mb-2 text-lg font-semibold">How to use Open edX Filters?</h3>
+          <p class="mb-3 text-sm text-base-content/80">
+            Official documentation covering pipeline step implementation, hook, trigger, and
+            testing.
+          </p>
+          <a href="https://docs.openedx.org/projects/openedx-filters/en/open-release-sumac.master/how-tos/using-filters.html" class="link link-primary inline-flex items-center gap-1">
+            Learn more <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
+          </a>
+        </li>
+        <li class="resource-card rounded-box border border-base-300 bg-base-200/70 p-4">
+          <h3 class="mb-2 text-lg font-semibold">Using Open edX Events</h3>
+          <p class="mb-3 text-sm text-base-content/80">
+            Official docs covering events: sending, receiving, and testing.
+          </p>
+          <a href="https://docs.openedx.org/projects/openedx-events/en/stable/how-tos/using-events.html" class="link link-primary inline-flex items-center gap-1">
+            Learn more <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="contribute-alert alert alert-info mt-8">
+    <Icon name="tabler:info-circle" width="1.1rem" height="1.1rem" />
+    <span>
+      Help improve this catalog via the
+      <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank" rel="noopener" class="link link-primary">
+        GitHub repository
+      </a>.
+    </span>
+  </section>
 </BaseLayout>
-
-<style>
-  .hero {
-    text-align: center;
-    margin: 3rem 0;
-  }
-
-  .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  .subtitle {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 3rem;
-  }
-
-  .subtitle-block {
-    max-width: 720px;
-    margin: 0 auto 3rem auto;
-    font-size: 1.05rem;
-    color: #5a5a5a;
-    line-height: 1.7;
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin: 3rem auto;
-    max-width: 1000px;
-  }
-
-  .data-card {
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    padding: 2rem;
-    text-align: center;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    position: relative;
-  }
-
-  .card-footer {
-    margin-top: auto;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .footer-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-  }
-
-  .footer-label {
-    color: #666;
-    font-weight: 500;
-  }
-
-  .footer-value {
-    color: var(--color-primary);
-    font-weight: 600;
-  }
-
-  .card-icon {
-    width: 3rem;
-    height: 3rem;
-    margin: 0 auto;
-  }
-
-  .card-icon.icon-red {
-    color: #dd0000;
-  }
-
-  .card-icon.icon-green {
-    color: #008855;
-  }
-
-  .card-icon.icon-purple {
-    color: #7c3aed;
-  }
-
-  .card-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .stat-number {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--color-primary);
-  }
-
-  .stat-label {
-    font-weight: 600;
-    color: #333;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-
-  .btn-primary {
-    background: var(--color-primary);
-    color: white;
-  }
-
-  .btn-primary:hover {
-    background: var(--color-primary-darker);
-  }
-
-  .btn-icon {
-    width: 1em;
-    height: 1em;
-  }
-
-  .spotlight-band {
-    margin: 4rem auto;
-    max-width: 1000px;
-    background: #f8f9ff;
-    padding: 2rem;
-    border-radius: 16px;
-    border: 1px solid #e2e6ff;
-    text-align: left;
-  }
-
-  .graph-band {
-    margin: 3rem auto 0 auto;
-    max-width: 1000px;
-    background: #fff;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: left;
-  }
-
-  .graph-section h2 {
-    margin: 0 0 0.5rem 0;
-  }
-
-  .graph-subtitle {
-    margin-bottom: 1.5rem;
-    color: #555;
-  }
-
-  .graph-chart-wrap {
-    position: relative;
-    width: 100%;
-    min-height: 320px;
-  }
-
-  #release-growth-chart {
-    width: 100%;
-    height: 320px;
-  }
-
-  .spotlight-section h2 {
-    margin: 0 0 0.5rem 0;
-  }
-
-  .spotlight-subtitle {
-    margin-bottom: 1.5rem;
-    color: #555;
-  }
-
-  .spotlight-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 1rem;
-  }
-
-  .spotlight-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    border: 1px solid var(--color-border);
-  }
-
-  .spotlight-card h3 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-
-  .spotlight-card p {
-    margin: 0 0 1rem 0;
-    color: #555;
-  }
-
-  .spotlight-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .spotlight-link:hover {
-    text-decoration: underline;
-  }
-
-  .contribute-section {
-    margin-top: 4rem;
-    background: #f5f5f5;
-    padding: 2rem;
-    border-radius: 12px;
-  }
-
-  .contribute-section h2 {
-    margin-top: 0;
-  }
-
-  .contribute-section a {
-    font-weight: 600;
-  }
-
-  @media (max-width: 720px) {
-    .graph-chart-wrap {
-      min-height: 280px;
-    }
-
-    #release-growth-chart {
-      height: 280px;
-    }
-  }
-</style>
 
 <script>
   async function initializeReleaseGrowthChart() {
@@ -434,24 +224,24 @@ const releaseGrowthData = getReleaseGrowthData();
         {
           label: 'MFE Plugin Slots',
           data: growthData.map((point) => point.slotCount),
-          backgroundColor: '#006d77',
-          borderColor: '#006d77',
+          backgroundColor: '#155dfc',
+          borderColor: '#155dfc',
           borderWidth: 1,
           borderRadius: 6,
         },
         {
           label: 'Filters',
           data: growthData.map((point) => point.filterCount),
-          backgroundColor: '#83c5be',
-          borderColor: '#83c5be',
+          backgroundColor: '#00b5b6',
+          borderColor: '#00b5b6',
           borderWidth: 1,
           borderRadius: 6,
         },
         {
           label: 'Events',
           data: growthData.map((point) => point.eventCount),
-          backgroundColor: '#e29578',
-          borderColor: '#e29578',
+          backgroundColor: '#ef9f1c',
+          borderColor: '#ef9f1c',
           borderWidth: 1,
           borderRadius: 6,
         },

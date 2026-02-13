@@ -1,4 +1,5 @@
 ---
+import '../styles/app.css';
 import SearchBar from '../components/SearchBar.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { Icon } from 'astro-icon/components';
@@ -38,6 +39,7 @@ const {
   showFilters = false,
   lastUpdated,
 } = Astro.props as Props;
+
 const formattedLastUpdated = lastUpdated
   ? new Date(lastUpdated).toLocaleString(undefined, {
       year: 'numeric',
@@ -54,284 +56,47 @@ const pathSuffix = currentPath.startsWith(normalizedBasePath)
   ? currentPath.slice(normalizedBasePath.length) || '/'
   : '/';
 const normalizedSuffix = pathSuffix.startsWith('/') ? pathSuffix : `/${pathSuffix}`;
+
 const releaseLinks = releaseOptions.map((option) => {
   const optionBase = option.basePath.endsWith('/') ? option.basePath.slice(0, -1) : option.basePath;
   const targetPath = normalizedSuffix === '/' ? optionBase : `${optionBase}${normalizedSuffix}`;
   return { ...option, targetPath };
 });
+
+const navItems = [
+  { href: '/mfes', label: 'MFE Slots', icon: 'tabler:puzzle' },
+  { href: '/filters', label: 'Filters', icon: 'tabler:filter-code' },
+  { href: '/events', label: 'Events', icon: 'tabler:bell' },
+  { href: '/about', label: 'About', icon: 'tabler:info-circle' },
+];
+
+const isNavActive = (href: string) =>
+  normalizedSuffix === href || (href !== '/' && normalizedSuffix.startsWith(`${href}/`));
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="openedx">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} | Open edX Plugins System Catalog</title>
-    <style is:global>
-      :root {
-        --color-primary: #0066cc;
-        --color-primary-darker: #00458a;
-        --color-secondary: #f0f0f0;
-        --color-text: #333;
-        --color-border: #ddd;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-          Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        color: var(--color-text);
-        line-height: 1.6;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-
-      header {
-        background: white;
-        border-bottom: 1px solid var(--color-border);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-
-      nav {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 0 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 2rem;
-      }
-
-      .nav-left {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-shrink: 0;
-        min-width: 0;
-      }
-
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        white-space: nowrap;
-        flex-shrink: 0;
-      }
-
-      .nav-brand strong {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        line-height: 1.1;
-      }
-
-      .nav-brand-icon {
-        width: 2.25rem;
-        height: 2.25rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background-color: #e7f1ff;
-        border: 2px solid var(--color-primary);
-        color: var(--color-primary);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        flex-shrink: 0;
-      }
-
-      .nav-center {
-        flex: 1;
-        min-width: 250px;
-        max-width: 500px;
-      }
-      .nav-right {
-        display: flex;
-        gap: 1rem;
-        flex-shrink: 0;
-      }
-
-      .release-switcher {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.35rem 0.6rem;
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        background: #f7f9ff;
-        color: #1d3b70;
-        font-size: 0.85rem;
-        font-weight: 600;
-        white-space: nowrap;
-      }
-
-      .release-switcher label {
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        font-size: 0.7rem;
-        padding-right: 0.5rem;
-        border-right: 1px solid var(--color-primary-darker);
-      }
-
-      .release-select {
-        border: none;
-        background: transparent;
-        font: inherit;
-        font-size: 0.85rem;
-        font-weight: 600;
-        padding-right: 0.75rem;
-        cursor: pointer;
-        appearance: none;
-        background-image: linear-gradient(45deg, transparent 50%, #1d3b70 50%),
-          linear-gradient(135deg, #1d3b70 50%, transparent 50%);
-        background-position: calc(100% - 12px) calc(50%),
-          calc(100% - 7px) calc(50%);
-        background-size: 5px 5px, 5px 5px;
-        background-repeat: no-repeat;
-      }
-
-      .release-select:focus {
-        outline: none;
-      }
-
-      nav a {
-        color: var(--color-primary);
-        text-decoration: none;
-      }
-
-      nav a:hover {
-        text-decoration: none;
-        color: var(--color-primary-darker);
-      }
-
-      .nav-link-with-icon {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        white-space: nowrap;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-      }
-
-      .nav-link-with-icon:hover {
-          background-color: #f3f5fd;
-      }
-
-      .nav-link-with-icon :global(svg) {
-        width: 1.1em;
-        height: 1.1em;
-        display: inline;
-      }
-
-      .nav-brand-icon :global(svg) {
-        display: block;
-        width: 1.3em;
-        height: 1.3em;
-      }
-
-      .content-wrapper {
-        display: flex;
-        flex: 1;
-        min-height: 0;
-      }
-
-      main {
-        flex: 1;
-        padding: 2rem;
-        max-width: 100%;
-      }
-
-      h1 {
-        margin-bottom: 1rem;
-        font-size: 2.5rem;
-      }
-
-      h2 {
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        font-size: 1.8rem;
-      }
-
-      h3 {
-        margin-top: 1.5rem;
-        margin-bottom: 0.5rem;
-        font-size: 1.3rem;
-      }
-
-      a {
-        color: var(--color-primary);
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      footer {
-        background: var(--color-secondary);
-        padding: 2rem;
-        margin-top: auto;
-        text-align: center;
-        font-size: 0.9rem;
-        color: #666;
-        grid-column: 1 / -1;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      @media (max-width: 768px) {
-        nav {
-          padding: 0 1rem;
-        }
-
-        main {
-          padding: 1.5rem;
-        }
-      }
-
-      @media (max-width: 786px) {
-          .nav-center {
-              display: none;
-          }
-      }
-
-      @media (max-width: 720px) {
-        .release-switcher label {
-          display: none;
-        }
-      }
-    </style>
   </head>
-  <body>
-    <header>
-      <nav>
-        <div class="nav-left">
-          <a href={withBasePath(basePath, '/')} class="nav-brand">
-            <strong>
-              <span class="nav-brand-icon">
-                <Icon name="tabler:plug" width="1.25rem" height="1.25rem" />
-              </span>
-              Open edX Plugins System Catalog
-            </strong>
+  <body class="flex min-h-dvh flex-col bg-base-200 text-base-content">
+    <header class="catalog-header sticky top-0 z-50 border-b border-base-300 bg-base-100/95 backdrop-blur">
+      <div class="navbar mx-auto max-w-[1440px] gap-3 px-4 py-2">
+        <div class="navbar-start w-auto flex-none min-w-0 gap-2">
+          <a href={withBasePath(basePath, '/')} class="catalog-brand btn btn-ghost min-h-0 px-2 normal-case text-base sm:text-lg">
+            <span class="catalog-brand-icon inline-flex size-8 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary">
+              <Icon name="tabler:plug" width="1.05rem" height="1.05rem" />
+            </span>
+            <span class="hidden xl:inline">Open edX Plugins System Catalog</span>
+            <span class="xl:hidden">Open edX Catalog</span>
           </a>
-          <div class="release-switcher">
-            <label for="release-select">Release</label>
+          <div class="hidden md:block">
             <select
               id="release-select"
-              class="release-select"
+              class="select select-bordered select-sm w-36"
               aria-label="Select release"
               onchange="window.location.href = this.value"
             >
@@ -343,7 +108,8 @@ const releaseLinks = releaseOptions.map((option) => {
             </select>
           </div>
         </div>
-        <div class="nav-center">
+
+        <div class="navbar-center hidden flex-1 justify-stretch lg:flex">
           <SearchBar
             pluginData={pluginData}
             filtersData={filtersData}
@@ -351,56 +117,95 @@ const releaseLinks = releaseOptions.map((option) => {
             basePath={basePath}
           />
         </div>
-        <div class="nav-right">
-          <a href={withBasePath(basePath, '/mfes')} class="nav-link-with-icon">
-            <Icon name="tabler:puzzle" width="1em" height="1em" is:inline />
-            MFE Slots
-          </a>
-          <a href={withBasePath(basePath, '/filters')} class="nav-link-with-icon">
-            <Icon name="tabler:filter-code" width="1em" height="1em" is:inline />
-            Filters
-          </a>
-          <a href={withBasePath(basePath, '/events')} class="nav-link-with-icon">
-            <Icon name="tabler:bell" width="1em" height="1em" is:inline />
-            Events
-          </a>
-          <a href={withBasePath(basePath, '/about')} class="nav-link-with-icon">
-            <Icon name="tabler:info-circle" width="1em" height="1em" />
-            About
-          </a>
+
+        <div class="navbar-end w-auto flex-none gap-1">
+          <div class="hidden lg:flex lg:items-center lg:gap-1">
+            {navItems.map((item) => (
+              <a
+                href={withBasePath(basePath, item.href)}
+                class={`catalog-nav-link btn btn-ghost btn-sm ${isNavActive(item.href) ? 'btn-active' : ''}`}
+              >
+                <Icon name={item.icon} width="1em" height="1em" is:inline />
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <div class="dropdown dropdown-end lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-square btn-sm" aria-label="Open menu">
+              <Icon name="tabler:menu-2" width="1.1rem" height="1.1rem" />
+            </div>
+            <ul tabindex="0" class="menu dropdown-content z-[1] mt-3 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
+              <li class="md:hidden">
+                <label class="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-base-content/70" for="release-select-mobile">
+                  Release
+                </label>
+                <select
+                  id="release-select-mobile"
+                  class="select select-bordered select-sm w-full"
+                  aria-label="Select release"
+                  onchange="window.location.href = this.value"
+                >
+                  {releaseLinks.map((option) => (
+                    <option value={option.targetPath} selected={option.slug === release}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </li>
+              {navItems.map((item) => (
+                <li>
+                  <a href={withBasePath(basePath, item.href)} class={isNavActive(item.href) ? 'active' : ''}>
+                    <Icon name={item.icon} width="1em" height="1em" is:inline />
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </nav>
-    </header>
-    <div class="content-wrapper">
-      {showSidebar && (
-        <Sidebar
+      </div>
+      <div class="mx-auto max-w-[1440px] px-4 pb-3 lg:hidden">
+        <SearchBar
           pluginData={pluginData}
           filtersData={filtersData}
           eventsData={eventsData}
           basePath={basePath}
-          currentMfeId={currentMfeId}
-          currentSlotId={currentSlotId}
-          currentEventId={currentEventId}
-          currentFilterId={currentFilterId}
-          showEvents={showEvents}
-          showFilters={showFilters}
         />
+      </div>
+    </header>
+
+    <div class="catalog-shell mx-auto flex w-full max-w-[1440px] flex-1 gap-4 px-4 py-5">
+      {showSidebar && (
+        <div class="hidden w-80 shrink-0 lg:block">
+          <Sidebar
+            pluginData={pluginData}
+            filtersData={filtersData}
+            eventsData={eventsData}
+            basePath={basePath}
+            currentMfeId={currentMfeId}
+            currentSlotId={currentSlotId}
+            currentEventId={currentEventId}
+            currentFilterId={currentFilterId}
+            showEvents={showEvents}
+            showFilters={showFilters}
+          />
+        </div>
       )}
-      <main class={showSidebar ? 'with-sidebar' : ''}>
+
+      <main class="catalog-main min-w-0 flex-1 space-y-1">
         <slot />
       </main>
     </div>
-    <footer>
-      <p>
-        Open edX Plugins System Catalog — Auto-updating catalog of frontend plugin slots
-      </p>
-      {formattedLastUpdated && (
-        <p>
-          <small>
+
+    <footer class="catalog-footer mt-auto border-t border-base-300 bg-base-100">
+      <div class="mx-auto max-w-[1440px] px-4 py-4 text-center text-sm text-base-content/80">
+        <p>Open edX Plugins System Catalog - Auto-updating catalog of frontend plugin slots</p>
+        {formattedLastUpdated && (
+          <p class="mt-1">
             Last updated: <time>{formattedLastUpdated}</time>
-          </small>
-        </p>
-      )}
+          </p>
+        )}
+      </div>
     </footer>
   </body>
 </html>

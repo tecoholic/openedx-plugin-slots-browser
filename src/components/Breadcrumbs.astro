@@ -8,72 +8,21 @@ import { Icon } from 'astro-icon/components';
 
 const { items } = Astro.props as { items: BreadcrumbItem[] };
 const lastIndex = items.length - 1;
-const folderIcon = 'tabler:folder';
 ---
 
-<nav class="breadcrumb" aria-label="Breadcrumb">
-  {items.map((item, index) => (
-    <span class="crumb">
-      {item.href && index < lastIndex ? (
-        <a href={item.href}>
-          <span class="link-content">
-            <Icon name={folderIcon} />
-            <span>{item.label}</span>
-          </span>
-        </a>
-      ) : (
-        <span class="current" aria-current="page">{item.label}</span>
-      )}
-      {index < lastIndex && <span class="separator">/</span>}
-    </span>
-  ))}
-</nav>
-
-<style>
-  .breadcrumb {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: start;
-    gap: 0;
-    padding: 0;
-  }
-
-  .crumb {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .breadcrumb a {
-    color: var(--color-primary);
-    text-decoration: none;
-  }
-
-  .link-content {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-
-  .link-content :global(svg) {
-    width: 1em;
-    height: 1em;
-    display: inline;
-    vertical-align: -0.125em;
-  }
-
-  .breadcrumb a:hover {
-    text-decoration: underline;
-  }
-
-  .separator {
-    margin: 0 0.5rem;
-  }
-
-  .current {
-    font-weight: 500;
-  }
-</style>
+<div class="breadcrumbs mb-4 text-sm">
+  <ul>
+    {items.map((item, index) => (
+      <li>
+        {item.href && index < lastIndex ? (
+          <a href={item.href} class="inline-flex items-center gap-1 text-primary">
+            <Icon name="tabler:folder" width="0.95rem" height="0.95rem" is:inline />
+            {item.label}
+          </a>
+        ) : (
+          <span class="font-medium text-base-content/80" aria-current="page">{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ul>
+</div>

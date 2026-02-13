@@ -13,7 +13,6 @@ const { releaseSlug } = Astro.props as Props;
 const { release, pluginData, filtersData, eventsData } = getReleaseData(releaseSlug);
 const basePath = release.basePath;
 
-// Group events by namespace
 const eventsByNamespace = eventsData.events.reduce(
   (acc, event) => {
     if (!acc[event.namespace]) {
@@ -25,11 +24,8 @@ const eventsByNamespace = eventsData.events.reduce(
   {} as Record<string, typeof eventsData.events>
 );
 
-// Sort events by eventName within each namespace
 Object.keys(eventsByNamespace).forEach((namespace) => {
-  eventsByNamespace[namespace].sort((a, b) =>
-    a.eventName.localeCompare(b.eventName)
-  );
+  eventsByNamespace[namespace].sort((a, b) => a.eventName.localeCompare(b.eventName));
 });
 
 const namespaces = Object.keys(eventsByNamespace).sort();
@@ -45,264 +41,72 @@ const namespaces = Object.keys(eventsByNamespace).sort();
   showSidebar
   showEvents
 >
-  <div class="events-header">
-    <div class="title-with-badges">
-      <h1>Open edX Events</h1>
-      <div class="header-badges">
-        <span class="badge-stat badge-events">
-          <Icon name="tabler:bell" width="1em" height="1em" is:inline />
-          {eventsData.events.length} Events
-        </span>
-        <span class="badge-stat badge-domains">
-          <Icon name="tabler:folder" width="1em" height="1em" />
-          {namespaces.length} {namespaces.length === 1 ? 'Domain' : 'Domains'}
-        </span>
-      </div>
+  <section class="space-y-4">
+    <div class="flex flex-wrap items-center gap-2">
+      <h1 class="text-4xl font-bold">Open edX Events</h1>
+      <span class="badge badge-error gap-1 py-3">
+        <Icon name="tabler:bell" width="0.95rem" height="0.95rem" is:inline />
+        {eventsData.events.length} Events
+      </span>
+      <span class="badge badge-secondary gap-1 py-3">
+        <Icon name="tabler:folder" width="0.95rem" height="0.95rem" />
+        {namespaces.length} {namespaces.length === 1 ? 'Domain' : 'Domains'}
+      </span>
     </div>
-    <p class="subtitle">All OpenEdX event signals from the openedx-events repository</p>
-  </div>
+    <p class="max-w-3xl text-base-content/75">All Open edX event signals from the openedx-events repository.</p>
+  </section>
 
-  {
-    namespaces.map((namespace) => (
-      <section class="namespace-section" id={namespace}>
-         <div class="namespace-header">
-            <h2>
-              <a href={`#${namespace}`} class="namespace-anchor">
-                {namespace.replace(/-/g, ' ').split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+  <section class="mt-6 space-y-8">
+    {namespaces.map((namespace) => (
+      <article class="card border border-base-300 bg-base-100 shadow-sm" id={namespace}>
+        <div class="card-body gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="card-title text-2xl">
+              <a href={`#${namespace}`} class="link link-hover">
+                {namespace
+                  .replace(/-/g, ' ')
+                  .split(' ')
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' ')}
               </a>
             </h2>
-            <span class="namespace-badge">{eventsByNamespace[namespace].length} events</span>
+            <span class="badge badge-ghost">{eventsByNamespace[namespace].length} events</span>
           </div>
 
-        <table class="events-table" data-namespace={namespace}>
-          <thead>
-            <tr>
-              <th>Event Name</th>
-              <th>Description</th>
-              <th>Source</th>
-            </tr>
-          </thead>
-          <tbody>
-            {eventsByNamespace[namespace].map((event) => (
-              <tr>
-                <td class="event-name">
-                  <a href={withBasePath(basePath, `/events/${event.id}`)}>
-                    {event.eventName}
-                  </a>
-                  <p class="event-type">{event.eventType}</p>
-                </td>
-                <td class="event-description">{event.description || '-'}</td>
-                <td class="event-source">
-                  <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer" class="source-link">
-                    <Icon name="tabler:external-link" />
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-       </section>
-    ))
-  }
+          <div class="overflow-x-auto rounded-box border border-base-300">
+            <table class="table table-zebra events-table" data-namespace={namespace}>
+              <thead>
+                <tr>
+                  <th>Event Name</th>
+                  <th>Description</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                {eventsByNamespace[namespace].map((event) => (
+                  <tr>
+                    <td class="align-top">
+                      <a href={withBasePath(basePath, `/events/${event.id}`)} class="link link-primary block">
+                        {event.eventName}
+                      </a>
+                      <code class="mt-2 inline-block rounded bg-base-200 px-2 py-1 text-xs">{event.eventType}</code>
+                    </td>
+                    <td class="text-sm text-base-content/80">{event.description || '-'}</td>
+                    <td class="text-center">
+                      <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-xs" aria-label={`View source for ${event.eventName}`}>
+                        <Icon name="tabler:external-link" width="0.95rem" height="0.95rem" />
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+    ))}
+  </section>
 </BaseLayout>
-
-<style>
-  .events-header {
-    margin-bottom: 3rem;
-  }
-
-  .title-with-badges {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-
-  .events-header h1 {
-    font-size: 2.5rem;
-    margin: 0;
-  }
-
-  .header-badges {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .badge-stat {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  .badge-events {
-    background: #ffe7e7;
-    color: #cc0000;
-  }
-
-  .badge-domains {
-    background: #f0e7ff;
-    color: #7c3aed;
-  }
-
-  .badge-stat :global(svg) {
-    width: 1.1em;
-    height: 1.1em;
-    display: inline;
-  }
-
-  .subtitle {
-    font-size: 1.1rem;
-    color: #666;
-    line-height: 1.6;
-    max-width: 700px;
-  }
-
-  .namespace-section {
-    margin-bottom: 3rem;
-  }
-
-  .namespace-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .namespace-section h2 {
-    margin: 0;
-  }
-
-  .namespace-anchor {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .namespace-anchor:hover {
-    text-decoration: underline;
-  }
-
-  .namespace-badge {
-    background: #f0f0f0;
-    padding: 0.4rem 0.8rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    color: #666;
-    font-weight: 500;
-  }
-
-  .events-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    overflow: hidden;
-    background: white;
-  }
-
-  .events-table thead {
-    background: #e8e8e8;
-    border-bottom: 2px solid var(--color-border);
-  }
-
-  .events-table th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    font-size: 0.95rem;
-    background: #e8e8e8;
-  }
-
-  .events-table tbody tr {
-    border-bottom: 1px solid var(--color-border);
-    transition: background-color 0.2s ease;
-  }
-
-  .events-table tbody tr:hover {
-    background-color: #fafafa;
-  }
-
-  .events-table tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  .events-table td {
-    padding: 1rem;
-    font-size: 0.95rem;
-    color: #666;
-  }
-
-  .event-name {
-    font-weight: 500;
-    color: #333;
-  }
-
-  .event-name a {
-    color: var(--color-primary);
-    text-decoration: none;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-
-  .event-name a:hover {
-    text-decoration: underline;
-  }
-
-  .event-type {
-    background: var(--color-secondary);
-    padding: 0.3rem 0.5rem;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.75rem;
-    color: #555;
-    display: inline-block;
-    word-break: break-word;
-    margin: 0;
-  }
-
-  .event-description {
-    color: #666;
-    max-width: 300px;
-    word-break: break-word;
-  }
-
-  .event-source {
-    text-align: center;
-  }
-
-  .source-link {
-    display: inline-flex;
-    align-items: center;
-    color: var(--color-primary);
-    text-decoration: none;
-  }
-
-  .source-link:hover {
-    opacity: 0.7;
-  }
-
-  .source-link :global(svg) {
-    width: 1.2em;
-    height: 1.2em;
-  }
-
-  :global(.datatable-top) {
-      display: flex;
-    justify-content: end;
-  }
-
-  :global(.datatable-info) {
-    display: none;
-  }
-</style>
 
 <script>
   import { DataTable } from 'simple-datatables';
@@ -310,6 +114,11 @@ const namespaces = Object.keys(eventsByNamespace).sort();
   function initializeTables() {
     const tables = document.querySelectorAll('.events-table');
     tables.forEach((table) => {
+      if (table.dataset.initialized === 'true') {
+        return;
+      }
+
+      table.dataset.initialized = 'true';
       new DataTable(table, {
         searchable: true,
         sortable: true,
@@ -319,9 +128,6 @@ const namespaces = Object.keys(eventsByNamespace).sort();
     });
   }
 
-  // Initialize on page load
   document.addEventListener('DOMContentLoaded', initializeTables);
-
-  // Also initialize for client-side navigation
   document.addEventListener('astro:page-load', initializeTables);
 </script>

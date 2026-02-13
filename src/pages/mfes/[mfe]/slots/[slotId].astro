@@ -1,0 +1,30 @@
+---
+import SlotDetailPage from '../../../../views/SlotDetailPage.astro';
+import { getReleaseData } from '../../../../lib/release-data';
+import { withBasePath } from '../../../../lib/paths';
+
+export function getStaticPaths() {
+  const { pluginData } = getReleaseData('main');
+  return pluginData.pluginSlots.map((slot) => ({
+    params: { mfe: slot.mfeId, slotId: slot.id },
+  }));
+}
+
+const { mfe, slotId } = Astro.params;
+const { release, pluginData, filtersData, eventsData } = getReleaseData('main');
+const slot = pluginData.pluginSlots.find((s) => s.mfeId === mfe && s.id === slotId);
+const mfeInfo = pluginData.mfes.find((m) => m.id === mfe);
+
+if (!slot || !mfeInfo) {
+  return Astro.redirect(withBasePath(release.basePath, '/'));
+}
+---
+
+<SlotDetailPage
+  release={release}
+  pluginData={pluginData}
+  filtersData={filtersData}
+  eventsData={eventsData}
+  slot={slot}
+  mfe={mfeInfo}
+/>

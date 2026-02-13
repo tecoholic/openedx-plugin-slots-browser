@@ -27,229 +27,78 @@ const basePath = release.basePath;
   showSidebar
   currentMfeId={mfeInfo.id}
 >
-  <div class="header">
+  <section class="space-y-4">
     <Breadcrumbs
       items={[
         { label: 'MFEs', href: withBasePath(basePath, '/mfes') },
         { label: mfeInfo.name },
       ]}
     />
-    <div class="header-top">
-      <h1>{mfeInfo.name}</h1>
-       <a href={mfeInfo.repository} target="_blank" rel="noopener noreferrer" class="btn btn-small">
-         <Icon name="tabler:file-text" /> Repository
-       </a>
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <h1 class="text-4xl font-bold">{mfeInfo.name}</h1>
+      <a href={mfeInfo.repository} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+        <Icon name="tabler:brand-github" width="1rem" height="1rem" /> View on GitHub
+      </a>
     </div>
-    {mfeInfo.description && <p class="description">{mfeInfo.description}</p>}
-  </div>
+    {mfeInfo.description && <p class="text-base-content/75">{mfeInfo.description}</p>}
+  </section>
 
-  <section>
-    <h2>Plugin Slots ({slots.length})</h2>
+  <section class="mt-6 space-y-4">
+    <h2 class="text-2xl font-semibold">Plugin Slots ({slots.length})</h2>
 
-    {
-      slots.length === 0 ? (
-        <p class="no-slots">
-          No plugin slots found in this MFE. The plugin-slots directory may not exist or may be
+    {slots.length === 0 ? (
+      <div class="alert">
+        <Icon name="tabler:info-circle" width="1rem" height="1rem" />
+        <span>
+          No plugin slots found in this MFE. The `plugin-slots` directory may not exist or may be
           empty.
-        </p>
-      ) : (
-        <>
-          <div class="slots-grid">
-          {slots.map((slot) => (
-            <div class="slot-card">
-                <a href={withBasePath(basePath, `/slots/${slot.id}`)}><h3>{slot.id}</h3></a>
+        </span>
+      </div>
+    ) : (
+      <div class="grid gap-4 md:grid-cols-2">
+        {slots.map((slot) => (
+          <article class="slot-card card border border-base-300 bg-base-100 shadow-sm">
+            <div class="card-body gap-3">
+              <h3 class="card-title text-base">
+                <a href={withBasePath(basePath, `/mfes/${slot.mfeId}/slots/${slot.id}`)} class="link link-primary break-all">
+                  {slot.id}
+                </a>
+              </h3>
 
-              <div class="slot-badges">
+              <div class="flex flex-wrap gap-1">
                 {!slot.readmePresent && (
-                  <span class="badge badge-missing" title="README documentation is missing">
-                    <Icon name="tabler:x" /> README missing
+                  <span class="badge badge-error gap-1">
+                    <Icon name="tabler:x" width="0.8rem" height="0.8rem" /> README missing
                   </span>
                 )}
                 {slot.hasExamples && (
-                  <span class="badge badge-examples" title="Example code available">
-                    <Icon name="tabler:code" /> Example Code
+                  <span class="badge badge-success gap-1">
+                    <Icon name="tabler:code" width="0.8rem" height="0.8rem" /> Example code
                   </span>
                 )}
                 {slot.readmePresent && !slot.hasExamples && (
-                  <span class="badge badge-no-examples" title="No example code available">
-                    <Icon name="tabler:alert-circle" /> Example missing
+                  <span class="badge badge-warning gap-1">
+                    <Icon name="tabler:alert-circle" width="0.8rem" height="0.8rem" /> Example missing
                   </span>
                 )}
               </div>
 
-              {slot.description && <p class="slot-description">{slot.description}</p>}
+              {slot.description && <p class="text-sm text-base-content/80">{slot.description}</p>}
 
-              <div class="slot-footer">
-                <a href={slot.sourceUrl} target="_blank" rel="noopener noreferrer" class="source-link">
-                  View on Github →
+              <div class="card-actions justify-end">
+                <a href={slot.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">
+                  <Icon name="tabler:brand-github" width="0.95rem" height="0.95rem" />
+                  View on GitHub
                 </a>
               </div>
             </div>
-          ))}
-            </div>
-        </>
-      )
-    }
+          </article>
+        ))}
+      </div>
+    )}
   </section>
 
-  <div class="back-link">
-    <a href={withBasePath(basePath, '/mfes')}>← Back to MFEs</a>
+  <div class="mt-6">
+    <a href={withBasePath(basePath, '/mfes')} class="btn btn-ghost btn-sm">Back to MFEs</a>
   </div>
 </BaseLayout>
-
-<style>
-  .header {
-    margin-bottom: 3rem;
-  }
-
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .header-top h1 {
-    margin: 0;
-    flex: 1;
-  }
-
-  .description {
-    font-size: 1.1rem;
-    color: #666;
-    margin: 0;
-  }
-
-  .btn-small {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background: var(--color-primary);
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-
-  .btn-small:hover {
-    background: #0052a3;
-  }
-
-  .no-slots {
-    background: var(--color-secondary);
-    padding: 1.5rem;
-    border-radius: 6px;
-    color: #666;
-  }
-
-  .slots-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-
-  .slot-card {
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .slot-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: var(--color-primary);
-  }
-
-  .slot-card.hidden {
-    display: none;
-  }
-
-  .slot-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .slot-card h3 {
-      margin: 0 0 0.25rem 0;
-    color: var(--color-primary);
-    word-break: break-word;
-  }
-
-  .slot-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .slot-badges {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-
-  .badge-missing {
-    background: #ffe1e1;
-    color: #cc0000;
-  }
-
-  .badge-examples {
-    background: #e0f5e8;
-    color: #006b3c;
-  }
-
-  .badge-no-examples {
-    background: #fff4db;
-    color: #b87300;
-  }
-
-  .badge :global(svg) {
-    width: 1em;
-    height: 1em;
-    display: inline;
-  }
-
-  .slot-description {
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin: 0 0 1rem 0;
-  }
-
-  .slot-footer {
-    margin-top: auto;
-  }
-
-  .source-link {
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .source-link:hover {
-    text-decoration: underline;
-  }
-
-  .back-link {
-    margin-top: 2rem;
-  }
-</style>
