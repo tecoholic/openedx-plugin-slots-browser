@@ -10,9 +10,9 @@ export interface Props {
   title: string;
   basePath: string;
   release: string;
-  pluginData: { pluginSlots: any[]; mfes: any[] };
-  filtersData: { filters: any[] };
-  eventsData: { events: any[] };
+  pluginData: { pluginSlots: any[]; mfes: any[]; lastUpdated?: string };
+  filtersData: { filters: any[]; lastUpdated?: string };
+  eventsData: { events: any[]; lastUpdated?: string };
   showSidebar?: boolean;
   currentMfeId?: string;
   currentSlotId?: string;
@@ -40,8 +40,11 @@ const {
   lastUpdated,
 } = Astro.props as Props;
 
-const formattedLastUpdated = lastUpdated
-  ? new Date(lastUpdated).toLocaleString(undefined, {
+const effectiveLastUpdated =
+  lastUpdated ?? pluginData.lastUpdated ?? filtersData.lastUpdated ?? eventsData.lastUpdated;
+
+const formattedLastUpdated = effectiveLastUpdated
+  ? new Date(effectiveLastUpdated).toLocaleString(undefined, {
       year: 'numeric',
       month: 'short',
       day: '2-digit',
@@ -82,7 +85,7 @@ const isNavActive = (href: string) =>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} | Open edX Plugins System Catalog</title>
   </head>
-  <body class="flex min-h-dvh flex-col bg-base-200 text-base-content">
+  <body class="catalog-page bg-base-200 text-base-content">
     <header class="catalog-header sticky top-0 z-50 border-b border-base-300 bg-base-100/95 backdrop-blur">
       <div class="navbar mx-auto max-w-[1440px] gap-3 px-4 py-2">
         <div class="navbar-start w-auto flex-none min-w-0 gap-2">
@@ -197,7 +200,7 @@ const isNavActive = (href: string) =>
       </main>
     </div>
 
-    <footer class="catalog-footer mt-auto border-t border-base-300 bg-base-100">
+    <footer class="catalog-footer border-t border-base-300 bg-base-100">
       <div class="mx-auto max-w-[1440px] px-4 py-4 text-center text-sm text-base-content/80">
         <p>Open edX Plugins System Catalog - Auto-updating catalog of frontend plugin slots</p>
         {formattedLastUpdated && (
