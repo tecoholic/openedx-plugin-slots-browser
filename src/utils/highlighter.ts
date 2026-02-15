@@ -6,9 +6,14 @@ export async function highlightCodeAsync(code: string, lang: string | undefined)
   }
 
   try {
+    const lightTheme = 'github-light' as keyof typeof bundledThemes;
+    const darkTheme = 'github-dark' as keyof typeof bundledThemes;
     return await codeToHtml(code, {
       lang: lang as keyof typeof bundledLanguages,
-      theme: 'github-light' as keyof typeof bundledThemes
+      themes: {
+        light: lightTheme,
+        dark: darkTheme,
+      },
     });
   } catch (err) {
     // Fallback if language is not supported

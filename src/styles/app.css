@@ -1,37 +1,14 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: corporate --default, dark --prefersdark;
+}
 
 @plugin "daisyui/theme" {
-  name: "openedx";
-  default: true;
-  prefersdark: false;
-  color-scheme: light;
-  --color-base-100: oklch(98.4% 0.006 245);
-  --color-base-200: oklch(95.3% 0.014 247);
-  --color-base-300: oklch(89.4% 0.02 247);
-  --color-base-content: oklch(24.5% 0.03 251);
-  --color-primary: oklch(55% 0.2 252);
-  --color-primary-content: oklch(98% 0.01 250);
-  --color-secondary: oklch(67% 0.16 188);
-  --color-secondary-content: oklch(17% 0.03 188);
-  --color-accent: oklch(77% 0.16 72);
-  --color-accent-content: oklch(24% 0.03 72);
-  --color-neutral: oklch(33% 0.03 252);
-  --color-neutral-content: oklch(97% 0.006 245);
-  --color-info: oklch(71% 0.14 235);
-  --color-info-content: oklch(18% 0.03 235);
-  --color-success: oklch(71% 0.16 160);
-  --color-success-content: oklch(20% 0.035 160);
-  --color-warning: oklch(83% 0.15 82);
-  --color-warning-content: oklch(27% 0.04 82);
-  --color-error: oklch(67% 0.21 28);
-  --color-error-content: oklch(19% 0.05 28);
-  --radius-selector: 0.65rem;
-  --radius-field: 0.65rem;
-  --radius-box: 1rem;
-  --border: 1px;
-  --depth: 0;
-  --noise: 0;
+  name: "dark";
+  default: false;
+  prefersdark: true;
+  --color-primary: oklch(72% 0.158 241.966);
+  --color-primary-content: oklch(100% 0 0);
 }
 
 html,
@@ -213,35 +190,8 @@ a {
   overflow: hidden;
 }
 
-.metric-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto auto 0;
-  height: 3px;
-  width: 100%;
-  background: linear-gradient(90deg, color-mix(in oklab, var(--color-primary) 75%, transparent), color-mix(in oklab, var(--color-secondary) 75%, transparent));
-}
-
 .metric-card .stat-value {
   font-size: 1.8rem;
-}
-
-.resource-card {
-  background: linear-gradient(155deg, color-mix(in oklab, var(--color-base-100) 95%, white), color-mix(in oklab, var(--color-base-200) 70%, white));
-}
-
-.trend-card {
-  background: linear-gradient(180deg, color-mix(in oklab, var(--color-base-100) 92%, white), color-mix(in oklab, var(--color-base-200) 72%, white));
-}
-
-.contribute-alert {
-  border: 1px solid color-mix(in oklab, var(--color-info) 40%, var(--color-base-300));
-  background: linear-gradient(120deg, color-mix(in oklab, var(--color-info) 22%, transparent), color-mix(in oklab, var(--color-base-100) 95%, white));
-}
-
-.mfe-card,
-.slot-card {
-  background: linear-gradient(150deg, color-mix(in oklab, var(--color-base-100) 94%, white), color-mix(in oklab, var(--color-base-200) 60%, white));
 }
 
 .datatable-top {

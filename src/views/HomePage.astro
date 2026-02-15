@@ -140,7 +140,7 @@ const releaseGrowthData = getReleaseGrowthData();
       <h2 class="card-title">Getting Started</h2>
       <p class="text-sm text-base-content/75">Short, curated notes with links to deeper dives.</p>
       <ul class="grid gap-4 lg:grid-cols-3">
-        <li class="resource-card rounded-box border border-base-300 bg-base-200/70 p-4">
+        <li class="rounded-box border border-base-300 p-4">
           <h3 class="mb-2 text-lg font-semibold">Frontend Plugin Implementation Guide</h3>
           <p class="mb-3 text-sm text-base-content/80">
             A complete guide that demonstrates how to customize Open edX micro-frontends using the
@@ -150,7 +150,7 @@ const releaseGrowthData = getReleaseGrowthData();
             Learn more <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
           </a>
         </li>
-        <li class="resource-card rounded-box border border-base-300 bg-base-200/70 p-4">
+        <li class="rounded-box border border-base-300 p-4">
           <h3 class="mb-2 text-lg font-semibold">How to use Open edX Filters?</h3>
           <p class="mb-3 text-sm text-base-content/80">
             Official documentation covering pipeline step implementation, hook, trigger, and
@@ -160,7 +160,7 @@ const releaseGrowthData = getReleaseGrowthData();
             Learn more <Icon name="tabler:arrow-right" width="1rem" height="1rem" />
           </a>
         </li>
-        <li class="resource-card rounded-box border border-base-300 bg-base-200/70 p-4">
+        <li class="rounded-box border border-base-300 p-4">
           <h3 class="mb-2 text-lg font-semibold">Using Open edX Events</h3>
           <p class="mb-3 text-sm text-base-content/80">
             Official docs covering events: sending, receiving, and testing.
@@ -173,11 +173,11 @@ const releaseGrowthData = getReleaseGrowthData();
     </div>
   </section>
 
-  <section class="contribute-alert alert alert-info mt-8">
+  <section class="alert alert-info mt-8">
     <Icon name="tabler:info-circle" width="1.1rem" height="1.1rem" />
     <span>
       Help improve this catalog via the
-      <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank" rel="noopener" class="link link-primary">
+      <a href="https://github.com/tecoholic/openedx-plugin-slots-browser" target="_blank" rel="noopener" class="link text-inherit font-semibold">
         GitHub repository
       </a>.
     </span>
@@ -217,6 +217,10 @@ const releaseGrowthData = getReleaseGrowthData();
 
     const growthData = JSON.parse(chartCanvas.dataset.growthChart);
     const labels = growthData.map((point) => point.label);
+    const rootStyles = getComputedStyle(document.documentElement);
+    const chartStyles = getComputedStyle(chartCanvas);
+    const baseContentColor = chartStyles.color;
+    const baseGridColor = rootStyles.getPropertyValue('--color-base-300').trim() || '#94a3b8';
 
     const chartData = {
       labels,
@@ -254,7 +258,7 @@ const releaseGrowthData = getReleaseGrowthData();
         const { ctx } = chart;
         ctx.save();
         ctx.font = '600 12px system-ui, -apple-system, sans-serif';
-        ctx.fillStyle = '#374151';
+        ctx.fillStyle = baseContentColor;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
 
@@ -286,13 +290,28 @@ const releaseGrowthData = getReleaseGrowthData();
         plugins: {
           legend: {
             position: 'bottom',
+            labels: {
+              color: baseContentColor,
+            },
           },
         },
         scales: {
           y: {
             beginAtZero: true,
+            grid: {
+              color: baseGridColor,
+            },
             ticks: {
+              color: baseContentColor,
               precision: 0,
+            },
+          },
+          x: {
+            grid: {
+              color: baseGridColor,
+            },
+            ticks: {
+              color: baseContentColor,
             },
           },
         },

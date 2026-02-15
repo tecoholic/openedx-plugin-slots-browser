@@ -181,6 +181,17 @@ function decodeHtml(html: string): string {
     padding: 0;
   }
 
+  @media (prefers-color-scheme: dark) {
+    .readme-content :global(pre.shiki) {
+      background-color: var(--shiki-dark-bg) !important;
+      color: var(--shiki-dark) !important;
+    }
+
+    .readme-content :global(pre.shiki span) {
+      color: var(--shiki-dark) !important;
+    }
+  }
+
   .readme-content :global(ul),
   .readme-content :global(ol) {
     margin: 0.9rem 0;
