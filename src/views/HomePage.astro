@@ -52,7 +52,10 @@ const releaseGrowthData = getReleaseGrowthData();
           <h2 class="card-title text-lg">Frontend Plugin Slots</h2>
           <Icon name="tabler:puzzle" class="text-primary" width="1.7rem" height="1.7rem" is:inline />
         </div>
-        <p class="text-4xl font-bold text-primary">{slotCount}</p>
+        <p class="text-4xl font-bold text-primary">
+          {slotCount}
+          <sup class="text-lg">*</sup>
+        </p>
         <a
           href={withBasePath(basePath, '/mfes')}
           class="btn btn-primary btn-lg w-full text-base font-semibold shadow-lg shadow-primary/25 sm:w-fit"
@@ -67,6 +70,9 @@ const releaseGrowthData = getReleaseGrowthData();
           <p class="flex items-center justify-between">
             <span class="uppercase tracking-wide">With Examples</span>
             <span class="font-semibold text-base-content/75">{examplesCount}</span>
+          </p>
+          <p class="mt-2 pt-2 border-t border-base-300/50 text-xs text-base-content/50 italic">
+            * Includes all MFE plugin slots plus header/footer component slots. Component slots are counted once per MFE that uses them.
           </p>
         </div>
       </div>

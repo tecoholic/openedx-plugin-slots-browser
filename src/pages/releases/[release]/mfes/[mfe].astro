@@ -16,7 +16,18 @@ export function getStaticPaths() {
 const { release, mfe } = Astro.params;
 const { release: releaseInfo, pluginData, filtersData, eventsData } = getReleaseData(release);
 const mfeInfo = pluginData.mfes.find((m) => m.id === mfe);
-const slots = pluginData.pluginSlots.filter((s) => s.mfeId === mfe);
+const slots = pluginData.pluginSlots.filter((s) => s.mfeId === mfe && (!s.type || s.type === 'mfe'));
+const headerSlots = pluginData.pluginSlots.filter((s) => s.mfeId === mfe && s.type === 'header');
+const footerSlots = pluginData.pluginSlots.filter((s) => s.mfeId === mfe && s.type === 'footer');
+
+// Add component version to component slots
+const componentSlots =
+  headerSlots.length > 0 || footerSlots.length > 0
+    ? {
+        headerSlots: headerSlots.map((s) => ({ ...s, componentVersion: mfeInfo?.header?.version })),
+        footerSlots: footerSlots.map((s) => ({ ...s, componentVersion: mfeInfo?.footer?.version })),
+      }
+    : undefined;
 
 if (!mfeInfo) {
   return Astro.redirect(withBasePath(releaseInfo.basePath, '/mfes'));
@@ -30,4 +41,5 @@ if (!mfeInfo) {
   eventsData={eventsData}
   mfeInfo={mfeInfo}
   slots={slots}
+  componentSlots={componentSlots}
 />

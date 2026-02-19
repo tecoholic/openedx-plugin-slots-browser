@@ -2,6 +2,15 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { pathToFileURL } from 'url';
 import { octokit, getTextFile, listDir, type GitRef } from './lib/github.js';
+import { resolveComponentVersions } from './lib/requirements.js';
+import { collectComponent } from './collect-components.js';
+
+export interface ComponentInfo {
+  id: string;
+  name: string;
+  version: string;
+  pluginSlotsCount: number;
+}
 
 export interface MFE {
   id: string;
@@ -11,6 +20,8 @@ export interface MFE {
   owner: string;
   topics: string[];
   pluginSlotsCount?: number;
+  header?: ComponentInfo;
+  footer?: ComponentInfo;
 }
 
 export interface PluginSlot {
@@ -24,6 +35,13 @@ export interface PluginSlot {
   lastUpdated: string;
   readmePresent: boolean;
   hasExamples: boolean;
+  type?: 'mfe' | 'header' | 'footer'; // Type of slot (mfe, header, footer)
+  componentVersion?: string; // Version of the component (for header/footer slots)
+}
+
+export interface ComponentSlot extends PluginSlot {
+  componentId: string;
+  componentVersion: string;
 }
 
 export interface PluginsData {
@@ -36,9 +54,11 @@ export async function collectPlugins(opts?: {
   refForRepo?: (repoName: string) => Promise<string | null>;
   outputPath?: string;
   devLimit?: number;
+  componentCache?: Record<string, Record<string, any>>;
 }): Promise<PluginsData> {
   const outputPath = opts?.outputPath ?? 'data/plugin-slots.json';
   const limit = opts?.devLimit;
+  const componentCache = opts?.componentCache ?? {};
 
   if (limit) {
     console.log(`[DEV MODE] Collecting first ${limit} MFEs only...`);
@@ -70,26 +90,37 @@ export async function collectPlugins(opts?: {
       }
 
       for (const repo of repos.data) {
-        if (
-          !repo.name.startsWith('frontend-app-') &&
-          !repo.name.startsWith('frontend-component-')
-        ) {
-          continue;
-        }
+         if (
+           !repo.name.startsWith('frontend-app-') &&
+           !repo.name.startsWith('frontend-component-')
+         ) {
+           continue;
+         }
 
-        if (limit && mfes.length >= limit) {
-          break;
-        }
+         // Skip component repos - they will be collected as part of MFEs
+         if (
+           repo.name === 'frontend-component-header' ||
+           repo.name === 'frontend-component-footer'
+         ) {
+           continue;
+         }
 
-        let ref: string | undefined;
-        if (opts?.refForRepo) {
-          const resolved = await opts.refForRepo(repo.name);
-          if (resolved === null) {
-            console.log(`  ↳ Skipping ${repo.name} (no ref found)`);
-            continue;
-          }
-          ref = resolved;
-        }
+         if (limit && mfes.length >= limit) {
+           break;
+         }
+
+         let ref: string | undefined;
+         if (opts?.refForRepo) {
+           const resolved = await opts.refForRepo(repo.name);
+           if (resolved === null) {
+             console.log(`  ↳ Skipping ${repo.name} (no ref found)`);
+             continue;
+           }
+           ref = resolved;
+         } else {
+           // Use the repository's default branch for component collection when no refForRepo is provided
+           ref = repo.default_branch;
+         }
 
         console.log(`  ↳ Processing ${repo.name}...`);
 
@@ -128,6 +159,7 @@ export async function collectPlugins(opts?: {
                 );
 
                 if (slotData) {
+                  slotData.type = 'mfe';
                   pluginSlots.push(slotData);
                   slotCount++;
                 }
@@ -142,6 +174,152 @@ export async function collectPlugins(opts?: {
           }
         } catch (err) {
           console.log(`    !! plugin-slots directory missing. Skipping repo.`);
+        }
+
+        // Collect component (header/footer) data if componentCache is available
+        if (opts?.componentCache !== undefined && ref) {
+          try {
+            const componentVersions = await resolveComponentVersions({
+              mfeRef: ref,
+              mfeRepo: repo.name,
+            });
+
+            if (!componentVersions?.headerVersion && !componentVersions?.footerVersion) {
+              console.log(
+                `      ℹ No component versions found in ${repo.name}`
+              );
+            }
+
+            if (componentVersions?.headerVersion) {
+              const headerKey = `header:${componentVersions.headerVersion}`;
+              let headerData = componentCache[headerKey];
+
+              if (!headerData) {
+                headerData = await collectComponent({
+                  componentId: 'frontend-component-header',
+                  componentName: 'Header',
+                  ref: `v${componentVersions.headerVersion}`,
+                  repository: 'https://github.com/openedx/frontend-component-header',
+                  owner: 'openedx',
+                });
+                if (headerData) {
+                  componentCache[headerKey] = headerData;
+                  // Add component slots to the global pluginSlots array
+                  for (const slot of headerData.pluginSlots) {
+                    pluginSlots.push({
+                      id: slot.id,
+                      mfeId: repo.name,
+                      mfeName: formatName(repo.name),
+                      filePath: slot.filePath,
+                      description: slot.description,
+                      readmeContent: slot.readmeContent,
+                      sourceUrl: slot.sourceUrl,
+                      lastUpdated: slot.lastUpdated,
+                      readmePresent: slot.readmePresent,
+                      hasExamples: slot.hasExamples,
+                      type: 'header',
+                      componentVersion: componentVersions.headerVersion,
+                    });
+                  }
+                }
+              } else {
+                // Use cached component data
+                for (const slot of headerData.pluginSlots) {
+                  pluginSlots.push({
+                    id: slot.id,
+                    mfeId: repo.name,
+                    mfeName: formatName(repo.name),
+                    filePath: slot.filePath,
+                    description: slot.description,
+                    readmeContent: slot.readmeContent,
+                    sourceUrl: slot.sourceUrl,
+                    lastUpdated: slot.lastUpdated,
+                    readmePresent: slot.readmePresent,
+                    hasExamples: slot.hasExamples,
+                    type: 'header',
+                    componentVersion: componentVersions.headerVersion,
+                  });
+                }
+              }
+
+              if (headerData) {
+                mfe.header = {
+                  id: 'frontend-component-header',
+                  name: 'Header',
+                  version: componentVersions.headerVersion,
+                  pluginSlotsCount: headerData.pluginSlots.length,
+                };
+              }
+            }
+
+            if (componentVersions?.footerVersion) {
+              const footerKey = `footer:${componentVersions.footerVersion}`;
+              let footerData = componentCache[footerKey];
+
+              if (!footerData) {
+                footerData = await collectComponent({
+                  componentId: 'frontend-component-footer',
+                  componentName: 'Footer',
+                  ref: `v${componentVersions.footerVersion}`,
+                  repository: 'https://github.com/openedx/frontend-component-footer',
+                  owner: 'openedx',
+                });
+                if (footerData) {
+                  componentCache[footerKey] = footerData;
+                  // Add component slots to the global pluginSlots array
+                  for (const slot of footerData.pluginSlots) {
+                    pluginSlots.push({
+                      id: slot.id,
+                      mfeId: repo.name,
+                      mfeName: formatName(repo.name),
+                      filePath: slot.filePath,
+                      description: slot.description,
+                      readmeContent: slot.readmeContent,
+                      sourceUrl: slot.sourceUrl,
+                      lastUpdated: slot.lastUpdated,
+                      readmePresent: slot.readmePresent,
+                      hasExamples: slot.hasExamples,
+                      type: 'footer',
+                      componentVersion: componentVersions.footerVersion,
+                    });
+                  }
+                }
+              } else {
+                // Use cached component data
+                for (const slot of footerData.pluginSlots) {
+                  pluginSlots.push({
+                    id: slot.id,
+                    mfeId: repo.name,
+                    mfeName: formatName(repo.name),
+                    filePath: slot.filePath,
+                    description: slot.description,
+                    readmeContent: slot.readmeContent,
+                    sourceUrl: slot.sourceUrl,
+                    lastUpdated: slot.lastUpdated,
+                    readmePresent: slot.readmePresent,
+                    hasExamples: slot.hasExamples,
+                    type: 'footer',
+                    componentVersion: componentVersions.footerVersion,
+                  });
+                }
+              }
+
+              if (footerData) {
+                mfe.footer = {
+                  id: 'frontend-component-footer',
+                  name: 'Footer',
+                  version: componentVersions.footerVersion,
+                  pluginSlotsCount: footerData.pluginSlots.length,
+                };
+              }
+            }
+          } catch (err) {
+            console.log(
+              `    ⚠ Error collecting component data: ${
+                err instanceof Error ? err.message : String(err)
+              }`
+            );
+          }
         }
       }
 
@@ -283,6 +461,12 @@ if (isMain) {
   if (isDryRun) {
     console.log('[DRY RUN] No API calls will be made');
   } else {
-    collectPlugins(isDevMode ? { devLimit: 3 } : undefined);
+    const componentCache: Record<string, Record<string, any>> = {};
+    // Use the repository's default branch to collect component data
+    collectPlugins(
+      isDevMode
+        ? { devLimit: 3, componentCache }
+        : { componentCache }
+    );
   }
 }

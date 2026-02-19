@@ -1,6 +1,20 @@
 {
-  "lastUpdated": "2026-02-12T03:57:51.864Z",
+  "lastUpdated": "2026-02-19T01:44:05.749Z",
   "releases": [
+    {
+      "slug": "sumac",
+      "name": "Sumac",
+      "edxPlatformRef": "open-release/sumac.master",
+      "filtersRef": "v1.11.0",
+      "eventsRef": "v9.15.0"
+    },
+    {
+      "slug": "teak",
+      "name": "Teak",
+      "edxPlatformRef": "release/teak",
+      "filtersRef": "v2.0.1",
+      "eventsRef": "v10.2.0"
+    },
     {
       "slug": "ulmo",
       "name": "Ulmo",

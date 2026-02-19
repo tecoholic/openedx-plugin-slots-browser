@@ -73,12 +73,13 @@ function mergeManifestEntries(
   return [...orderedKnown, ...unknown];
 }
 
-async function collectForRelease(release: Release, devMode: boolean): Promise<ReleaseMeta | null> {
+async function collectForRelease(release: Release, devMode: boolean, componentCache?: Record<string, Record<string, any>>): Promise<ReleaseMeta | null> {
   console.log(`\n${'='.repeat(60)}`);
   console.log(`[RELEASE] Collecting data for ${release.name} (${release.slug})`);
   console.log('='.repeat(60));
 
   const warnings: string[] = [];
+  const cache = componentCache || {};
 
   const platformRef = await resolveEdxPlatformRef(release.slug);
   if (!platformRef) {
@@ -133,6 +134,7 @@ async function collectForRelease(release: Release, devMode: boolean): Promise<Re
   await collectPlugins({
     refForRepo: (repoName) => resolveMfeRef(repoName, release.slug),
     outputPath: `${outDir}/plugin-slots.json`,
+    componentCache: cache,
     ...(devMode ? { devLimit: 3 } : {}),
   });
 
@@ -203,9 +205,10 @@ async function collectReleases() {
   }
 
   const manifestEntries: ReleaseManifestEntry[] = [];
+  const componentCache: Record<string, Record<string, any>> = {}; // Shared across all releases
 
   for (const release of releases) {
-    const meta = await collectForRelease(release, isDevMode);
+    const meta = await collectForRelease(release, isDevMode, componentCache);
     if (meta) {
       manifestEntries.push({
         slug: meta.slug,

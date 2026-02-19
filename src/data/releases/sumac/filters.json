@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-12T03:38:49.166Z",
+  "lastUpdated": "2026-02-19T01:38:23.276Z",
   "filters": [
     {
       "id": "CertificateCreationRequested",
@@ -49,7 +49,7 @@
           "description": "Custom class used to stop the certificate creation process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.274Z"
     },
     {
       "id": "CertificateRenderStarted",
@@ -87,7 +87,7 @@
           "description": "Custom class used to stop the certificate rendering process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.274Z"
     },
     {
       "id": "CohortAssignmentRequested",
@@ -117,7 +117,7 @@
           "description": "Custom class used to stop the cohort assignment process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "CohortChangeRequested",
@@ -147,7 +147,7 @@
           "description": "Custom class used to stop the cohort change process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.274Z"
     },
     {
       "id": "CourseAboutPageURLRequested",
@@ -172,7 +172,7 @@
       ],
       "returns": [],
       "exceptions": [],
-      "lastUpdated": "2026-02-12T03:38:49.166Z"
+      "lastUpdated": "2026-02-19T01:38:23.276Z"
     },
     {
       "id": "CourseAboutRenderStarted",
@@ -210,7 +210,7 @@
           "description": "Custom class used to stop the course about rendering process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "CourseEnrollmentQuerysetRequested",
@@ -235,7 +235,7 @@
           "description": "Custom class used to stop the course enrollment queryset request process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "CourseEnrollmentStarted",
@@ -270,7 +270,7 @@
           "description": "Custom class used to stop the enrollment process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.274Z"
     },
     {
       "id": "CourseHomeUrlCreationStarted",
@@ -295,7 +295,7 @@
       ],
       "returns": [],
       "exceptions": [],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "CourseUnenrollmentStarted",
@@ -320,7 +320,7 @@
           "description": "Custom class used to stop the unenrollment process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.274Z"
     },
     {
       "id": "DashboardRenderStarted",
@@ -358,7 +358,7 @@
           "description": "Custom class used to stop the dashboard rendering process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "CourseRunAPIRenderStarted",
@@ -378,7 +378,7 @@
       ],
       "returns": [],
       "exceptions": [],
-      "lastUpdated": "2026-02-12T03:38:49.165Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "CourseEnrollmentAPIRenderStarted",
@@ -403,7 +403,7 @@
       ],
       "returns": [],
       "exceptions": [],
-      "lastUpdated": "2026-02-12T03:38:49.165Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "IDVPageURLRequested",
@@ -423,7 +423,7 @@
       ],
       "returns": [],
       "exceptions": [],
-      "lastUpdated": "2026-02-12T03:38:49.165Z"
+      "lastUpdated": "2026-02-19T01:38:23.276Z"
     },
     {
       "id": "InstructorDashboardRenderStarted",
@@ -461,7 +461,7 @@
           "description": "Custom class used to stop the instructor dashboard rendering by returning a custom response."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.165Z"
+      "lastUpdated": "2026-02-19T01:38:23.276Z"
     },
     {
       "id": "ORASubmissionViewRenderStarted",
@@ -491,7 +491,7 @@
           "description": "Custom class used to stop the submission view render process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.165Z"
+      "lastUpdated": "2026-02-19T01:38:23.276Z"
     },
     {
       "id": "StudentLoginRequested",
@@ -516,7 +516,7 @@
           "description": "Custom class used to stop the login process."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.274Z"
     },
     {
       "id": "AccountSettingsRenderStarted",
@@ -554,7 +554,7 @@
           "description": "Custom class used to stop the account settings rendering process and return a custom response."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.163Z"
+      "lastUpdated": "2026-02-19T01:38:23.274Z"
     },
     {
       "id": "VerticalBlockChildRenderStarted",
@@ -584,7 +584,7 @@
           "description": "Custom class used to stop a particular child block from being rendered."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "VerticalBlockRenderCompleted",
@@ -624,7 +624,7 @@
           "description": "Custom class used to prevent the vertical block from rendering for the user."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     },
     {
       "id": "RenderXBlockStarted",
@@ -658,7 +658,7 @@
           "description": "Custom class used to stop the XBlock rendering process and return a custom response."
         }
       ],
-      "lastUpdated": "2026-02-12T03:38:49.164Z"
+      "lastUpdated": "2026-02-19T01:38:23.275Z"
     }
   ],
   "categories": [
