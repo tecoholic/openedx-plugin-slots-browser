@@ -11,9 +11,13 @@ interface Props {
   eventsData: { events: any[] };
   mfeInfo: any;
   slots: any[];
+  componentSlots?: {
+    headerSlots: any[];
+    footerSlots: any[];
+  };
 }
 
-const { release, pluginData, filtersData, eventsData, mfeInfo, slots } = Astro.props as Props;
+const { release, pluginData, filtersData, eventsData, mfeInfo, slots, componentSlots } = Astro.props as Props;
 const basePath = release.basePath;
 ---
 
@@ -97,6 +101,98 @@ const basePath = release.basePath;
       </div>
     )}
   </section>
+
+  {componentSlots?.headerSlots && componentSlots.headerSlots.length > 0 && (
+    <section class="mt-6 space-y-4">
+      <h2 class="text-2xl font-semibold">Component: Header ({componentSlots.headerSlots[0]?.componentVersion || 'Unknown'})</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        {componentSlots.headerSlots.map((slot) => (
+          <article class="slot-card card border border-base-300 bg-base-100 shadow-sm">
+            <div class="card-body gap-3">
+              <h3 class="card-title text-base">
+                <a href={slot.sourceUrl} target="_blank" class="link link-primary break-all">
+                  {slot.id}
+                </a>
+              </h3>
+
+              <div class="flex flex-wrap gap-1">
+                {!slot.readmePresent && (
+                  <span class="badge badge-error gap-1">
+                    <Icon name="tabler:x" width="0.8rem" height="0.8rem" /> README missing
+                  </span>
+                )}
+                {slot.hasExamples && (
+                  <span class="badge badge-success gap-1">
+                    <Icon name="tabler:code" width="0.8rem" height="0.8rem" /> Example code
+                  </span>
+                )}
+                {slot.readmePresent && !slot.hasExamples && (
+                  <span class="badge badge-warning gap-1">
+                    <Icon name="tabler:alert-circle" width="0.8rem" height="0.8rem" /> Example missing
+                  </span>
+                )}
+              </div>
+
+              {slot.description && <p class="text-sm text-base-content/80">{slot.description}</p>}
+
+              <div class="card-actions justify-end">
+                <a href={slot.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">
+                  <Icon name="tabler:brand-github" width="0.95rem" height="0.95rem" />
+                  View on GitHub
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {componentSlots?.footerSlots && componentSlots.footerSlots.length > 0 && (
+    <section class="mt-6 space-y-4">
+      <h2 class="text-2xl font-semibold">Component: Footer ({componentSlots.footerSlots[0]?.componentVersion || 'Unknown'})</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        {componentSlots.footerSlots.map((slot) => (
+          <article class="slot-card card border border-base-300 bg-base-100 shadow-sm">
+            <div class="card-body gap-3">
+              <h3 class="card-title text-base">
+                <a href={slot.sourceUrl} target="_blank" class="link link-primary break-all">
+                  {slot.id}
+                </a>
+              </h3>
+
+              <div class="flex flex-wrap gap-1">
+                {!slot.readmePresent && (
+                  <span class="badge badge-error gap-1">
+                    <Icon name="tabler:x" width="0.8rem" height="0.8rem" /> README missing
+                  </span>
+                )}
+                {slot.hasExamples && (
+                  <span class="badge badge-success gap-1">
+                    <Icon name="tabler:code" width="0.8rem" height="0.8rem" /> Example code
+                  </span>
+                )}
+                {slot.readmePresent && !slot.hasExamples && (
+                  <span class="badge badge-warning gap-1">
+                    <Icon name="tabler:alert-circle" width="0.8rem" height="0.8rem" /> Example missing
+                  </span>
+                )}
+              </div>
+
+              {slot.description && <p class="text-sm text-base-content/80">{slot.description}</p>}
+
+              <div class="card-actions justify-end">
+                <a href={slot.sourceUrl} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">
+                  <Icon name="tabler:brand-github" width="0.95rem" height="0.95rem" />
+                  View on GitHub
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
 
   <div class="mt-6">
     <a href={withBasePath(basePath, '/mfes')} class="btn btn-ghost btn-sm">Back to MFEs</a>

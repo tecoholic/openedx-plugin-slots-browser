@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-12T03:56:00.341Z",
+  "lastUpdated": "2026-02-19T01:40:02.107Z",
   "repository": "https://github.com/openedx/openedx-events",
   "events": [
     {
@@ -10,7 +10,7 @@
       "description": "Emitted when a tracking log event is emitted.",
       "filePath": "openedx_events/analytics/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/analytics/signals.py",
-      "lastUpdated": "2026-02-12T03:55:55.945Z",
+      "lastUpdated": "2026-02-19T01:39:58.975Z",
       "dataClasses": [
         {
           "name": "TrackingLogData",
@@ -49,7 +49,7 @@
       "description": "Fired when a course changes in Studio in a way that is relevant for catalog consumers.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.674Z",
+      "lastUpdated": "2026-02-19T01:39:59.552Z",
       "dataClasses": [
         {
           "name": "CourseCatalogData",
@@ -93,7 +93,7 @@
       "description": "Fired when an XBlock is created.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.674Z",
+      "lastUpdated": "2026-02-19T01:39:59.552Z",
       "dataClasses": [
         {
           "name": "XBlockData",
@@ -127,7 +127,7 @@
       "description": "Fired when an XBlock is updated.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.552Z",
       "dataClasses": [
         {
           "name": "XBlockData",
@@ -161,7 +161,7 @@
       "description": "Fired when an XBlock is published. If a parent block with changes in one or more child blocks is published, only a single XBLOCK_PUBLISHED event is fired with parent block details. For example: If a section is published with changes in multiple units, only a single event is fired with section details like : `XBlockData(usage_key=\"section-usage-key\", block_type=\"chapter\")`",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.553Z",
       "dataClasses": [
         {
           "name": "XBlockData",
@@ -195,7 +195,7 @@
       "description": "Fired when an XBlock is deleted.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.553Z",
       "dataClasses": [
         {
           "name": "XBlockData",
@@ -229,7 +229,7 @@
       "description": "Fired when an XBlock is duplicated in Studio.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.553Z",
       "dataClasses": [
         {
           "name": "DuplicatedXBlockData",
@@ -253,7 +253,7 @@
       "description": "Fired when a course certificate configuration changes in Studio. https://github.com/openedx/openedx-events/issues/445 for more information about the future of this event.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.553Z",
       "dataClasses": [
         {
           "name": "CertificateConfigData",
@@ -297,7 +297,7 @@
       "description": "Fired when a course certificate configuration deletes in Studio. https://github.com/openedx/openedx-events/issues/445 for more information about the future of this event.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.553Z",
       "dataClasses": [
         {
           "name": "CertificateConfigData",
@@ -341,7 +341,7 @@
       "description": "Emitted when a course is created.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "CourseData",
@@ -365,7 +365,7 @@
       "description": "Emitted when a content library is created.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "ContentLibraryData",
@@ -394,7 +394,7 @@
       "description": "Emitted when a content library is updated, such as its name is changed. This is NOT sent when the only changes are to items within the library, even though that affects the \"last updated\" and potentially \"last published\" or \"has unpublished changes\" aspects of the library overall. To detect those, subscribe to the detailed LIBRARY_* events.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "ContentLibraryData",
@@ -423,7 +423,7 @@
       "description": "Emitted when a content library is deleted.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "ContentLibraryData",
@@ -452,7 +452,7 @@
       "description": "Emitted when a library XBlock is created.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryBlockData",
@@ -481,7 +481,7 @@
       "description": "Emitted when a library XBlock (draft) is updated.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryBlockData",
@@ -510,7 +510,7 @@
       "description": "Emitted when a library XBlock (draft) is deleted.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryBlockData",
@@ -539,7 +539,7 @@
       "description": "Emitted when a library XBlock is published. Also when a library block draft is deleted and then the deletion is published.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.675Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryBlockData",
@@ -568,7 +568,7 @@
       "description": "Emitted when an object's associations are changed, e.g tags, collections",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "ContentObjectChangedData",
@@ -592,7 +592,7 @@
       "description": "Emitted when an object's tags are changed.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "ContentObjectData",
@@ -616,7 +616,7 @@
       "description": "Emitted when a content library collection is created.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryCollectionData",
@@ -645,7 +645,7 @@
       "description": "Emitted when when a content library collection is updated.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryCollectionData",
@@ -674,7 +674,7 @@
       "description": "Emitted when an when a content library collection is deleted.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryCollectionData",
@@ -703,7 +703,7 @@
       "description": "Emitted when a content library container is created.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.554Z",
       "dataClasses": [
         {
           "name": "LibraryContainerData",
@@ -732,7 +732,7 @@
       "description": "Emitted when when a content library container is updated.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.555Z",
       "dataClasses": [
         {
           "name": "LibraryContainerData",
@@ -761,7 +761,7 @@
       "description": "Emitted when an when a content library container is deleted.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.676Z",
+      "lastUpdated": "2026-02-19T01:39:59.555Z",
       "dataClasses": [
         {
           "name": "LibraryContainerData",
@@ -790,7 +790,7 @@
       "description": "Emitted when a library container is published. Also when a library container draft is deleted and then the deletion is published.",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.677Z",
+      "lastUpdated": "2026-02-19T01:39:59.555Z",
       "dataClasses": [
         {
           "name": "LibraryContainerData",
@@ -819,7 +819,7 @@
       "description": "Fired after a course is imported",
       "filePath": "openedx_events/content_authoring/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/content_authoring/signals.py",
-      "lastUpdated": "2026-02-12T03:55:56.677Z",
+      "lastUpdated": "2026-02-19T01:39:59.555Z",
       "dataClasses": [
         {
           "name": "CourseData",
@@ -843,7 +843,7 @@
       "description": "emitted when an enterprise subsidy is utilized. https://github.com/openedx/openedx-events/issues/445 for more information about the future of this event.",
       "filePath": "openedx_events/enterprise/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/enterprise/signals.py",
-      "lastUpdated": "2026-02-12T03:55:57.688Z"
+      "lastUpdated": "2026-02-19T01:40:00.113Z"
     },
     {
       "id": "enterprise.SUBSIDY_REDEMPTION_REVERSED",
@@ -853,7 +853,7 @@
       "description": "emitted when an enterprise subsidy is reversed. https://github.com/openedx/openedx-events/issues/445 for more information about the future of this event.",
       "filePath": "openedx_events/enterprise/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/enterprise/signals.py",
-      "lastUpdated": "2026-02-12T03:55:57.688Z"
+      "lastUpdated": "2026-02-19T01:40:00.113Z"
     },
     {
       "id": "enterprise.LEDGER_TRANSACTION_CREATED",
@@ -863,7 +863,7 @@
       "description": "emitted when an enterprise ledger transaction is created. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
       "filePath": "openedx_events/enterprise/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/enterprise/signals.py",
-      "lastUpdated": "2026-02-12T03:55:57.688Z"
+      "lastUpdated": "2026-02-19T01:40:00.113Z"
     },
     {
       "id": "enterprise.LEDGER_TRANSACTION_COMMITTED",
@@ -873,7 +873,7 @@
       "description": "emitted when an enterprise ledger transaction is committed. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
       "filePath": "openedx_events/enterprise/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/enterprise/signals.py",
-      "lastUpdated": "2026-02-12T03:55:57.688Z"
+      "lastUpdated": "2026-02-19T01:40:00.113Z"
     },
     {
       "id": "enterprise.LEDGER_TRANSACTION_FAILED",
@@ -883,7 +883,7 @@
       "description": "emitted when an enterprise ledger transaction fails. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
       "filePath": "openedx_events/enterprise/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/enterprise/signals.py",
-      "lastUpdated": "2026-02-12T03:55:57.688Z"
+      "lastUpdated": "2026-02-19T01:40:00.113Z"
     },
     {
       "id": "enterprise.LEDGER_TRANSACTION_REVERSED",
@@ -893,7 +893,7 @@
       "description": "emitted when an enterprise ledger transaction is reversed. See: https://github.com/openedx/openedx-ledger/tree/main/docs/decisions",
       "filePath": "openedx_events/enterprise/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/enterprise/signals.py",
-      "lastUpdated": "2026-02-12T03:55:57.688Z"
+      "lastUpdated": "2026-02-19T01:40:00.113Z"
     },
     {
       "id": "enterprise.LEARNER_CREDIT_COURSE_ENROLLMENT_REVOKED",
@@ -903,7 +903,7 @@
       "description": "emitted when a LearnerCreditEnterpriseCourseEnrollment is revoked. This most often happens when an enterprise learner unenrolls from a course which was LC-subsidized.",
       "filePath": "openedx_events/enterprise/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/enterprise/signals.py",
-      "lastUpdated": "2026-02-12T03:55:57.688Z"
+      "lastUpdated": "2026-02-19T01:40:00.113Z"
     },
     {
       "id": "learning.STUDENT_REGISTRATION_COMPLETED",
@@ -913,7 +913,7 @@
       "description": "Emitted when a user completes registration in Open edX.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.695Z",
+      "lastUpdated": "2026-02-19T01:40:01.546Z",
       "dataClasses": [
         {
           "name": "UserData",
@@ -937,7 +937,7 @@
       "description": "Emitted when a user logs in to Open edX.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.695Z",
+      "lastUpdated": "2026-02-19T01:40:01.546Z",
       "dataClasses": [
         {
           "name": "UserData",
@@ -961,7 +961,7 @@
       "description": "Emitted when the user enrolls in a course.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.695Z",
+      "lastUpdated": "2026-02-19T01:40:01.546Z",
       "dataClasses": [
         {
           "name": "CourseEnrollmentData",
@@ -1010,7 +1010,7 @@
       "description": "Emitted when the enrollment for a user in a course changes.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.695Z",
+      "lastUpdated": "2026-02-19T01:40:01.546Z",
       "dataClasses": [
         {
           "name": "CourseEnrollmentData",
@@ -1059,7 +1059,7 @@
       "description": "Emitted when the user unenrolls from a course.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.695Z",
+      "lastUpdated": "2026-02-19T01:40:01.546Z",
       "dataClasses": [
         {
           "name": "CourseEnrollmentData",
@@ -1108,7 +1108,7 @@
       "description": "Emitted when a certificate is created for a user.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.695Z",
+      "lastUpdated": "2026-02-19T01:40:01.546Z",
       "dataClasses": [
         {
           "name": "CertificateData",
@@ -1167,7 +1167,7 @@
       "description": "Emitted when a program certificate is awarded to a learner.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.546Z",
       "dataClasses": [
         {
           "name": "ProgramCertificateData",
@@ -1216,7 +1216,7 @@
       "description": "Emitted when the user's certificate changes.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.547Z",
       "dataClasses": [
         {
           "name": "CertificateData",
@@ -1275,7 +1275,7 @@
       "description": "Emitted when a certificate is revoked from a user.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.547Z",
       "dataClasses": [
         {
           "name": "CertificateData",
@@ -1334,7 +1334,7 @@
       "description": "Emit when a program certificate is revoked from a learner.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.547Z",
       "dataClasses": [
         {
           "name": "ProgramCertificateData",
@@ -1383,7 +1383,7 @@
       "description": "Emitted when a user's cohort membership changes.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.547Z",
       "dataClasses": [
         {
           "name": "CohortData",
@@ -1417,7 +1417,7 @@
       "description": "Emitted when the configuration for a course's discussions changes in the course. like ``List[DiscussionTopicContext]`` cannot be serialized yet.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "CourseDiscussionConfigurationData",
@@ -1471,7 +1471,7 @@
       "description": "Emitted when a course's persistent grade summary changes for a user.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "PersistentCourseGradeData",
@@ -1530,7 +1530,7 @@
       "description": "Emitted when an XBlock skill is verified.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "XBlockSkillVerificationData",
@@ -1564,7 +1564,7 @@
       "description": "Can be emitted from apps to send user notifications. are not serializable.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "UserNotificationData",
@@ -1607,7 +1607,7 @@
       "description": "Emitted when an exam attempt is submitted by a learner in edx-exams.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "ExamAttemptData",
@@ -1651,7 +1651,7 @@
       "description": "Emitted when an exam attempt is marked rejected in edx-exams.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "ExamAttemptData",
@@ -1695,7 +1695,7 @@
       "description": "Emitted when an exam attempt is marked verified in edx-exams.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "ExamAttemptData",
@@ -1739,7 +1739,7 @@
       "description": "Emitted when a learner's exam attempt errors out in edx-exams.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.696Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "ExamAttemptData",
@@ -1783,7 +1783,7 @@
       "description": "Emitted when an exam attempt is reset in edx-exams.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.548Z",
       "dataClasses": [
         {
           "name": "ExamAttemptData",
@@ -1827,7 +1827,7 @@
       "description": "Emitted when a user is given a course access role.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "CourseAccessRoleData",
@@ -1865,7 +1865,7 @@
       "description": "Emitted when a course access role is removed from a user.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "CourseAccessRoleData",
@@ -1903,7 +1903,7 @@
       "description": "Emitted when a new thread is created in a discussion. are not serializable.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "DiscussionThreadData",
@@ -2022,7 +2022,7 @@
       "description": "Emitted when a new response is added to a thread. are not serializable.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "DiscussionThreadData",
@@ -2141,7 +2141,7 @@
       "description": "Emitted when a new comment is added to a response. are not serializable.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "DiscussionThreadData",
@@ -2260,7 +2260,7 @@
       "description": "Emitted when a notification is requested for a course. are not serializable.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "CourseNotificationData",
@@ -2309,7 +2309,7 @@
       "description": "Emitted when a user submits an ORA assignment.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "ORASubmissionData",
@@ -2363,7 +2363,7 @@
       "description": "Emitted when course grade updates.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "CoursePassingStatusData",
@@ -2397,7 +2397,7 @@
       "description": "Emitted when a CCX course grade updates.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "CcxCoursePassingStatusData",
@@ -2421,7 +2421,7 @@
       "description": "Emit when a badge is awarded to a learner.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "BadgeData",
@@ -2455,7 +2455,7 @@
       "description": "Emit when a badge is revoked for a learner,",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "BadgeData",
@@ -2489,7 +2489,7 @@
       "description": "Emitted when an IDV attempt is created.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "VerificationAttemptData",
@@ -2532,7 +2532,7 @@
       "description": "Emitted when an IDV attempt is marked as pending.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "VerificationAttemptData",
@@ -2575,7 +2575,7 @@
       "description": "Emitted when an IDV attempt is approved.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.697Z",
+      "lastUpdated": "2026-02-19T01:40:01.549Z",
       "dataClasses": [
         {
           "name": "VerificationAttemptData",
@@ -2618,7 +2618,7 @@
       "description": "Emitted when an IDV attempt is denied.",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.698Z",
+      "lastUpdated": "2026-02-19T01:40:01.550Z",
       "dataClasses": [
         {
           "name": "VerificationAttemptData",
@@ -2661,7 +2661,7 @@
       "description": "emitted when an external grader provides a score for a submission",
       "filePath": "openedx_events/learning/signals.py",
       "sourceUrl": "https://github.com/openedx/openedx-events/tree/v10.2.0/openedx_events/learning/signals.py",
-      "lastUpdated": "2026-02-12T03:55:59.698Z",
+      "lastUpdated": "2026-02-19T01:40:01.550Z",
       "dataClasses": [
         {
           "name": "ExternalGraderScoreData",
