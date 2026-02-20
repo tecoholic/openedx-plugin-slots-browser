@@ -19,6 +19,7 @@ interface Props {
 
 const { release, pluginData, filtersData, eventsData, mfeInfo, slots, componentSlots } = Astro.props as Props;
 const basePath = release.basePath;
+const missingPluginSlotsDir = mfeInfo?.hasPluginSlotsDir === false;
 ---
 
 <BaseLayout
@@ -50,12 +51,21 @@ const basePath = release.basePath;
   <section class="mt-6 space-y-4">
     <h2 class="text-2xl font-semibold">Plugin Slots ({slots.length})</h2>
 
-    {slots.length === 0 ? (
+    {missingPluginSlotsDir && (
+      <div class="alert alert-error">
+        <Icon name="tabler:alert-circle" width="1rem" height="1rem" />
+        <span>
+          This release branch does not include a `src/plugin-slots` directory for this MFE.
+        </span>
+      </div>
+    )}
+
+    {slots.length === 0 && !missingPluginSlotsDir ? (
       <div class="alert">
         <Icon name="tabler:info-circle" width="1rem" height="1rem" />
         <span>
-          No plugin slots found in this MFE. The `plugin-slots` directory may not exist or may be
-          empty.
+          No plugin slots found in this MFE. The `src/plugin-slots` directory is present but has no
+          slot entries this collector can parse.
         </span>
       </div>
     ) : (

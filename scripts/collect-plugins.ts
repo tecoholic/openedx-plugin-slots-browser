@@ -20,6 +20,7 @@ export interface MFE {
   owner: string;
   topics: string[];
   pluginSlotsCount?: number;
+  hasPluginSlotsDir?: boolean;
   header?: ComponentInfo;
   footer?: ComponentInfo;
 }
@@ -90,18 +91,7 @@ export async function collectPlugins(opts?: {
       }
 
       for (const repo of repos.data) {
-         if (
-           !repo.name.startsWith('frontend-app-') &&
-           !repo.name.startsWith('frontend-component-')
-         ) {
-           continue;
-         }
-
-         // Skip component repos - they will be collected as part of MFEs
-         if (
-           repo.name === 'frontend-component-header' ||
-           repo.name === 'frontend-component-footer'
-         ) {
+         if (!repo.name.startsWith('frontend-app-')) {
            continue;
          }
 
@@ -133,48 +123,46 @@ export async function collectPlugins(opts?: {
           topics: repo.topics || [],
         };
 
-        try {
-          const entries = await listDir({
-            owner: 'openedx',
-            repo: repo.name,
-            path: 'src/plugin-slots',
-            ref,
-          });
+        let slotCount = 0;
+        const entries = await listDir({
+          owner: 'openedx',
+          repo: repo.name,
+          path: 'src/plugin-slots',
+          ref,
+        });
 
-          if (entries) {
-            console.log(
-              `    ✓ Found plugin-slots directory (${entries.length} items)`
-            );
+        if (entries) {
+          mfe.hasPluginSlotsDir = true;
+          console.log(
+            `    ✓ Found plugin-slots directory (${entries.length} items)`
+          );
 
-            let slotCount = 0;
+          for (const item of entries) {
+            if (item.type === 'dir') {
+              const slotData = await parsePluginSlot(
+                repo.name,
+                formatName(repo.name),
+                repo.html_url,
+                item.path,
+                ref
+              );
 
-            for (const item of entries) {
-              if (item.type === 'dir') {
-                const slotData = await parsePluginSlot(
-                  repo.name,
-                  formatName(repo.name),
-                  repo.html_url,
-                  item.path,
-                  ref
-                );
-
-                if (slotData) {
-                  slotData.type = 'mfe';
-                  pluginSlots.push(slotData);
-                  slotCount++;
-                }
+              if (slotData) {
+                slotData.type = 'mfe';
+                pluginSlots.push(slotData);
+                slotCount++;
               }
             }
-
-            if (slotCount > 0) {
-              mfe.pluginSlotsCount = slotCount;
-              mfes.push(mfe);
-              console.log(`    ✓ Extracted ${slotCount} plugin slots`);
-            }
           }
-        } catch (err) {
-          console.log(`    !! plugin-slots directory missing. Skipping repo.`);
+
+          if (slotCount > 0) {
+            console.log(`    ✓ Extracted ${slotCount} plugin slots`);
+          }
+        } else {
+          mfe.hasPluginSlotsDir = false;
+          console.log(`    !! plugin-slots directory missing.`);
         }
+        mfe.pluginSlotsCount = slotCount;
 
         // Collect component (header/footer) data if componentCache is available
         if (opts?.componentCache !== undefined && ref) {
@@ -321,6 +309,8 @@ export async function collectPlugins(opts?: {
             );
           }
         }
+
+        mfes.push(mfe);
       }
 
       if (limit && mfes.length >= limit) {
@@ -342,7 +332,7 @@ export async function collectPlugins(opts?: {
 
     console.log('\n[SUCCESS] Collection complete!');
     console.log(`[RESULTS]:`);
-    console.log(`  • MFEs with plugin slots: ${mfes.length}`);
+    console.log(`  • MFEs collected: ${mfes.length}`);
     console.log(`  • Total plugin slots: ${pluginSlots.length}`);
     console.log(`  • Last updated: ${output.lastUpdated}`);
 

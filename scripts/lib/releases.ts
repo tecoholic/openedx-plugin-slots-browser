@@ -12,6 +12,8 @@ export const KNOWN_RELEASES: Release[] = [
 ];
 
 const BRANCH_CANDIDATES = (slug: string) => [
+  `open-release/${slug}.main`,
+  `release/${slug}.main`,
   `open-release/${slug}.master`,
   `release/${slug}.master`,
   `release/${slug}`,

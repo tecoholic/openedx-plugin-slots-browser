@@ -10,6 +10,15 @@ export type GitRef = string;
 
 const cache = new Map<string, any>();
 
+function isNotFoundError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'status' in error &&
+    (error as { status?: number }).status === 404
+  );
+}
+
 function cacheKey(owner: string, repo: string, path: string, ref?: string): string {
   return `${owner}/${repo}@${ref ?? 'default'}:${path}`;
 }
@@ -44,7 +53,10 @@ export async function getTextFile(opts: {
       cache.set(key, text);
       return text;
     }
-  } catch {
+  } catch (error) {
+    if (!isNotFoundError(error)) {
+      throw error;
+    }
     cache.set(key, null);
   }
 
@@ -83,7 +95,10 @@ export async function listDir(opts: {
       cache.set(key, entries);
       return entries;
     }
-  } catch {
+  } catch (error) {
+    if (!isNotFoundError(error)) {
+      throw error;
+    }
     cache.set(key, null);
   }
 
@@ -106,7 +121,10 @@ export async function refExists(opts: {
     });
     cache.set(key, true);
     return true;
-  } catch {
+  } catch (error) {
+    if (!isNotFoundError(error)) {
+      throw error;
+    }
     // Not a branch, try as a tag
   }
 
@@ -118,7 +136,10 @@ export async function refExists(opts: {
     });
     cache.set(key, true);
     return true;
-  } catch {
+  } catch (error) {
+    if (!isNotFoundError(error)) {
+      throw error;
+    }
     cache.set(key, false);
     return false;
   }
