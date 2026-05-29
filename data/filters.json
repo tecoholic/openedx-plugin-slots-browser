@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-28T03:19:17.766Z",
+  "lastUpdated": "2026-05-29T03:17:31.096Z",
   "filters": [
     {
       "id": "LMSPageURLRequested",
@@ -38,7 +38,7 @@
         "path": "cms/djangoapps/contentstore/asset_storage_handler.py",
         "function": "get_asset_json"
       },
-      "lastUpdated": "2026-05-28T03:19:17.766Z"
+      "lastUpdated": "2026-05-29T03:17:31.096Z"
     },
     {
       "id": "AccountSettingsReadOnlyFieldsRequested",
@@ -48,7 +48,7 @@
       "description": "This filter is triggered when the account settings API validates which fields\n        may be updated for a given user. Pipeline steps may add field names to\n        ``readonly_fields`` to mark those fields as read-only for the requesting user.",
       "repository": "https://github.com/openedx/openedx-filters",
       "filePath": "openedx_filters/learning/filters.py",
-      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1524",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1527",
       "arguments": [
         {
           "name": "readonly_fields",
@@ -68,7 +68,7 @@
         "path": "openedx/core/djangoapps/user_api/accounts/api.py",
         "function": "_validate_read_only_fields"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.011Z"
     },
     {
       "id": "CertificateCreationRequested",
@@ -148,7 +148,7 @@
         "path": "lms/djangoapps/certificates/generated_certificate.py",
         "function": "_generate_certificate_task"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CertificateRenderStarted",
@@ -200,7 +200,7 @@
         "path": "lms/djangoapps/certificates/views/webview.py",
         "function": "render_html_view"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CohortAssignmentRequested",
@@ -244,7 +244,7 @@
         "path": "openedx/core/djangoapps/course_groups/models.py",
         "function": "assign"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CohortChangeRequested",
@@ -288,7 +288,7 @@
         "path": "openedx/core/djangoapps/course_groups/models.py",
         "function": "assign"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CourseAboutPageURLRequested",
@@ -298,7 +298,7 @@
       "description": "This filter is triggered when a user requests to view the course about page, just before the page is rendered\n        allowing the filter to act on the URL of the page and the course org.",
       "repository": "https://github.com/openedx/openedx-filters",
       "filePath": "openedx_filters/learning/filters.py",
-      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1452",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1455",
       "arguments": [
         {
           "name": "url",
@@ -327,7 +327,7 @@
         "path": "common/djangoapps/util/course.py",
         "function": "get_link_for_about_page"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.011Z"
     },
     {
       "id": "CourseAboutRenderStarted",
@@ -379,7 +379,7 @@
         "path": "lms/djangoapps/courseware/views/views.py",
         "function": "course_about"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CourseEnrollmentQuerysetRequested",
@@ -404,7 +404,7 @@
           "description": "Raise to prevent the course enrollment queryset request to continue."
         }
       ],
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CourseEnrollmentStarted",
@@ -457,7 +457,7 @@
         "path": "common/djangoapps/student/models/course_enrollment.py",
         "function": "enroll"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CourseHomeUrlCreationStarted",
@@ -496,7 +496,7 @@
         "path": "openedx/features/course_experience/__init__.py",
         "function": "course_home_url"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CourseUnenrollmentStarted",
@@ -526,7 +526,7 @@
         "path": "common/djangoapps/student/models/course_enrollment.py",
         "function": "unenroll"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "DashboardRenderStarted",
@@ -578,7 +578,7 @@
         "path": "common/djangoapps/student/views/dashboard.py",
         "function": "student_dashboard"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "GradeEventContextRequested",
@@ -588,7 +588,7 @@
       "description": "This filter is triggered when a grade event context is requested, allowing\n        pipeline steps to enrich the context dictionary with additional data.",
       "repository": "https://github.com/openedx/openedx-filters",
       "filePath": "openedx_filters/learning/filters.py",
-      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1564",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1567",
       "arguments": [
         {
           "name": "context",
@@ -613,7 +613,7 @@
         "path": "lms/djangoapps/grades/events.py",
         "function": "course_grade_passed_first_time"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.011Z"
     },
     {
       "id": "CourseRunAPIRenderStarted",
@@ -638,7 +638,7 @@
         "path": "lms/djangoapps/learner_home/serializers.py",
         "function": "CourseRunSerializer.to_representation"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "CourseEnrollmentAPIRenderStarted",
@@ -677,7 +677,7 @@
         "path": "lms/djangoapps/learner_home/serializers.py",
         "function": "EnrollmentSerializer.to_representation"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "IDVPageURLRequested",
@@ -687,7 +687,7 @@
       "description": "This filter is triggered when a user requests to view the ID verification page, just before the page is rendered\n        allowing the filter to act on the URL of the page.",
       "repository": "https://github.com/openedx/openedx-filters",
       "filePath": "openedx_filters/learning/filters.py",
-      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1418",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1421",
       "arguments": [
         {
           "name": "url",
@@ -702,7 +702,7 @@
         "path": "lms/djangoapps/verify_student/services.py",
         "function": "XBlockVerificationService.get_verify_location"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "InstructorDashboardRenderStarted",
@@ -754,7 +754,7 @@
         "path": "lms/djangoapps/instructor/views/instructor_dashboard.py",
         "function": "instructor_dashboard_2"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "InstructorDashboardTabsRequested",
@@ -794,7 +794,7 @@
         "path": "lms/djangoapps/instructor/views/serializers_v2.py",
         "function": "CourseInformationSerializerV2.get_tabs"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "ORASubmissionViewRenderStarted",
@@ -804,7 +804,7 @@
       "description": "This filter is triggered when a user requests to view the submission, just before the page is rendered allowing\n        the filter to act on the context and the template used to render the page.",
       "repository": "https://github.com/openedx/openedx-filters",
       "filePath": "openedx_filters/learning/filters.py",
-      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1360",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1363",
       "arguments": [
         {
           "name": "context",
@@ -838,7 +838,7 @@
         "path": "openassessment/xblock/ui_mixins/legacy/views/submission.py",
         "function": "render_submission"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "ScheduleQuerySetRequested",
@@ -848,7 +848,7 @@
       "description": "This filter is triggered when a QuerySet of Schedules is requested, allowing the filter to act on the schedules\n        data. If you want to know more about the Schedules feature, please refer to the official documentation:\n            - https://github.com/openedx/edx-platform/tree/master/openedx/co",
       "repository": "https://github.com/openedx/openedx-filters",
       "filePath": "openedx_filters/learning/filters.py",
-      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1489",
+      "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1492",
       "arguments": [
         {
           "name": "schedules",
@@ -863,7 +863,7 @@
         "path": "openedx/core/djangoapps/schedules/resolvers.py",
         "function": "BinnedSchedulesBaseResolver.get_schedules_with_target_date_by_bin_and_orgs"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.011Z"
     },
     {
       "id": "StudentLoginRequested",
@@ -893,7 +893,7 @@
         "path": "openedx/core/djangoapps/user_authn/views/login.py",
         "function": "login_user"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "AccountSettingsRenderStarted",
@@ -945,7 +945,7 @@
         "path": "openedx/core/djangoapps/user_api/accounts/settings_views.py",
         "function": "account_settings"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.009Z"
     },
     {
       "id": "VerticalBlockChildRenderStarted",
@@ -989,7 +989,7 @@
         "path": "xmodule/vertical_block.py",
         "function": "VerticalBlock._student_or_public_view"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "VerticalBlockRenderCompleted",
@@ -1047,7 +1047,7 @@
         "path": "xmodule/vertical_block.py",
         "function": "VerticalBlock._student_or_public_view"
       },
-      "lastUpdated": "2026-05-28T03:19:17.643Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     },
     {
       "id": "RenderXBlockStarted",
@@ -1095,7 +1095,7 @@
         "path": "lms/djangoapps/courseware/views/views.py",
         "function": "render_xblock"
       },
-      "lastUpdated": "2026-05-28T03:19:17.642Z"
+      "lastUpdated": "2026-05-29T03:17:31.010Z"
     }
   ],
   "categories": [
