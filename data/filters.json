@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-18T03:16:51.254Z",
+  "lastUpdated": "2026-06-19T03:18:41.166Z",
   "filters": [
     {
       "id": "LMSPageURLRequested",
@@ -38,7 +38,7 @@
         "path": "cms/djangoapps/contentstore/asset_storage_handler.py",
         "function": "get_asset_json"
       },
-      "lastUpdated": "2026-06-18T03:16:51.254Z"
+      "lastUpdated": "2026-06-19T03:18:41.166Z"
     },
     {
       "id": "AccountSettingsReadOnlyFieldsRequested",
@@ -68,7 +68,7 @@
         "path": "openedx/core/djangoapps/user_api/accounts/api.py",
         "function": "_validate_read_only_fields"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.078Z"
     },
     {
       "id": "CertificateCreationRequested",
@@ -148,7 +148,7 @@
         "path": "lms/djangoapps/certificates/generated_certificate.py",
         "function": "_generate_certificate_task"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.076Z"
     },
     {
       "id": "CertificateRenderStarted",
@@ -200,7 +200,7 @@
         "path": "lms/djangoapps/certificates/views/webview.py",
         "function": "render_html_view"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.076Z"
     },
     {
       "id": "CohortAssignmentRequested",
@@ -244,7 +244,7 @@
         "path": "openedx/core/djangoapps/course_groups/models.py",
         "function": "assign"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "CohortChangeRequested",
@@ -288,7 +288,7 @@
         "path": "openedx/core/djangoapps/course_groups/models.py",
         "function": "assign"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "CourseAboutPageURLRequested",
@@ -327,7 +327,7 @@
         "path": "common/djangoapps/util/course.py",
         "function": "get_link_for_about_page"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "CourseAboutRenderStarted",
@@ -379,7 +379,7 @@
         "path": "lms/djangoapps/courseware/views/views.py",
         "function": "course_about"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "CourseEnrollmentQuerysetRequested",
@@ -404,7 +404,7 @@
           "description": "Raise to prevent the course enrollment queryset request to continue."
         }
       ],
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "CourseEnrollmentStarted",
@@ -457,7 +457,7 @@
         "path": "common/djangoapps/student/models/course_enrollment.py",
         "function": "enroll"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.076Z"
     },
     {
       "id": "CourseHomeUrlCreationStarted",
@@ -496,7 +496,7 @@
         "path": "openedx/features/course_experience/__init__.py",
         "function": "course_home_url"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "CourseStartDateValidationFailed",
@@ -531,7 +531,7 @@
         "path": "lms/djangoapps/courseware/access_utils.py",
         "function": "check_start_date"
       },
-      "lastUpdated": "2026-06-18T03:16:51.163Z"
+      "lastUpdated": "2026-06-19T03:18:41.078Z"
     },
     {
       "id": "CourseUnenrollmentStarted",
@@ -561,7 +561,7 @@
         "path": "common/djangoapps/student/models/course_enrollment.py",
         "function": "unenroll"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.076Z"
     },
     {
       "id": "CoursewareAccessChecksRequested",
@@ -585,7 +585,7 @@
         "path": "lms/djangoapps/courseware/courses.py",
         "function": "check_course_access"
       },
-      "lastUpdated": "2026-06-18T03:16:51.163Z"
+      "lastUpdated": "2026-06-19T03:18:41.078Z"
     },
     {
       "id": "CoursewareViewStarted",
@@ -620,7 +620,7 @@
         "path": "lms/djangoapps/courseware/decorators.py",
         "function": "courseware_view_hooks"
       },
-      "lastUpdated": "2026-06-18T03:16:51.163Z"
+      "lastUpdated": "2026-06-19T03:18:41.078Z"
     },
     {
       "id": "DashboardRenderStarted",
@@ -672,7 +672,7 @@
         "path": "common/djangoapps/student/views/dashboard.py",
         "function": "student_dashboard"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "GradeEventContextRequested",
@@ -707,7 +707,7 @@
         "path": "lms/djangoapps/grades/events.py",
         "function": "course_grade_passed_first_time"
       },
-      "lastUpdated": "2026-06-18T03:16:51.163Z"
+      "lastUpdated": "2026-06-19T03:18:41.078Z"
     },
     {
       "id": "CourseRunAPIRenderStarted",
@@ -732,7 +732,7 @@
         "path": "lms/djangoapps/learner_home/serializers.py",
         "function": "CourseRunSerializer.to_representation"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "CourseEnrollmentAPIRenderStarted",
@@ -771,7 +771,7 @@
         "path": "lms/djangoapps/learner_home/serializers.py",
         "function": "EnrollmentSerializer.to_representation"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "IDVPageURLRequested",
@@ -796,7 +796,7 @@
         "path": "lms/djangoapps/verify_student/services.py",
         "function": "XBlockVerificationService.get_verify_location"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "InstructorDashboardRenderStarted",
@@ -848,7 +848,7 @@
         "path": "lms/djangoapps/instructor/views/instructor_dashboard.py",
         "function": "instructor_dashboard_2"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "InstructorDashboardTabsRequested",
@@ -888,7 +888,7 @@
         "path": "lms/djangoapps/instructor/views/serializers_v2.py",
         "function": "CourseInformationSerializerV2.get_tabs"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "ORASubmissionViewRenderStarted",
@@ -932,7 +932,7 @@
         "path": "openassessment/xblock/ui_mixins/legacy/views/submission.py",
         "function": "render_submission"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "ScheduleQuerySetRequested",
@@ -957,7 +957,7 @@
         "path": "openedx/core/djangoapps/schedules/resolvers.py",
         "function": "BinnedSchedulesBaseResolver.get_schedules_with_target_date_by_bin_and_orgs"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.078Z"
     },
     {
       "id": "StudentLoginRequested",
@@ -987,7 +987,7 @@
         "path": "openedx/core/djangoapps/user_authn/views/login.py",
         "function": "login_user"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.076Z"
     },
     {
       "id": "AccountSettingsRenderStarted",
@@ -1039,7 +1039,7 @@
         "path": "openedx/core/djangoapps/user_api/accounts/settings_views.py",
         "function": "account_settings"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.076Z"
     },
     {
       "id": "VerticalBlockChildRenderStarted",
@@ -1083,7 +1083,7 @@
         "path": "xmodule/vertical_block.py",
         "function": "VerticalBlock._student_or_public_view"
       },
-      "lastUpdated": "2026-06-18T03:16:51.161Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "VerticalBlockRenderCompleted",
@@ -1141,7 +1141,7 @@
         "path": "xmodule/vertical_block.py",
         "function": "VerticalBlock._student_or_public_view"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     },
     {
       "id": "RenderXBlockStarted",
@@ -1189,7 +1189,7 @@
         "path": "lms/djangoapps/courseware/views/views.py",
         "function": "render_xblock"
       },
-      "lastUpdated": "2026-06-18T03:16:51.162Z"
+      "lastUpdated": "2026-06-19T03:18:41.077Z"
     }
   ],
   "categories": [
