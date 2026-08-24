@@ -1,4 +1,4 @@
-export type ReleaseSlug = 'main' | 'ulmo' | 'teak' | 'sumac';
+export type ReleaseSlug = 'main' | 'verawood' | 'ulmo' | 'teak' | 'sumac';
 
 export type ReleaseOption = {
   slug: ReleaseSlug;
@@ -11,6 +11,11 @@ export const releaseOptions: ReleaseOption[] = [
     slug: 'main',
     label: 'Main',
     basePath: '/openedx-plugin-slots-browser',
+  },
+  {
+    slug: 'verawood',
+    label: 'Verawood',
+    basePath: '/openedx-plugin-slots-browser/releases/verawood',
   },
   {
     slug: 'ulmo',

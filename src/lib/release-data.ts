@@ -6,6 +6,10 @@ import ulmoPluginData from '../../data/releases/ulmo/plugin-slots.json';
 import ulmoFiltersData from '../../data/releases/ulmo/filters.json';
 import ulmoEventsData from '../../data/releases/ulmo/events.json';
 
+import verawoodPluginData from '../../data/releases/verawood/plugin-slots.json';
+import verawoodFiltersData from '../../data/releases/verawood/filters.json';
+import verawoodEventsData from '../../data/releases/verawood/events.json';
+
 import teakPluginData from '../../data/releases/teak/plugin-slots.json';
 import teakFiltersData from '../../data/releases/teak/filters.json';
 import teakEventsData from '../../data/releases/teak/events.json';
@@ -41,6 +45,11 @@ const dataByRelease = {
     pluginData: ulmoPluginData,
     filtersData: ulmoFiltersData,
     eventsData: ulmoEventsData,
+  },
+  verawood: {
+    pluginData: verawoodPluginData,
+    filtersData: verawoodFiltersData,
+    eventsData: verawoodEventsData,
   },
   teak: {
     pluginData: teakPluginData,

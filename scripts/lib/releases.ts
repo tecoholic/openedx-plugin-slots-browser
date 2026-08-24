@@ -9,6 +9,7 @@ export const KNOWN_RELEASES: Release[] = [
   { slug: 'sumac', name: 'Sumac' },
   { slug: 'teak', name: 'Teak' },
   { slug: 'ulmo', name: 'Ulmo' },
+  { slug: 'verawood', name: 'Verawood' },
 ];
 
 const BRANCH_CANDIDATES = (slug: string) => [

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-20T04:18:30.979Z",
+  "lastUpdated": "2026-08-24T21:05:02.187Z",
   "releases": [
     {
       "slug": "sumac",
@@ -21,6 +21,13 @@
       "edxPlatformRef": "release/ulmo",
       "filtersRef": "v2.1.0",
       "eventsRef": "v10.5.0"
+    },
+    {
+      "slug": "verawood",
+      "name": "Verawood",
+      "edxPlatformRef": "release/verawood",
+      "filtersRef": "v3.4.1",
+      "eventsRef": "v11.2.0"
     }
   ]
 }

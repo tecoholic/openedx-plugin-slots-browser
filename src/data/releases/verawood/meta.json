@@ -1,0 +1,10 @@
+{
+  "slug": "verawood",
+  "name": "Verawood",
+  "edxPlatformRef": "release/verawood",
+  "filtersVersion": "3.4.1",
+  "filtersRef": "v3.4.1",
+  "eventsVersion": "11.2.0",
+  "eventsRef": "v11.2.0",
+  "warnings": []
+}
