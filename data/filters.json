@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-10T07:08:44.802Z",
+  "lastUpdated": "2026-09-11T07:07:44.134Z",
   "filters": [
     {
       "id": "LMSPageURLRequested",
@@ -38,7 +38,7 @@
         "path": "cms/djangoapps/contentstore/asset_storage_handler.py",
         "function": "get_asset_json"
       },
-      "lastUpdated": "2026-09-10T07:08:44.802Z"
+      "lastUpdated": "2026-09-11T07:07:44.134Z"
     },
     {
       "id": "AccountSettingsReadOnlyFieldsRequested",
@@ -68,7 +68,7 @@
         "path": "openedx/core/djangoapps/user_api/accounts/api.py",
         "function": "_validate_read_only_fields"
       },
-      "lastUpdated": "2026-09-10T07:08:44.644Z"
+      "lastUpdated": "2026-09-11T07:07:43.992Z"
     },
     {
       "id": "CertificateCreationRequested",
@@ -148,7 +148,7 @@
         "path": "lms/djangoapps/certificates/generated_certificate.py",
         "function": "_generate_certificate_task"
       },
-      "lastUpdated": "2026-09-10T07:08:44.642Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CertificateRenderStarted",
@@ -200,7 +200,7 @@
         "path": "lms/djangoapps/certificates/views/webview.py",
         "function": "render_html_view"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CohortAssignmentRequested",
@@ -244,7 +244,7 @@
         "path": "openedx/core/djangoapps/course_groups/models.py",
         "function": "assign"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CohortChangeRequested",
@@ -288,7 +288,7 @@
         "path": "openedx/core/djangoapps/course_groups/models.py",
         "function": "assign"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CourseAboutPageURLRequested",
@@ -327,7 +327,7 @@
         "path": "common/djangoapps/util/course.py",
         "function": "get_link_for_about_page"
       },
-      "lastUpdated": "2026-09-10T07:08:44.644Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "CourseAboutRenderStarted",
@@ -379,7 +379,7 @@
         "path": "lms/djangoapps/courseware/views/views.py",
         "function": "course_about"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CourseEnrollmentQuerysetRequested",
@@ -404,7 +404,7 @@
           "description": "Raise to prevent the course enrollment queryset request to continue."
         }
       ],
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "CourseModePriceRequested",
@@ -439,7 +439,7 @@
         "path": "common/djangoapps/course_modes/views.py",
         "function": "ChooseModeView.get"
       },
-      "lastUpdated": "2026-09-10T07:08:44.645Z"
+      "lastUpdated": "2026-09-11T07:07:43.993Z"
     },
     {
       "id": "CourseEnrollmentStarted",
@@ -492,7 +492,7 @@
         "path": "common/djangoapps/student/models/course_enrollment.py",
         "function": "enroll"
       },
-      "lastUpdated": "2026-09-10T07:08:44.642Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CourseEnrollmentViewStarted",
@@ -545,7 +545,7 @@
         "path": "openedx/core/djangoapps/enrollments/views.py",
         "function": "EnrollmentListView.post"
       },
-      "lastUpdated": "2026-09-10T07:08:44.642Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CourseHomeUrlCreationStarted",
@@ -584,7 +584,7 @@
         "path": "openedx/features/course_experience/__init__.py",
         "function": "course_home_url"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "CourseStartDateValidationFailed",
@@ -619,7 +619,7 @@
         "path": "lms/djangoapps/courseware/access_utils.py",
         "function": "check_start_date"
       },
-      "lastUpdated": "2026-09-10T07:08:44.644Z"
+      "lastUpdated": "2026-09-11T07:07:43.992Z"
     },
     {
       "id": "CourseUnenrollmentStarted",
@@ -649,7 +649,7 @@
         "path": "common/djangoapps/student/models/course_enrollment.py",
         "function": "unenroll"
       },
-      "lastUpdated": "2026-09-10T07:08:44.642Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "CoursewareAccessChecksRequested",
@@ -673,7 +673,7 @@
         "path": "lms/djangoapps/courseware/courses.py",
         "function": "check_course_access"
       },
-      "lastUpdated": "2026-09-10T07:08:44.645Z"
+      "lastUpdated": "2026-09-11T07:07:43.992Z"
     },
     {
       "id": "CoursewareViewStarted",
@@ -708,7 +708,7 @@
         "path": "lms/djangoapps/courseware/decorators.py",
         "function": "courseware_view_hooks"
       },
-      "lastUpdated": "2026-09-10T07:08:44.644Z"
+      "lastUpdated": "2026-09-11T07:07:43.992Z"
     },
     {
       "id": "DashboardRenderStarted",
@@ -760,7 +760,7 @@
         "path": "common/djangoapps/student/views/dashboard.py",
         "function": "student_dashboard"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "DiscountEligibilityCheckRequested",
@@ -808,7 +808,7 @@
         "path": "openedx/features/discounts/applicability.py",
         "function": "can_receive_discount,"
       },
-      "lastUpdated": "2026-09-10T07:08:44.645Z"
+      "lastUpdated": "2026-09-11T07:07:43.993Z"
     },
     {
       "id": "GradeEventContextRequested",
@@ -843,7 +843,7 @@
         "path": "lms/djangoapps/grades/events.py",
         "function": "course_grade_passed_first_time"
       },
-      "lastUpdated": "2026-09-10T07:08:44.644Z"
+      "lastUpdated": "2026-09-11T07:07:43.992Z"
     },
     {
       "id": "CourseRunAPIRenderStarted",
@@ -868,7 +868,7 @@
         "path": "lms/djangoapps/learner_home/serializers.py",
         "function": "CourseRunSerializer.to_representation"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "CourseEnrollmentAPIRenderStarted",
@@ -907,7 +907,7 @@
         "path": "lms/djangoapps/learner_home/serializers.py",
         "function": "EnrollmentSerializer.to_representation"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "IDVPageURLRequested",
@@ -932,7 +932,7 @@
         "path": "lms/djangoapps/verify_student/services.py",
         "function": "XBlockVerificationService.get_verify_location"
       },
-      "lastUpdated": "2026-09-10T07:08:44.644Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "InstructorDashboardRenderStarted",
@@ -984,7 +984,7 @@
         "path": "lms/djangoapps/instructor/views/instructor_dashboard.py",
         "function": "instructor_dashboard_2"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "InstructorDashboardTabsRequested",
@@ -1024,7 +1024,7 @@
         "path": "lms/djangoapps/instructor/views/serializers_v2.py",
         "function": "CourseInformationSerializerV2.get_tabs"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "ORASubmissionViewRenderStarted",
@@ -1068,7 +1068,7 @@
         "path": "openassessment/xblock/ui_mixins/legacy/views/submission.py",
         "function": "render_submission"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "ScheduleQuerySetRequested",
@@ -1093,7 +1093,7 @@
         "path": "openedx/core/djangoapps/schedules/resolvers.py",
         "function": "BinnedSchedulesBaseResolver.get_schedules_with_target_date_by_bin_and_orgs"
       },
-      "lastUpdated": "2026-09-10T07:08:44.644Z"
+      "lastUpdated": "2026-09-11T07:07:43.992Z"
     },
     {
       "id": "StudentLoginRequested",
@@ -1123,7 +1123,7 @@
         "path": "openedx/core/djangoapps/user_authn/views/login.py",
         "function": "login_user"
       },
-      "lastUpdated": "2026-09-10T07:08:44.642Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "AccountSettingsRenderStarted",
@@ -1175,46 +1175,32 @@
         "path": "openedx/core/djangoapps/user_api/accounts/settings_views.py",
         "function": "account_settings"
       },
-      "lastUpdated": "2026-09-10T07:08:44.642Z"
+      "lastUpdated": "2026-09-11T07:07:43.990Z"
     },
     {
       "id": "SupportContactContextRequested",
       "filterType": "org.openedx.learning.support.contact.context.requested.v1",
       "name": "SupportContactContextRequested",
       "category": "learning",
-      "description": "This filter is triggered when a user submits a support contact request. Pipeline steps\n        can inspect the user to append custom tags to the tags list that will be associated\n        with the support ticket.",
+      "description": "This filter is triggered when a user submits a support contact request. Pipeline steps\n        can inspect and modify the support contact page context — e.g. append custom tags to\n        context['tags'] — before the page is rendered and the ticket is associated with those tags.",
       "repository": "https://github.com/openedx/openedx-filters",
       "filePath": "openedx_filters/learning/filters.py",
       "sourceUrl": "https://github.com/openedx/openedx-filters/blob/main/openedx_filters/learning/filters.py#L1941",
       "arguments": [
         {
-          "name": "tags",
-          "type": "list[str]",
-          "description": "the list of tags to be associated with the support ticket."
-        },
-        {
-          "name": "user",
-          "type": "User",
-          "description": "the user submitting the support request."
+          "name": "context",
+          "type": "dict",
+          "description": "the support contact page template context."
         }
       ],
-      "returns": [
-        {
-          "type": "list",
-          "description": "the (possibly modified) tags list."
-        },
-        {
-          "type": "Any",
-          "description": "the Django User object (unchanged)."
-        }
-      ],
+      "returns": [],
       "exceptions": [],
       "trigger": {
         "repository": "openedx/edx-platform",
         "path": "lms/djangoapps/support/views/contact_us.py",
         "function": "ContactUsView.get"
       },
-      "lastUpdated": "2026-09-10T07:08:44.645Z"
+      "lastUpdated": "2026-09-11T07:07:43.993Z"
     },
     {
       "id": "VerticalBlockChildRenderStarted",
@@ -1258,7 +1244,7 @@
         "path": "xmodule/vertical_block.py",
         "function": "VerticalBlock._student_or_public_view"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "VerticalBlockRenderCompleted",
@@ -1316,7 +1302,7 @@
         "path": "xmodule/vertical_block.py",
         "function": "VerticalBlock._student_or_public_view"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     },
     {
       "id": "RenderXBlockStarted",
@@ -1364,7 +1350,7 @@
         "path": "lms/djangoapps/courseware/views/views.py",
         "function": "render_xblock"
       },
-      "lastUpdated": "2026-09-10T07:08:44.643Z"
+      "lastUpdated": "2026-09-11T07:07:43.991Z"
     }
   ],
   "categories": [
